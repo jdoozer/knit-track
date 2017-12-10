@@ -2,6 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { addSection } from 'actions';
 
+const mapStateToProps = state => {
+  return { patternID: state.patterns.selected };
+};
+
 class AddSection extends React.Component {
   constructor(props) {
     super(props);
@@ -22,12 +26,12 @@ class AddSection extends React.Component {
   handleSubmit(event) {
 
     const { title, rows } = this.state;
-    const { dispatch } = this.props;
+    const { dispatch, patternID } = this.props;
 
     event.preventDefault();
 
     if (title.trim()) {
-      dispatch(addSection(title, rows));
+      dispatch(addSection(patternID, title, rows));
       this.setState({ title: '', rows: 0 });
     }
   }
@@ -45,6 +49,6 @@ class AddSection extends React.Component {
   }
 }
 
-AddSection = connect()(AddSection);
+AddSection = connect(mapStateToProps)(AddSection);
 
 export default AddSection;

@@ -3,11 +3,20 @@ import { updateCount } from 'actions';
 import Pattern from 'components/Pattern';
 
 const mapStateToProps = state => {
-  if (state.selectedPattern != null) {
-    return { pattern: state.patterns[state.selectedPattern] };
+  const selectedID = state.patterns.selected;
+
+  if (selectedID != null) {
+    const pattern = state.patterns.byID[selectedID];
+    const sections = pattern.sections.map(
+      sectionID => state.sections.byID[sectionID]
+    );
+
+    return { pattern, sections };
+
   } else {
     return {
-      pattern: null
+      pattern: null,
+      sections: []
     };
   }
 };

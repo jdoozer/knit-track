@@ -3,7 +3,11 @@ import { selectPattern } from 'actions';
 import PatternList from 'components/PatternList';
 
 const mapStateToProps = state => {
-  return { patterns: state.patterns };
+  return {
+    patterns: state.patterns.allIDs.map(patternID =>
+      state.patterns.byID[patternID]
+    )
+  };
 };
 
 const mapDispatchToProps = dispatch => {

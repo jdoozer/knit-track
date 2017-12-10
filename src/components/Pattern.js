@@ -3,7 +3,21 @@ import PropTypes from 'prop-types';
 import SectionCard from 'components/SectionCard';
 import AddSection from 'containers/AddSection';
 
-const Pattern = ({ pattern, onIncClick }) => {
+
+/* NEED TO UPDATE PatternContainer TO ONLY PASS RELEVANT SECTIONS */
+
+/*
+{sections.map(section => (
+  <SectionCard
+    key={section.sectionID}
+    {...section}
+    onClick={() => onIncClick(section.sectionID)}
+  />
+))}
+
+*/
+
+const Pattern = ({ pattern, onIncClick, sections }) => {
   if (pattern == null) {
     return (
       <div>No pattern selected!</div>
@@ -14,11 +28,11 @@ const Pattern = ({ pattern, onIncClick }) => {
         <h2>{pattern.title}</h2>
         <p>{pattern.info}</p>
         <ul>
-          {pattern.sections.map((section, index) => (
+          {sections.map(section => (
             <SectionCard
-              key={index}
+              key={section.sectionID}
               {...section}
-              onClick={() => onIncClick(index)}
+              onClick={() => onIncClick(section.sectionID)}
             />
           ))}
         </ul>
@@ -32,7 +46,10 @@ Pattern.propTypes = {
   pattern: PropTypes.shape({
     title: PropTypes.string.isRequired,
     info: PropTypes.string.isRequired,
-    sections: PropTypes.arrayOf(PropTypes.object).isRequired,
+    sections: PropTypes.shape({
+      byID: PropTypes.object.isRequired,
+      allIDs: PropTypes.arrayOf(PropTypes.string).isRequired
+    }).isRequired,
   })
 };
 

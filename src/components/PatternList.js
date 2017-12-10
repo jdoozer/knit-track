@@ -4,18 +4,21 @@ import PatternTitleBlock from './PatternTitleBlock';
 
 const PatternList = ({ patterns, onPatternClick }) => (
   <ul>
-    {patterns.map((pattern, index) => (
+    {patterns.map(pattern => (
       <PatternTitleBlock
-        key={index}
+        key={pattern.patternID}
         {...pattern}
-        onClick={() => onPatternClick(index)}
+        onClick={() => onPatternClick(pattern.patternID)}
       />
     ))}
   </ul>
 );
 
 PatternList.propTypes = {
-  patterns: PropTypes.arrayOf(PropTypes.object).isRequired,
+  patterns: PropTypes.shape({
+    byID: PropTypes.object.isRequired,
+    allIDs: PropTypes.arrayOf(PropTypes.string).isRequired
+  }).isRequired,
   onPatternClick: PropTypes.func.isRequired
 };
 
