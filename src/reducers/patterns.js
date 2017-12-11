@@ -4,10 +4,10 @@ const initialPattern = (payload) => {
   const { patternID, title } = payload;
 
   return {
-    title: title,
+    title,
+    patternID,
     sections: [],
     info: `here's some pattern info`,
-    patternID: patternID
   };
 };
 

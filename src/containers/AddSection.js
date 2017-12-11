@@ -2,14 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { addSection } from 'actions';
 
-const mapStateToProps = state => {
-  return { patternID: state.patterns.selected };
-};
-
 class AddSection extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { title: '', rows: 0 };
+    this.state = { title: '', numRows: 0 };
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleRowsChange = this.handleRowsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -20,19 +16,19 @@ class AddSection extends React.Component {
   }
 
   handleRowsChange(event) {
-    this.setState({ rows: event.target.value });
+    this.setState({ numRows: event.target.value });
   }
 
   handleSubmit(event) {
 
-    const { title, rows } = this.state;
+    const { title, numRows } = this.state;
     const { dispatch, patternID } = this.props;
 
     event.preventDefault();
 
     if (title.trim()) {
-      dispatch(addSection(patternID, title, rows));
-      this.setState({ title: '', rows: 0 });
+      dispatch(addSection(patternID, title, numRows));
+      this.setState({ title: '', numRows: 0 });
     }
   }
 
@@ -41,7 +37,7 @@ class AddSection extends React.Component {
       <div>
         <form onSubmit={this.handleSubmit}>
           <input type="text" title={this.state.title} onChange={this.handleTitleChange} />
-          <input type="text" title={this.state.rows} onChange={this.handleRowsChange} />
+          <input type="text" title={this.state.numRows} onChange={this.handleRowsChange} />
           <input type="submit" title="Add Section" />
         </form>
       </div>
@@ -49,6 +45,6 @@ class AddSection extends React.Component {
   }
 }
 
-AddSection = connect(mapStateToProps)(AddSection);
+AddSection = connect()(AddSection);
 
 export default AddSection;

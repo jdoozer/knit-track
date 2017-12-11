@@ -18,22 +18,43 @@ export function selectPattern(patternID) {
   };
 }
 
-export function addSection(patternID, title, rows) {
+export function selectSection(sectionID) {
+  return {
+    type: 'SELECT_SECTION',
+    sectionID
+  };
+}
+
+export function addSection(patternID, title, numRows) {
   const sectionID = generateID();
   return {
     type: 'ADD_SECTION',
     payload: {
       title,
-      rows,
+      numRows,
       patternID,
       sectionID
     }
   };
 }
 
-export function updateCount(sectionID, updateType) {
+export function addRow(sectionID, fullText, quickText, stitches) {
+  const rowID = generateID();
   return {
-    type: 'UPDATE_COUNT',
+    type: 'ADD_ROW',
+    payload: {
+      sectionID,
+      rowID,
+      fullText,
+      quickText,
+      stitches
+    }
+  }
+}
+
+export function updateRowCount(sectionID, updateType) {
+  return {
+    type: 'UPDATE_ROW_COUNT',
     payload: {
       sectionID,
       updateType

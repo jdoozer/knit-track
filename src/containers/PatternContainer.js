@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { updateCount } from 'actions';
 import Pattern from 'components/Pattern';
 
 const mapStateToProps = state => {
@@ -21,18 +20,6 @@ const mapStateToProps = state => {
   }
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onIncClick: index => {
-      dispatch(updateCount(index, 'INCREASE'));
-    }
-  }
-};
-
-
-const PatternContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Pattern);
+const PatternContainer = connect(mapStateToProps)(Pattern);
 
 export default PatternContainer;

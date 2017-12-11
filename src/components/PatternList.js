@@ -15,10 +15,11 @@ const PatternList = ({ patterns, onPatternClick }) => (
 );
 
 PatternList.propTypes = {
-  patterns: PropTypes.shape({
-    byID: PropTypes.object.isRequired,
-    allIDs: PropTypes.arrayOf(PropTypes.string).isRequired
-  }).isRequired,
+  patterns: PropTypes.arrayOf(
+    PropTypes.shape({
+      patternID: PropTypes.string.isRequired
+    }).isRequired
+  ).isRequired,
   onPatternClick: PropTypes.func.isRequired
 };
 
