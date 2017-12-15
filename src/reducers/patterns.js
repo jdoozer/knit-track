@@ -7,26 +7,25 @@ const initialPattern = (payload) => {
     title,
     patternID,
     sections: [],
-    info: `here's some pattern info`,
+    info: '<pattern info placeholder>',
   };
 };
 
 function addPattern(state, action) {
 
   const { payload } = action;
-  const { patternID } = payload;
 
   const pattern = initialPattern(payload);
 
   return {
     ...state,
-    [patternID]: pattern
+    [payload.patternID]: pattern
   };
 }
 
 function addSection(state, action) {
-  const { payload } = action;
-  const { patternID, sectionID } = payload;
+
+  const { patternID, sectionID } = action.payload;
 
   const pattern = state[patternID];
 
@@ -51,9 +50,7 @@ function patternsByID(state = {}, action) {
 }
 
 function addPatternID(state, action) {
-  const { payload } = action;
-  const { patternID } = payload;
-  return state.concat(patternID);
+  return state.concat(action.payload.patternID);
 }
 
 function allPatterns(state = [], action) {

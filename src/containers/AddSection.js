@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { addSection } from 'actions';
 
 class AddSection extends React.Component {
@@ -22,14 +23,14 @@ class AddSection extends React.Component {
   handleSubmit(event) {
 
     const { title, numRows } = this.state;
-    const { dispatch, patternID } = this.props;
-
-    event.preventDefault();
+    const { dispatch, patternID, history } = this.props;
 
     if (title.trim()) {
       dispatch(addSection(patternID, title, numRows));
-      this.setState({ title: '', numRows: 0 });
     }
+
+    event.preventDefault();
+    history.push('/section');
   }
 
   render() {
@@ -45,6 +46,6 @@ class AddSection extends React.Component {
   }
 }
 
-AddSection = connect()(AddSection);
+AddSection = withRouter(connect()(AddSection));
 
 export default AddSection;

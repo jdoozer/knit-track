@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import RowCounterContainer from 'containers/RowCounterContainer';
 
-const SectionCard = ({ section }) => {
-  const { title, sectionID } = section;
+const SectionCard = ({ title, sectionID }) => {
 
   return(
     <li>
@@ -14,11 +13,8 @@ const SectionCard = ({ section }) => {
 };
 
 SectionCard.propTypes = {
-  section: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    currentRow: PropTypes.number.isRequired,
-    rows: PropTypes.array.isRequired
-  }).isRequired
+  sectionID: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired
 };
 
 export default SectionCard;

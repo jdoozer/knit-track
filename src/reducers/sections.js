@@ -17,20 +17,18 @@ const initialSection = (payload) => {
 function addSectionEntry(state, action) {
 
   const { payload } = action;
-  const { sectionID } = payload;
 
   const section = initialSection(payload);
 
   return {
     ...state,
-    [sectionID]: section,
+    [payload.sectionID]: section,
   };
 }
 
 function addRow(state, action) {
-  const { payload } = action;
-  const { sectionID, rowID } = payload;
-
+  const { sectionID, payload } = action;
+  const { rowID } = payload;
   const section = state[sectionID];
 
   return {
@@ -43,11 +41,9 @@ function addRow(state, action) {
 }
 
 function updateRowCount(state, action) {
-  const { payload } = action;
-  const { sectionID, updateType } = payload;
-
+  const { sectionID, updateType } = action.payload;
   const section = state[sectionID];
-  //const { currentRow, numRows } = section;
+
   const currentRow = section.currentRow;
   const lastRow = section.numRows;
   let nextRow = currentRow;
@@ -89,9 +85,7 @@ function sectionsByID(state = {}, action) {
 }
 
 function addSectionID(state, action) {
-  const { payload } = action;
-  const { sectionID } = payload;
-  return state.concat(sectionID);
+  return state.concat(action.payload.sectionID);
 }
 
 function allSections(state = [], action) {
@@ -105,8 +99,8 @@ function allSections(state = [], action) {
 
 function selectedSection(state = null, action) {
   switch(action.type) {
-    case 'SELECT_SECTION':
-      return action.sectionID;
+    case 'ADD_SECTION':
+      return action.payload.sectionID;
     default:
       return state;
   }

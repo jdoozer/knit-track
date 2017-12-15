@@ -18,13 +18,6 @@ export function selectPattern(patternID) {
   };
 }
 
-export function selectSection(sectionID) {
-  return {
-    type: 'SELECT_SECTION',
-    sectionID
-  };
-}
-
 export function addSection(patternID, title, numRows) {
   const sectionID = generateID();
   return {
@@ -38,16 +31,14 @@ export function addSection(patternID, title, numRows) {
   };
 }
 
-export function addRow(sectionID, fullText, quickText, stitches) {
+export function addRow(sectionID, rowInfo) {
   const rowID = generateID();
   return {
     type: 'ADD_ROW',
+    sectionID,
     payload: {
-      sectionID,
       rowID,
-      fullText,
-      quickText,
-      stitches
+      ...rowInfo
     }
   }
 }

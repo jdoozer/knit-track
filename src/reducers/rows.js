@@ -23,9 +23,7 @@ function rowsByID(state = {}, action) {
 }
 
 function addRowID(state, action) {
-  const { payload } = action;
-  const { rowID } = payload;
-  return state.concat(rowID);
+  return state.concat(action.payload.rowID);
 }
 
 function allRows(state = [], action) {

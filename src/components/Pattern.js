@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import SectionCard from 'components/SectionCard';
 import AddSection from 'containers/AddSection';
 
-const Pattern = ({ pattern, onIncClick, sections }) => {
+const Pattern = ({ pattern, sections }) => {
   if (pattern == null) {
     return (
       <div>No pattern selected!</div>
@@ -17,7 +17,7 @@ const Pattern = ({ pattern, onIncClick, sections }) => {
           {sections.map(section => (
             <SectionCard
               key={section.sectionID}
-              section={section}
+              {...section}
             />
           ))}
         </ul>
