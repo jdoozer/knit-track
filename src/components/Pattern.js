@@ -1,26 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Typography from 'material-ui/Typography';
+import { withStyles } from 'material-ui/styles';
 import SectionCard from 'components/SectionCard';
 import AddSection from 'containers/AddSection';
 
-const Pattern = ({ pattern, sections }) => {
+const styles = (theme) => ({
+  info: {
+    textAlign: 'left',
+    marginTop: theme.spacing.unit * 2,
+  }
+});
+
+const Pattern = ({ pattern, sections, classes }) => {
   if (pattern == null) {
     return (
-      <div>No pattern selected!</div>
+      <Typography type="title">No pattern selected!</Typography>
     );
   } else {
     return(
       <div>
-        <h2>{pattern.title}</h2>
-        <p>{pattern.info}</p>
-        <ul>
+        <Typography type="title">{pattern.title}</Typography>
+        <Typography type="subheading" className={classes.info}>
+          {pattern.info}
+        </Typography>
+        <div>
           {sections.map(section => (
             <SectionCard
               key={section.sectionID}
               {...section}
             />
           ))}
-        </ul>
+        </div>
         <AddSection patternID={pattern.patternID} />
       </div>
     );
@@ -39,4 +50,4 @@ Pattern.propTypes = {
   ).isRequired
 };
 
-export default Pattern;
+export default withStyles(styles)(Pattern);

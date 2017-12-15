@@ -5,7 +5,9 @@ import { createStore } from 'redux';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import throttle from 'lodash/throttle';
-// import './index.css';
+
+import 'typeface-roboto';
+import './index.css';
 
 import knitTrack from './reducers';
 import { loadState, saveState } from './localStorage';

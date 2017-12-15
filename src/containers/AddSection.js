@@ -1,12 +1,29 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { withStyles } from 'material-ui/styles';
+import Button from 'material-ui/Button';
+import TextField from 'material-ui/TextField';
 import { addSection } from 'actions';
+
+const styles = theme => ({
+  root: {
+    paddingTop: theme.spacing.unit * 3
+  },
+  button: {
+    margin: theme.spacing.unit,
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+  },
+});
+
 
 class AddSection extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { title: '', numRows: 0 };
+    this.state = { title: '', numRows: '' };
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleRowsChange = this.handleRowsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -34,12 +51,27 @@ class AddSection extends React.Component {
   }
 
   render() {
+    const { classes } = this.props;
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
-          <input type="text" title={this.state.title} onChange={this.handleTitleChange} />
-          <input type="text" title={this.state.numRows} onChange={this.handleRowsChange} />
-          <input type="submit" title="Add Section" />
+          <TextField
+            label="Section Name"
+            className={classes.textField}
+            value={this.state.title}
+            onChange={this.handleTitleChange}
+            style={{width:200}}
+          />
+          <TextField
+            label="# Rows"
+            className={classes.textField}
+            value={this.state.numRows}
+            onChange={this.handleRowsChange}
+            style={{width:75}}
+          />
+          <Button raised color="primary" className={classes.button} type="submit">
+            Add Section
+          </Button>
         </form>
       </div>
     );
@@ -48,4 +80,4 @@ class AddSection extends React.Component {
 
 AddSection = withRouter(connect()(AddSection));
 
-export default AddSection;
+export default withStyles(styles)(AddSection);

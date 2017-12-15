@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import './App.css';
+import MainContentWrapper from 'muiwrappers/MainContentWrapper';
 
 import Header from 'components/Header';
 import PatternListContainer from 'containers/PatternListContainer';
@@ -15,12 +15,16 @@ const App = () => (
 
       <Header />
 
-      <Route exact path="/" component={PatternListContainer} />
-      <Route exact path="/" component={AddPattern} />
+      <MainContentWrapper>
 
-      <Route path="/pattern" component={PatternContainer} />
+        <Route exact path="/" component={PatternListContainer} />
+        <Route exact path="/" component={AddPattern} />
 
-      <Route path="/section" component={SectionSetupContainer} />
+        <Route path="/pattern" component={PatternContainer} />
+
+        <Route path="/section" component={SectionSetupContainer} />
+
+      </MainContentWrapper>
 
     </div>
   </Router>

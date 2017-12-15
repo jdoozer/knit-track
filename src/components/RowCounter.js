@@ -1,14 +1,17 @@
 import React from 'react';
+import Typography from 'material-ui/Typography';
 
 const RowCounter = ({ section, rows, dynamic, onUpdateCountClick }) => {
   const { currentRow, numRows } = section;
 
-  const sectionStatus = `${currentRow + 1} / ${numRows}`;
+  const sectionStatusComponent = (
+    <Typography type="title">
+      {`${currentRow + 1} / ${numRows}`}
+    </Typography>
+  );
 
   if (!dynamic) {
-    return(
-      <div>{sectionStatus}</div>
-    );
+    return(sectionStatusComponent);
   }
 
   let infoDiv = '';
@@ -16,14 +19,18 @@ const RowCounter = ({ section, rows, dynamic, onUpdateCountClick }) => {
     const { fullText, quickText, stitches } = rows[currentRow];
     infoDiv =
       <div>
-        {quickText && quickText.trim() ? <div>{quickText}</div> : ''}
-        {`${fullText} [${stitches} sts]`}
+        <Typography type="subheading">
+          {quickText && quickText.trim() ? <div>{quickText}</div> : ''}
+        </Typography>
+        <Typography type="body1">
+          {`${fullText} [${stitches} sts]`}
+        </Typography>
       </div>;
     }
 
   return(
     <div>
-      <div>{sectionStatus}</div>
+      {sectionStatusComponent}
       <div>
         <button type="button" onClick={() => onUpdateCountClick("INCREMENT")}>+</button>
         <button type="button" onClick={() => onUpdateCountClick("DECREMENT")}>-</button>
