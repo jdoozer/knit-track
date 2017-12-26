@@ -6,16 +6,13 @@ import Divider from 'material-ui/Divider';
 import { withStyles } from 'material-ui/styles';
 
 const styles = () => ({
-  link: {
-    textDecoration: 'none',
-  },
   listItemText: {
     paddingRight: 0,
-  }
+  },
 });
 
 const PatternTitleBlock = ({ onClick, title, classes }) => (
-  <Link to="/pattern" className={classes.link}>
+  <Link to="/pattern">
     <ListItem button onClick={onClick}>
       <ListItemText primary={title} className={classes.listItemText} />
     </ListItem>
@@ -25,7 +22,8 @@ const PatternTitleBlock = ({ onClick, title, classes }) => (
 
 PatternTitleBlock.propTypes = {
   onClick: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(PatternTitleBlock);

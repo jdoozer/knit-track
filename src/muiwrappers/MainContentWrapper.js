@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
@@ -6,25 +7,27 @@ import Paper from 'material-ui/Paper';
 const styles = theme => ({
   root: {
     justifyContent: 'center',
-    flexGrow: 1,
-    marginTop: 30,
+    marginTop: theme.spacing.unit * 4,
   },
   paper: {
-    padding: 16,
     minWidth: 300,
     textAlign: 'center',
-    color: theme.palette.text.secondary,
   },
 });
 
 const MainContentWrapper = ({ classes, children }) => (
   <Grid container className={classes.root}>
     <Grid item>
-      <Paper className={classes.paper}>
+      <Paper className={classes.paper} elevation="4">
         {children}
       </Paper>
     </Grid>
   </Grid>
 );
+
+MainContentWrapper.propTypes = {
+  classes: PropTypes.object.isRequired,
+  children: PropTypes.node.isRequired,
+};
 
 export default withStyles(styles)(MainContentWrapper);

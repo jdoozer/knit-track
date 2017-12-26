@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import MainContentWrapper from 'muiwrappers/MainContentWrapper';
-
 import Header from 'components/Header';
 import PatternListContainer from 'containers/PatternListContainer';
 import PatternContainer from 'containers/PatternContainer';
@@ -11,7 +10,7 @@ import SectionSetupContainer from 'containers/SectionSetupContainer';
 
 const App = () => (
   <Router>
-    <div className="App">
+    <div>
 
       <Header />
 

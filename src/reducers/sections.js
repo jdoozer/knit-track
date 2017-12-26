@@ -7,7 +7,7 @@ const initialSection = (payload) => {
   return {
     title,
     sectionID,
-    numRows,
+    numRows: Number(numRows),
     rows: [],
     currentRow: 0,
   };

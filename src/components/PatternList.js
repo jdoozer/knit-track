@@ -1,13 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Typography from 'material-ui/Typography';
+import { withStyles } from 'material-ui/styles';
 import List from 'material-ui/List';
-import PatternTitleBlock from './PatternTitleBlock';
+import Divider from 'material-ui/Divider';
+import ContentHeader from 'components/ContentHeader';
+import PatternTitleBlock from 'components/PatternTitleBlock';
 
-const PatternList = ({ patterns, onPatternClick }) => (
+const styles = () => ({
+  list: {
+    padding: 0,
+  },
+});
+
+const PatternList = ({ patterns, onPatternClick, classes }) => (
   <div>
-    <Typography type="title">Pattern List</Typography>
-    <List>
+    <ContentHeader>Pattern List</ContentHeader>
+    <Divider />
+    <List className={classes.list}>
       {patterns.map(pattern => (
         <PatternTitleBlock
           key={pattern.patternID}
@@ -25,7 +34,8 @@ PatternList.propTypes = {
       patternID: PropTypes.string.isRequired
     }).isRequired
   ).isRequired,
-  onPatternClick: PropTypes.func.isRequired
+  onPatternClick: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
-export default PatternList;
+export default withStyles(styles)(PatternList);

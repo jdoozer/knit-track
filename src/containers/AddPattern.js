@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
@@ -7,15 +8,11 @@ import { addPattern } from 'actions';
 
 const styles = theme => ({
   root: {
-    paddingTop: theme.spacing.unit * 3
-  },
-  button: {
-    margin: theme.spacing.unit,
+    padding: theme.spacing.unit * 2,
   },
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    minWidth: 250
+    minWidth: 250,
+    marginRight: theme.spacing.unit * 2,
   },
 });
 
@@ -56,17 +53,18 @@ class AddPattern extends React.Component {
             value={this.state.value}
             onChange={this.handleChange}
           />
-          <Button raised color="primary" className={classes.button} type="submit">
+          <Button raised color="primary" type="submit">
             Add Pattern
           </Button>
-
         </form>
       </div>
     );
   }
 }
 
+AddPattern.propTypes = {
+  classes: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
+};
 
-AddPattern = connect()(AddPattern);
-
-export default withStyles(styles)(AddPattern)
+export default withStyles(styles)(connect()(AddPattern));

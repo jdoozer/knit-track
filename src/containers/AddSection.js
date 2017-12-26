@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from 'material-ui/styles';
@@ -8,14 +9,11 @@ import { addSection } from 'actions';
 
 const styles = theme => ({
   root: {
-    paddingTop: theme.spacing.unit * 3
-  },
-  button: {
-    margin: theme.spacing.unit,
+    padding: theme.spacing.unit * 3,
+    paddingTop: 0,
   },
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing.unit * 2,
   },
 });
 
@@ -53,7 +51,7 @@ class AddSection extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <div>
+      <div className={classes.root}>
         <form onSubmit={this.handleSubmit}>
           <TextField
             label="Section Name"
@@ -78,6 +76,11 @@ class AddSection extends React.Component {
   }
 }
 
-AddSection = withRouter(connect()(AddSection));
+AddSection.propTypes = {
+  classes: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  patternID: PropTypes.string.isRequired,
+  history: PropTypes.object.isRequired,
+};
 
-export default withStyles(styles)(AddSection);
+export default withStyles(styles)(withRouter(connect()(AddSection)));

@@ -2,29 +2,33 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
+import ContentHeader from 'components/ContentHeader';
 import SectionCard from 'components/SectionCard';
 import AddSection from 'containers/AddSection';
 
 const styles = (theme) => ({
   info: {
     textAlign: 'left',
-    marginTop: theme.spacing.unit * 2,
-  }
+    margin: theme.spacing.unit * 3,
+  },
+  sectionCards: {
+    margin: theme.spacing.unit * 3,
+  },
 });
 
 const Pattern = ({ pattern, sections, classes }) => {
   if (pattern == null) {
     return (
-      <Typography type="title">No pattern selected!</Typography>
+      <ContentHeader>No pattern selected!</ContentHeader>
     );
   } else {
     return(
       <div>
-        <Typography type="title">{pattern.title}</Typography>
+        <ContentHeader>{pattern.title}</ContentHeader>
         <Typography type="subheading" className={classes.info}>
           {pattern.info}
         </Typography>
-        <div>
+        <div className={classes.sectionCards}>
           {sections.map(section => (
             <SectionCard
               key={section.sectionID}
@@ -42,12 +46,14 @@ Pattern.propTypes = {
   pattern: PropTypes.shape({
     title: PropTypes.string.isRequired,
     info: PropTypes.string.isRequired,
+    patternID: PropTypes.string.isRequired,
   }),
   sections: PropTypes.arrayOf(
     PropTypes.shape({
       sectionID: PropTypes.string.isRequired
     }).isRequired
-  ).isRequired
+  ).isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Pattern);

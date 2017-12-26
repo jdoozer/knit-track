@@ -5,14 +5,15 @@ import RowCounter from 'components/RowCounter';
 const mapStateToProps = (state, ownProps) => {
   const { sectionID } = ownProps;
   const section = state.sections.byID[sectionID];
-  const rowIDs = section.rows;
-  const rows = rowIDs.map(rowID => state.rows.byID[rowID]);
+  const { rows, currentRow } = section;
+  const rowData = rows.map(rowID => state.rows.byID[rowID]);
 
   return {
-    section,
-    rows
+    sectionID,
+    currentRow,
+    rowData,
   };
-}
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   const { sectionID } = ownProps;

@@ -1,49 +1,57 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import Typography from 'material-ui/Typography';
+import ContentHeader from 'components/ContentHeader';
 
-const styles = theme => ({
-  button: {
-    margin: theme.spacing.unit,
-  },
-  buttons: {
-    marginTop: theme.spacing.unit * 2,
-  },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-  },
-  row: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: theme.spacing.unit * 2,
-  },
-  rowLabel: {
-    marginRight: theme.spacing.unit * 2,
-  },
-  stitches: {
-    width: 40
-  },
+/* keys here should match the props pulled out in RowCounter component */
+const rowProps = {
   fullText: {
+    display: 'Full Row Instructions',
     width: 300,
   },
   quickText: {
-    width: 150
+    display: 'Shorthand/Alert',
+    width: 150,
+  },
+  stitches: {
+    display: 'Sts',
+    width: 40,
+  },
+};
+
+const styles = theme => {
+  const mainStyles = {
+    root: {
+      padding: theme.spacing.unit * 3,
+    },
+    textField: {
+      marginLeft: theme.spacing.unit * 2,
+    },
+    row: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: theme.spacing.unit,
+    },
+    button: {
+      marginTop: theme.spacing.unit * 2,
+    },
+  };
+
+  let rowPropStyles = {};
+  for (let prop in rowProps) {
+    rowPropStyles[prop] = { width: rowProps[prop].width };
   }
-});
+
+  return Object.assign(mainStyles, rowPropStyles);
+}
 
 class SectionSetup extends React.Component {
   constructor(props) {
     super(props);
-    this.rowProperties = ['fullText', 'quickText', 'stitches'];
-    this.rowPropsDisplay = {
-      fullText: 'Full Row Instructions',
-      quickText: 'Shorthand/alert',
-      stitches: 'sts'
-    };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReset = this.handleReset.bind(this);
@@ -52,7 +60,7 @@ class SectionSetup extends React.Component {
   componentWillMount() {
     let initialState = {};
     for (let rowInd = 0; rowInd < this.props.numRows; rowInd++) {
-      for (let property of this.rowProperties) {
+      for (let property in rowProps) {
         initialState[property + rowInd] = '';
       }
     }
@@ -69,7 +77,7 @@ class SectionSetup extends React.Component {
     let rowInfo;
     for (let rowInd = 0; rowInd < numRows; rowInd++) {
       rowInfo = {};
-      for (let property of this.rowProperties) {
+      for (let property in rowProps) {
         rowInfo[property] = (this.state[property + rowInd]);
       }
       addRow(sectionID, rowInfo);
@@ -97,7 +105,7 @@ class SectionSetup extends React.Component {
         key={inputName}
         value={this.state[inputName]}
         onChange={this.handleChange}
-        placeholder={this.rowPropsDisplay[property]}
+        placeholder={rowProps[property].display}
       />
     );
   }
@@ -110,7 +118,7 @@ class SectionSetup extends React.Component {
         <Typography type="subheading" className={classes.rowLabel}>
           Row {rowNum+1}
         </Typography>
-        {this.rowProperties.map(property =>
+        {Object.keys(rowProps).map(property =>
           this.createInput(property, rowNum))}
       </div>
     );
@@ -133,18 +141,29 @@ class SectionSetup extends React.Component {
     } else {
       return (
         <div>
-          <form onSubmit={this.handleSubmit} onReset={this.handleReset}>
+          <ContentHeader>Section Setup</ContentHeader>
+          <form
+            onSubmit={this.handleSubmit}
+            onReset={this.handleReset}
+            className={classes.root}
+          >
             {this.allRowInputs()}
-            <div className={classes.buttons}>
-              <Button raised color="primary" className={classes.button} type="submit">
-                Create Section
-              </Button>
-            </div>
+            <Button raised color="primary" className={classes.button} type="submit">
+              Create Section
+            </Button>
           </form>
         </div>
       );
     }
   }
+};
+
+SectionSetup.propTypes = {
+  history: PropTypes.object.isRequired,
+  sectionID: PropTypes.string.isRequired,
+  addRow: PropTypes.func.isRequired,
+  numRows: PropTypes.number.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(SectionSetup);
