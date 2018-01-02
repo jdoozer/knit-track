@@ -9,18 +9,28 @@ const styles = () => ({
     flexDirection: 'row',
     alignItems: 'flex-end',
   },
-  totalRows: {
+  numRows: {
     paddingLeft: 4,
   },
 });
 
-const SectionStatus = ({ section, classes }) => {
+const SectionStatus = ({ section, classes, displayStyle }) => {
   const { currentRow, numRows } = section;
+
+  if (displayStyle == 'row fraction') {
+    return(
+      <div className={classes.root}>
+        <Typography type="headline">{currentRow + 1}</Typography>
+        <Typography type="subheading" className={classes.numRows}>
+          / {numRows}
+        </Typography>
+      </div>
+    );
+  }
 
   return(
     <div className={classes.root}>
-      <Typography type="title">{currentRow + 1}</Typography>
-      <Typography type="body1" className={classes.totalRows}> / {numRows}</Typography>
+      <Typography type="subheading">Rows in Section: {numRows}</Typography>
     </div>
   );
 };

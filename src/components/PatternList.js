@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import List from 'material-ui/List';
-import Divider from 'material-ui/Divider';
 import ContentHeader from 'components/ContentHeader';
 import PatternTitleBlock from 'components/PatternTitleBlock';
 
@@ -15,7 +14,6 @@ const styles = () => ({
 const PatternList = ({ patterns, onPatternClick, classes }) => (
   <div>
     <ContentHeader>Pattern List</ContentHeader>
-    <Divider />
     <List className={classes.list}>
       {patterns.map(pattern => (
         <PatternTitleBlock

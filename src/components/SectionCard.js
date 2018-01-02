@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card';
+import Card, { CardHeader, CardContent } from 'material-ui/Card';
+import Typography from 'material-ui/Typography';
 import Collapse from 'material-ui/transitions/Collapse';
 import IconButton from 'material-ui/IconButton';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
@@ -12,8 +13,7 @@ import RowCounterContainer from 'containers/RowCounterContainer';
 
 const styles = theme => ({
   root: {
-    marginTop: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 2,
+    margin: `${theme.spacing.unit * 2}px 0`,
     display: 'flex',
     flexDirection: 'column',
   },
@@ -24,8 +24,22 @@ const styles = theme => ({
     alignItems: 'center',
   },
   header: {
-    display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+  },
+  action: {
+    margin: `0 ${theme.spacing.unit}px 0 0`,
+  },
+  sectionStatus: {
+    '&:last-child': {
+      paddingBottom: theme.spacing.unit * 2,
+    },
+  },
+  rowCounter: {
+    paddingTop: 0,
+    '&:last-child': {
+      paddingBottom: theme.spacing.unit * 2,
+    },
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -35,6 +49,9 @@ const styles = theme => ({
   },
   expandOpen: {
     transform: 'rotate(180deg)',
+  },
+  hidden: {
+/*    visibility: 'hidden',*/
   },
 });
 
@@ -52,30 +69,48 @@ class SectionCard extends React.Component {
   render() {
     const { title, sectionID, classes } = this.props;
     const { expanded } = this.state;
+
+    const cardHeaderAction = (
+      <IconButton
+        className={classnames(
+          classes.expand,
+          { [classes.expandOpen]: expanded },
+        )}
+        onClick={this.handleExpandClick}
+      >
+        <ExpandMoreIcon />
+      </IconButton>
+    );
+
+    const cardHeaderTitle = (
+      <Typography type="title">{title}</Typography>
+    )
+
     return(
       <Card className={classes.root}>
         <div className={classes.staticTop}>
-          <div className={classes.header}>
-            <CardActions>
-              <IconButton
-                className={classnames(classes.expand, {
-                  [classes.expandOpen]: expanded,
-                })}
-                onClick={this.handleExpandClick}
-                aria-expanded={expanded}
-                aria-label="expand section"
-              >
-                <ExpandMoreIcon />
-              </IconButton>
-            </CardActions>
-            <CardHeader title={title} className={classes.headerText} />
-          </div>
-          <CardContent>
-            <SectionStatusContainer sectionID={sectionID} />
+          <CardHeader
+            classes={{
+              root: classes.header,
+              action: classes.action,
+            }}
+            action={cardHeaderAction}
+            title={cardHeaderTitle}
+          />
+          <CardContent
+            className={classnames(
+              classes.sectionStatus,
+              { [classes.hidden]: expanded },
+            )}
+          >
+            <SectionStatusContainer
+              sectionID={sectionID}
+              displayStyle={expanded ? '' : 'row fraction'}
+            />
           </CardContent>
         </div>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent>
+          <CardContent className={classes.rowCounter}>
             <RowCounterContainer sectionID={sectionID} />
           </CardContent>
         </Collapse>

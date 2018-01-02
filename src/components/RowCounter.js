@@ -2,18 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
-import Button from 'material-ui/Button';
+import IconButton from 'material-ui/Button';
 import AddIcon from 'material-ui-icons/Add';
 import MinusIcon from 'material-ui-icons/Remove';
 import ResetIcon from 'material-ui-icons/Undo';
 import SectionStatusContainer from 'containers/SectionStatusContainer';
 
-const styles = () => ({
-  iconLink: {
-    margin: '2px',
+const styles = theme => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  iconButton: {
     minWidth: 0,
-    minHeight: 0,
-    padding: '4px'
+    padding: theme.spacing.unit / 2,
+    margin: '0 2px',
   },
 });
 
@@ -21,46 +25,45 @@ const RowCounter = ({ sectionID, currentRow, rowData, onUpdateCountClick, classe
 
   let infoDiv = '';
   if (rowData && rowData[currentRow]) {
+    /* variables here should match the keys used in SectionSetup component */
     const { fullText, quickText, stitches } = rowData[currentRow];
-    infoDiv =
+    infoDiv = (
       <div>
         <Typography type="subheading">
-          {quickText && quickText.trim() ? <div>{quickText}</div> : ''}
+          {quickText && quickText.trim() && <span>{quickText}</span>}
         </Typography>
         <Typography type="body1">
           {`${fullText} [${stitches} sts]`}
         </Typography>
-      </div>;
-    }
+      </div>
+    );
+  }
 
   return(
-    <div>
-      <SectionStatusContainer sectionID={sectionID} />
+    <div className={classes.root}>
+      <SectionStatusContainer sectionID={sectionID} displayStyle="row fraction" />
       <div>
-        <Button
+        <IconButton
           raised
           color="primary"
-          className={classes.iconLink}
-          type="button"
+          className={classes.iconButton}
           onClick={() => onUpdateCountClick("RESET")}>
             <ResetIcon />
-        </Button>
-        <Button
+        </IconButton>
+        <IconButton
           raised
           color="primary"
-          className={classes.iconLink}
-          type="button"
+          className={classes.iconButton}
           onClick={() => onUpdateCountClick("DECREMENT")}>
             <MinusIcon />
-        </Button>
-        <Button
+        </IconButton>
+        <IconButton
           raised
           color="primary"
-          className={classes.iconLink}
-          type="button"
+          className={classes.iconButton}
           onClick={() => onUpdateCountClick("INCREMENT")}>
             <AddIcon />
-        </Button>
+        </IconButton>
       </div>
       {infoDiv}
     </div>

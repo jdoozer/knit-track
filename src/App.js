@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Hidden from 'material-ui/Hidden';
 
 import MainContentWrapper from 'muiwrappers/MainContentWrapper';
 import Header from 'components/Header';
@@ -17,7 +18,9 @@ const App = () => (
       <MainContentWrapper>
 
         <Route exact path="/" component={PatternListContainer} />
-        <Route exact path="/" component={AddPattern} />
+        <Hidden smDown>
+          <Route exact path="/" component={AddPattern} />
+        </Hidden>
 
         <Route path="/pattern" component={PatternContainer} />
 

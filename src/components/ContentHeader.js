@@ -20,7 +20,7 @@ const ContentHeader = ({ classes, children }) => (
     className={classes.root}
   >
     <Toolbar>
-      <Typography type="title" color="inherit">
+      <Typography type="headline" color="inherit">
         {children}
       </Typography>
     </Toolbar>

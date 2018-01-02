@@ -1,12 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
+import Hidden from 'material-ui/Hidden';
+import Typography from 'material-ui/Typography';
 import ContentHeader from 'components/ContentHeader';
 import SectionCard from 'components/SectionCard';
 import AddSection from 'containers/AddSection';
 
 const styles = (theme) => ({
+  root: {
+    paddingBottom: 1,
+  },
   info: {
     textAlign: 'left',
     margin: theme.spacing.unit * 3,
@@ -23,7 +27,7 @@ const Pattern = ({ pattern, sections, classes }) => {
     );
   } else {
     return(
-      <div>
+      <div className={classes.root}>
         <ContentHeader>{pattern.title}</ContentHeader>
         <Typography type="subheading" className={classes.info}>
           {pattern.info}
@@ -36,7 +40,9 @@ const Pattern = ({ pattern, sections, classes }) => {
             />
           ))}
         </div>
-        <AddSection patternID={pattern.patternID} />
+        <Hidden smDown>
+          <AddSection patternID={pattern.patternID} />
+        </Hidden>
       </div>
     );
   }
