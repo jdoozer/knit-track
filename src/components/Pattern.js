@@ -36,7 +36,7 @@ const Pattern = ({ pattern, sections, classes }) => {
           {sections.map(section => (
             <SectionCard
               key={section.sectionID}
-              {...section}
+              section={section}
             />
           ))}
         </div>

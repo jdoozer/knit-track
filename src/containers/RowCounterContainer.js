@@ -3,15 +3,12 @@ import { updateRowCount } from 'actions';
 import RowCounter from 'components/RowCounter';
 
 const mapStateToProps = (state, ownProps) => {
-  const { sectionID } = ownProps;
-  const section = state.sections.byID[sectionID];
-  const { rows, currentRow } = section;
+  const { rows, sectionID, ...passThruProps } = ownProps;
   const rowData = rows.map(rowID => state.rows.byID[rowID]);
 
   return {
-    sectionID,
-    currentRow,
     rowData,
+    ...passThruProps,
   };
 };
 

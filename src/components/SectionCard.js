@@ -8,7 +8,7 @@ import IconButton from 'material-ui/IconButton';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 import classnames from 'classnames';
 
-import SectionStatusContainer from 'containers/SectionStatusContainer';
+import SectionStatus from 'components/SectionStatus';
 import RowCounterContainer from 'containers/RowCounterContainer';
 
 const styles = theme => ({
@@ -50,9 +50,6 @@ const styles = theme => ({
   expandOpen: {
     transform: 'rotate(180deg)',
   },
-  hidden: {
-/*    visibility: 'hidden',*/
-  },
 });
 
 
@@ -67,8 +64,10 @@ class SectionCard extends React.Component {
   }
 
   render() {
-    const { title, sectionID, classes } = this.props;
+    const { section, classes } = this.props;
     const { expanded } = this.state;
+
+    const { title, sectionID, currentRow, numRows, rows } = section;
 
     const cardHeaderAction = (
       <IconButton
@@ -103,15 +102,20 @@ class SectionCard extends React.Component {
               { [classes.hidden]: expanded },
             )}
           >
-            <SectionStatusContainer
-              sectionID={sectionID}
-              displayStyle={expanded ? '' : 'row fraction'}
+            <SectionStatus
+              currentRow={currentRow}
+              numRows={numRows}
+              displayStyle={expanded ? 'total rows' : 'row fraction'}
             />
           </CardContent>
         </div>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent className={classes.rowCounter}>
-            <RowCounterContainer sectionID={sectionID} />
+            <RowCounterContainer
+              currentRow={currentRow}
+              sectionID={sectionID}
+              rows={rows}
+            />
           </CardContent>
         </Collapse>
       </Card>
@@ -120,8 +124,13 @@ class SectionCard extends React.Component {
 };
 
 SectionCard.propTypes = {
-  sectionID: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
+  section: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    sectionID: PropTypes.string.isRequired,
+    currentRow: PropTypes.number.isRequired,
+    numRows: PropTypes.number.isRequired,
+    rows: PropTypes.arrayOf(PropTypes.string),
+  }).isRequired,
   classes: PropTypes.object.isRequired,
 };
 

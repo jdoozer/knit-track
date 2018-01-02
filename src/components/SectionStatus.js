@@ -12,12 +12,15 @@ const styles = () => ({
   numRows: {
     paddingLeft: 4,
   },
+  background: {
+    color: '#999',
+    fontStyle: 'italic',
+  },
 });
 
-const SectionStatus = ({ section, classes, displayStyle }) => {
-  const { currentRow, numRows } = section;
+const SectionStatus = ({ currentRow, numRows, classes, displayStyle }) => {
 
-  if (displayStyle == 'row fraction') {
+  if (displayStyle === 'row fraction') {
     return(
       <div className={classes.root}>
         <Typography type="headline">{currentRow + 1}</Typography>
@@ -29,17 +32,15 @@ const SectionStatus = ({ section, classes, displayStyle }) => {
   }
 
   return(
-    <div className={classes.root}>
-      <Typography type="subheading">Rows in Section: {numRows}</Typography>
-    </div>
+    <Typography type="subheading" className={classes.background}>total rows: {numRows}</Typography>
   );
 };
 
 SectionStatus.propTypes = {
-  section: PropTypes.shape({
-    currentRow: PropTypes.number.isRequired,
-    numRows: PropTypes.number.isRequired,
-  }).isRequired,
+  currentRow: PropTypes.number.isRequired,
+  numRows: PropTypes.number.isRequired,
+  displayStyle: PropTypes.string,
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(SectionStatus);
