@@ -11,7 +11,7 @@ const styles = theme => ({
     padding: 0,
   },
   noPattern: {
-    marginTop: theme.spacing.unit * 2,
+    margin: theme.spacing.unit * 2,
   },
 });
 
