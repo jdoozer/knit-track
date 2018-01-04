@@ -6,10 +6,9 @@ import IconButton from 'material-ui/Button';
 import PlusIcon from 'material-ui-icons/Add';
 import MinusIcon from 'material-ui-icons/Remove';
 import ResetIcon from 'material-ui-icons/Undo';
+import RowInfo from 'components/RowInfo';
 
-const styles = theme => {
-  /*debugger;*/
-return({
+const styles = theme => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -18,15 +17,17 @@ return({
   rowCounter: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: theme.spacing.unit * 2,
   },
   row: {
     border: 'solid 2px #333',
-    background: '#CCC',
+    background: '#DDD',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     width: 100,
+    height: 86,
     marginRight: theme.spacing.unit,
   },
   rowDisplay: {
@@ -39,11 +40,6 @@ return({
   rowButtonsSmall: {
     display: 'flex',
     flexDirection: 'row',
-  },
-  quickText: {
-    color: theme.palette.secondary["A200"],
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
   },
   iconButton: {
     minWidth: 0,
@@ -58,24 +54,13 @@ return({
     width: 50,
     height: 50,
   },
-})};
+});
 
 const RowCounter = ({ currentRow, rowData, onUpdateCountClick, classes }) => {
 
   let infoDiv = '';
   if (rowData && rowData[currentRow]) {
-    /* variables here should match the keys used in SectionSetup component */
-    const { fullText, quickText, stitches } = rowData[currentRow];
-    infoDiv = (
-      <div>
-        <Typography type="body1">
-          {`Row ${currentRow+1}: ${fullText} [${stitches} sts]`}
-        </Typography>
-        <Typography type="subheading" className={classes.quickText}>
-          {quickText && quickText.trim() && <span>{quickText}</span>}
-        </Typography>
-      </div>
-    );
+    infoDiv = (<RowInfo currentRow={currentRow} {...rowData[currentRow]} />);
   }
 
   return(
@@ -112,7 +97,11 @@ const RowCounter = ({ currentRow, rowData, onUpdateCountClick, classes }) => {
           </div>
         </div>
       </div>
-      {infoDiv}
+      {(
+        rowData
+        && rowData[currentRow]
+        && <RowInfo currentRow={currentRow} {...rowData[currentRow]} />
+      )}
     </div>
   );
 };

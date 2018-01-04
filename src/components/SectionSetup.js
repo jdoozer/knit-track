@@ -7,7 +7,7 @@ import TextField from 'material-ui/TextField';
 import Typography from 'material-ui/Typography';
 import ContentHeader from 'components/ContentHeader';
 
-/* keys here should match the props pulled out in RowCounter component */
+/* keys here should match the props pulled out in RowInfo component */
 const rowProps = {
   fullText: {
     display: 'Full Row Instructions',
