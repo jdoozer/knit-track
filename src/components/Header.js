@@ -14,17 +14,15 @@ const styles = () => ({
 });
 
 const Header = ({ classes }) => (
-  <header className={classes.root}>
-    <AppBar position="static">
-      <Toolbar>
-        <Typography type="headline" color="inherit">
-          <Link to="/">
-            Knit Track Smart Row Counter
-          </Link>
-        </Typography>
-      </Toolbar>
-    </AppBar>
-  </header>
+  <AppBar position="static" className={classes.root}>
+    <Toolbar>
+      <Typography type="headline" color="inherit">
+        <Link to="/">
+          Knit Track Smart Row Counter
+        </Link>
+      </Typography>
+    </Toolbar>
+  </AppBar>
 );
 
 Header.propTypes = {
