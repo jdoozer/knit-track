@@ -47,64 +47,53 @@ const styles = theme => ({
     padding: 2,
     margin: theme.spacing.unit / 2,
   },
-  plusButton: {
-    minHeight: 50,
-  },
   plusIcon: {
     width: 50,
     height: 50,
   },
 });
 
-const RowCounter = ({ currentRow, rowData, onUpdateCountClick, classes }) => {
-
-  let infoDiv = '';
-  if (rowData && rowData[currentRow]) {
-    infoDiv = (<RowInfo currentRow={currentRow} {...rowData[currentRow]} />);
-  }
-
-  return(
-    <div className={classes.root}>
-      <div className={classes.rowCounter}>
-        <div className={classes.row}>
-          <Typography type="display2" className={classes.rowDisplay}>
-            {currentRow + 1}
-          </Typography>
-        </div>
-        <div className={classes.rowButtons}>
+const RowCounter = ({ currentRow, rowData, onUpdateCountClick, classes }) => (
+  <div className={classes.root}>
+    <div className={classes.rowCounter}>
+      <div className={classes.row}>
+        <Typography type="display2" className={classes.rowDisplay}>
+          {currentRow + 1}
+        </Typography>
+      </div>
+      <div className={classes.rowButtons}>
+        <IconButton
+          raised
+          color="primary"
+          className={classes.iconButton}
+          onClick={() => onUpdateCountClick("INCREMENT")}>
+            <PlusIcon className={classes.plusIcon} />
+        </IconButton>
+        <div className={classes.rowButtonsSmall}>
           <IconButton
             raised
             color="primary"
-            className={[classes.iconButton, classes.plusButton].join(' ')}
-            onClick={() => onUpdateCountClick("INCREMENT")}>
-              <PlusIcon className={classes.plusIcon} />
+            className={classes.iconButton}
+            onClick={() => onUpdateCountClick("RESET")}>
+              <ResetIcon />
           </IconButton>
-          <div className={classes.rowButtonsSmall}>
-            <IconButton
-              raised
-              color="primary"
-              className={classes.iconButton}
-              onClick={() => onUpdateCountClick("RESET")}>
-                <ResetIcon />
-            </IconButton>
-            <IconButton
-              raised
-              color="primary"
-              className={classes.iconButton}
-              onClick={() => onUpdateCountClick("DECREMENT")}>
-                <MinusIcon />
-            </IconButton>
-          </div>
+          <IconButton
+            raised
+            color="primary"
+            className={classes.iconButton}
+            onClick={() => onUpdateCountClick("DECREMENT")}>
+              <MinusIcon />
+          </IconButton>
         </div>
       </div>
-      {(
-        rowData
-        && rowData[currentRow]
-        && <RowInfo currentRow={currentRow} {...rowData[currentRow]} />
-      )}
     </div>
-  );
-};
+    {(
+      rowData
+      && rowData[currentRow]
+      && <RowInfo currentRow={currentRow} {...rowData[currentRow]} />
+    )}
+  </div>
+);
 
 RowCounter.propTypes = {
   currentRow: PropTypes.number.isRequired,
