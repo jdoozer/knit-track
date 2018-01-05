@@ -35,8 +35,8 @@ export function addRow(sectionID, rowInfo) {
   const rowID = generateID();
   return {
     type: 'ADD_ROW',
-    sectionID,
     payload: {
+      sectionID,
       rowID,
       ...rowInfo
     }

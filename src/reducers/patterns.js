@@ -1,75 +1,66 @@
 import { combineReducers } from 'redux';
 
-const initialPattern = (payload) => {
-  const { patternID, title } = payload;
+const initialPattern = ({ patternID, title }) => ({
+  title,
+  patternID,
+  sections: [],
+  info: '<pattern info placeholder>',
+});
 
-  return {
-    title,
-    patternID,
-    sections: [],
-    info: '<pattern info placeholder>',
-  };
-};
-
-function addPattern(state, action) {
-
+const addPattern = (state, action) => {
   const { payload } = action;
-
-  const pattern = initialPattern(payload);
 
   return {
     ...state,
-    [payload.patternID]: pattern
+    [payload.patternID]: initialPattern(payload),
   };
-}
+};
 
-function addSection(state, action) {
+const addPatternID = (state, action) => (
+  state.concat(action.payload.patternID)
+);
 
+const addSection = (state, action) => {
   const { patternID, sectionID } = action.payload;
-
   const pattern = state[patternID];
 
   return {
     ...state,
-    [patternID] : {
+    [patternID]: {
       ...pattern,
-      sections: pattern.sections.concat(sectionID)
-    }
+      sections: pattern.sections.concat(sectionID),
+    },
   };
-}
+};
 
-function patternsByID(state = {}, action) {
+const patternsByID = (state = {}, action) => {
   switch(action.type) {
     case 'ADD_PATTERN':
       return addPattern(state, action);
     case 'ADD_SECTION':
-        return addSection(state, action);
+      return addSection(state, action);
     default:
       return state;
   }
-}
+};
 
-function addPatternID(state, action) {
-  return state.concat(action.payload.patternID);
-}
-
-function allPatterns(state = [], action) {
+const allPatterns = (state = [], action) => {
   switch(action.type) {
     case 'ADD_PATTERN':
       return addPatternID(state, action);
     default:
       return state;
   }
-}
+};
 
-function selectedPattern(state = null, action) {
+const selectedPattern = (state = null, action) => {
   switch(action.type) {
     case 'SELECT_PATTERN':
       return action.patternID;
     default:
       return state;
   }
-}
+};
 
 const patternsReducer = combineReducers({
   byID: patternsByID,

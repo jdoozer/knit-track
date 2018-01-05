@@ -1,43 +1,39 @@
 import { combineReducers } from 'redux';
 
-function addRowEntry(state, action) {
-
-  const { payload } = action;
-  const { rowID } = payload;
-
-  const row = payload;
+const addRowEntry = (state, action) => {
+  const row = action.payload;
 
   return {
     ...state,
-    [rowID]: row,
+    [row.rowID]: row,
   };
-}
+};
 
-function rowsByID(state = {}, action) {
+const addRowID = (state, action) => (
+  state.concat(action.payload.rowID)
+);
+
+const rowsByID = (state = {}, action) => {
   switch(action.type) {
     case 'ADD_ROW':
       return addRowEntry(state, action);
     default:
       return state;
   }
-}
+};
 
-function addRowID(state, action) {
-  return state.concat(action.payload.rowID);
-}
-
-function allRows(state = [], action) {
+const allRows = (state = [], action) => {
   switch(action.type) {
     case 'ADD_ROW':
       return addRowID(state, action);
     default:
       return state;
   }
-}
+};
 
 const rowsReducer = combineReducers({
   byID: rowsByID,
-  allIDs: allRows
+  allIDs: allRows,
 });
 
 export default rowsReducer;

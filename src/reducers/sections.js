@@ -1,56 +1,45 @@
 import { combineReducers } from 'redux';
 
-const initialSection = (payload) => {
+const initialSection = ({ sectionID, title, numRows }) => ({
+  title,
+  sectionID,
+  numRows: Number(numRows),
+  currentRow: 0,
+  rows: [],
+});
 
-  const { sectionID, title, numRows } = payload;
-
-  return {
-    title,
-    sectionID,
-    numRows: Number(numRows),
-    rows: [],
-    currentRow: 0,
-  };
-
-};
-
-function addSectionEntry(state, action) {
-
+const addSectionEntry = (state, action) => {
   const { payload } = action;
-
-  const section = initialSection(payload);
 
   return {
     ...state,
-    [payload.sectionID]: section,
+    [payload.sectionID]: initialSection(payload),
   };
-}
+};
 
-function addRow(state, action) {
-  const { sectionID, payload } = action;
-  const { rowID } = payload;
+const addRow = (state, action) => {
+  const { sectionID, rowID } = action.payload;
   const section = state[sectionID];
 
   return {
     ...state,
     [sectionID] : {
       ...section,
-      rows: section.rows.concat(rowID)
-    }
+      rows: section.rows.concat(rowID),
+    },
   };
-}
+};
 
-function updateRowCount(state, action) {
+const updateRowCount = (state, action) => {
   const { sectionID, updateType } = action.payload;
   const section = state[sectionID];
+  const { currentRow, numRows } = section;
 
-  const currentRow = section.currentRow;
-  const lastRow = section.numRows;
   let nextRow = currentRow;
 
   switch(updateType) {
     case 'INCREMENT':
-      nextRow = Math.min(currentRow + 1, lastRow - 1);
+      nextRow = Math.min(currentRow + 1, numRows - 1);
       break;
     case 'DECREMENT':
       nextRow = Math.max(currentRow - 1, 0);
@@ -66,12 +55,16 @@ function updateRowCount(state, action) {
     ...state,
     [sectionID]: {
       ...section,
-      currentRow: nextRow
-    }
+      currentRow: nextRow,
+    },
   };
-}
+};
 
-function sectionsByID(state = {}, action) {
+const addSectionID = (state, action) => (
+  state.concat(action.payload.sectionID)
+);
+
+const sectionsByID = (state = {}, action) => {
   switch(action.type) {
     case 'ADD_SECTION':
       return addSectionEntry(state, action);
@@ -82,34 +75,30 @@ function sectionsByID(state = {}, action) {
     default:
       return state;
   }
-}
+};
 
-function addSectionID(state, action) {
-  return state.concat(action.payload.sectionID);
-}
-
-function allSections(state = [], action) {
+const allSections = (state = [], action) => {
   switch(action.type) {
     case 'ADD_SECTION':
       return addSectionID(state, action);
     default:
       return state;
   }
-}
+};
 
-function selectedSection(state = null, action) {
+const selectedSection = (state = null, action) => {
   switch(action.type) {
     case 'ADD_SECTION':
       return action.payload.sectionID;
     default:
       return state;
   }
-}
+};
 
 const sectionsReducer = combineReducers({
   byID: sectionsByID,
   allIDs: allSections,
-  selected: selectedSection
+  selected: selectedSection,
 });
 
 export default sectionsReducer;
