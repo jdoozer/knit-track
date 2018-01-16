@@ -1,5 +1,6 @@
 import generateID from 'uuid/v4';
 
+// PATTERN ACTIONS
 export function addPattern(title) {
   const patternID = generateID();
   return {
@@ -14,10 +15,18 @@ export function addPattern(title) {
 export function selectPattern(patternID) {
   return {
     type: 'SELECT_PATTERN',
-    patternID
+    payload: { patternID },
   };
 }
 
+export function deletePattern(patternID) {
+  return {
+    type: 'DELETE_PATTERN',
+    payload: { patternID },
+  };
+}
+
+// SECTION ACTIONS
 export function addSection(patternID, title, numRows) {
   const sectionID = generateID();
   return {
@@ -31,6 +40,8 @@ export function addSection(patternID, title, numRows) {
   };
 }
 
+
+// ROW ACTIONS
 export function addRow(sectionID, rowInfo) {
   const rowID = generateID();
   return {
