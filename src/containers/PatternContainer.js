@@ -3,12 +3,12 @@ import { deletePattern } from 'actions';
 import Pattern from 'components/Pattern';
 
 const mapStateToProps = state => {
-  const selectedID = state.patterns.selected;
+  const selectedId = state.patterns.selected;
 
-  if (selectedID != null) {
-    const pattern = state.patterns.byID[selectedID];
+  if (selectedId != null) {
+    const pattern = state.patterns.byId[selectedId];
     const sections = pattern.sections.map(
-      sectionID => state.sections.byID[sectionID]
+      sectionId => state.sections.byId[sectionId]
     );
 
     return { pattern, sections };
@@ -22,8 +22,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  deletePattern: patternID => {
-    dispatch(deletePattern(patternID));
+  deletePattern: patternId => {
+    dispatch(deletePattern(patternId));
   },
 });
 

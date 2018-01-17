@@ -28,9 +28,9 @@ const PatternList = ({ patterns, onPatternClick, classes }) => {
       <List className={classes.list}>
         {patterns.map(pattern => (
           <PatternTitleBlock
-            key={pattern.patternID}
+            key={pattern.patternId}
             {...pattern}
-            onClick={() => onPatternClick(pattern.patternID)}
+            onClick={() => onPatternClick(pattern.patternId)}
           />
         ))}
       </List>
@@ -48,7 +48,7 @@ const PatternList = ({ patterns, onPatternClick, classes }) => {
 PatternList.propTypes = {
   patterns: PropTypes.arrayOf(
     PropTypes.shape({
-      patternID: PropTypes.string.isRequired
+      patternId: PropTypes.string.isRequired
     }).isRequired
   ).isRequired,
   onPatternClick: PropTypes.func.isRequired,

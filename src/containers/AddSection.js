@@ -38,10 +38,10 @@ class AddSection extends React.Component {
   handleSubmit(event) {
 
     const { title, numRows } = this.state;
-    const { dispatch, patternID, history } = this.props;
+    const { dispatch, patternId, history } = this.props;
 
     if (title.trim()) {
-      dispatch(addSection(patternID, title, numRows));
+      dispatch(addSection(patternId, title, numRows));
     }
 
     event.preventDefault();
@@ -79,7 +79,7 @@ class AddSection extends React.Component {
 AddSection.propTypes = {
   classes: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
-  patternID: PropTypes.string.isRequired,
+  patternId: PropTypes.string.isRequired,
   history: PropTypes.object.isRequired,
 };
 

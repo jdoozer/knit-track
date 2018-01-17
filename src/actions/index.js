@@ -1,64 +1,64 @@
-import generateID from 'uuid/v4';
+import generateId from 'uuid/v4';
 
 // PATTERN ACTIONS
 export function addPattern(title) {
-  const patternID = generateID();
+  const patternId = generateId();
   return {
     type: 'ADD_PATTERN',
     payload: {
-      patternID,
+      patternId,
       title
     }
   };
 }
 
-export function selectPattern(patternID) {
+export function selectPattern(patternId) {
   return {
     type: 'SELECT_PATTERN',
-    payload: { patternID },
+    payload: { patternId },
   };
 }
 
-export function deletePattern(patternID) {
+export function deletePattern(patternId) {
   return {
     type: 'DELETE_PATTERN',
-    payload: { patternID },
+    payload: { patternId },
   };
 }
 
 // SECTION ACTIONS
-export function addSection(patternID, title, numRows) {
-  const sectionID = generateID();
+export function addSection(patternId, title, numRows) {
+  const sectionId = generateId();
   return {
     type: 'ADD_SECTION',
     payload: {
       title,
       numRows,
-      patternID,
-      sectionID
+      patternId,
+      sectionId
     }
   };
 }
 
 
 // ROW ACTIONS
-export function addRow(sectionID, rowInfo) {
-  const rowID = generateID();
+export function addRow(sectionId, rowInfo) {
+  const rowId = generateId();
   return {
     type: 'ADD_ROW',
     payload: {
-      sectionID,
-      rowID,
+      sectionId,
+      rowId,
       ...rowInfo
     }
   }
 }
 
-export function updateRowCount(sectionID, updateType) {
+export function updateRowCount(sectionId, updateType) {
   return {
     type: 'UPDATE_ROW_COUNT',
     payload: {
-      sectionID,
+      sectionId,
       updateType
     }
   };

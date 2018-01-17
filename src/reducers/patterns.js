@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 
-const initialPattern = ({ patternID, title }) => ({
+const initialPattern = ({ patternId, title }) => ({
   title,
-  patternID,
+  patternId,
   sections: [],
   info: '<pattern info placeholder>',
 });
@@ -12,18 +12,18 @@ const addPattern = (state, action) => {
 
   return {
     ...state,
-    [payload.patternID]: initialPattern(payload),
+    [payload.patternId]: initialPattern(payload),
   };
 };
 
 const deletePattern = (state, action) => {
-  const { patternIDToDelete } = action.payload;
+  const { patternIdToDelete } = action.payload;
 
   return (
     Object.keys(state).reduce(
-      (patterns, patternID) => {
-        if (patternID !== patternIDToDelete) {
-          patterns[patternID] = state[patternID];
+      (patterns, patternId) => {
+        if (patternId !== patternIdToDelete) {
+          patterns[patternId] = state[patternId];
         }
         return patterns;
       },
@@ -32,28 +32,28 @@ const deletePattern = (state, action) => {
   );
 };
 
-const addPatternID = (state, action) => (
-  state.concat(action.payload.patternID)
+const addPatternId = (state, action) => (
+  state.concat(action.payload.patternId)
 );
 
-const deletePatternID = (state, action) => (
-  state.filter(pattID => pattID !== action.payload.patternID)
+const deletePatternId = (state, action) => (
+  state.filter(pattId => pattId !== action.payload.patternId)
 );
 
 const addSection = (state, action) => {
-  const { patternID, sectionID } = action.payload;
-  const pattern = state[patternID];
+  const { patternId, sectionId } = action.payload;
+  const pattern = state[patternId];
 
   return {
     ...state,
-    [patternID]: {
+    [patternId]: {
       ...pattern,
-      sections: pattern.sections.concat(sectionID),
+      sections: pattern.sections.concat(sectionId),
     },
   };
 };
 
-const patternsByID = (state = {}, action) => {
+const patternsById = (state = {}, action) => {
   switch(action.type) {
     case 'ADD_PATTERN':
       return addPattern(state, action);
@@ -69,9 +69,9 @@ const patternsByID = (state = {}, action) => {
 const allPatterns = (state = [], action) => {
   switch(action.type) {
     case 'ADD_PATTERN':
-      return addPatternID(state, action);
+      return addPatternId(state, action);
     case 'DELETE_PATTERN':
-      return deletePatternID(state, action);
+      return deletePatternId(state, action);
     default:
       return state;
   }
@@ -80,9 +80,9 @@ const allPatterns = (state = [], action) => {
 const selectedPattern = (state = null, action) => {
   switch(action.type) {
     case 'SELECT_PATTERN':
-      return action.payload.patternID;
+      return action.payload.patternId;
     case 'DELETE_PATTERN':
-      if (state === action.payload.patternID) {
+      if (state === action.payload.patternId) {
         return null;
       }
       return state;
@@ -92,8 +92,8 @@ const selectedPattern = (state = null, action) => {
 };
 
 const patternsReducer = combineReducers({
-  byID: patternsByID,
-  allIDs: allPatterns,
+  byId: patternsById,
+  allIds: allPatterns,
   selected: selectedPattern,
 });
 

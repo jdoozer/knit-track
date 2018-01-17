@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 
-const initialSection = ({ sectionID, title, numRows }) => ({
+const initialSection = ({ sectionId, title, numRows }) => ({
   title,
-  sectionID,
+  sectionId,
   numRows: Number(numRows),
   currentRow: 0,
   rows: [],
@@ -13,26 +13,26 @@ const addSectionEntry = (state, action) => {
 
   return {
     ...state,
-    [payload.sectionID]: initialSection(payload),
+    [payload.sectionId]: initialSection(payload),
   };
 };
 
 const addRow = (state, action) => {
-  const { sectionID, rowID } = action.payload;
-  const section = state[sectionID];
+  const { sectionId, rowId } = action.payload;
+  const section = state[sectionId];
 
   return {
     ...state,
-    [sectionID] : {
+    [sectionId] : {
       ...section,
-      rows: section.rows.concat(rowID),
+      rows: section.rows.concat(rowId),
     },
   };
 };
 
 const updateRowCount = (state, action) => {
-  const { sectionID, updateType } = action.payload;
-  const section = state[sectionID];
+  const { sectionId, updateType } = action.payload;
+  const section = state[sectionId];
   const { currentRow, numRows } = section;
 
   let nextRow = currentRow;
@@ -53,18 +53,18 @@ const updateRowCount = (state, action) => {
 
   return {
     ...state,
-    [sectionID]: {
+    [sectionId]: {
       ...section,
       currentRow: nextRow,
     },
   };
 };
 
-const addSectionID = (state, action) => (
-  state.concat(action.payload.sectionID)
+const addSectionId = (state, action) => (
+  state.concat(action.payload.sectionId)
 );
 
-const sectionsByID = (state = {}, action) => {
+const sectionsById = (state = {}, action) => {
   switch(action.type) {
     case 'ADD_SECTION':
       return addSectionEntry(state, action);
@@ -80,7 +80,7 @@ const sectionsByID = (state = {}, action) => {
 const allSections = (state = [], action) => {
   switch(action.type) {
     case 'ADD_SECTION':
-      return addSectionID(state, action);
+      return addSectionId(state, action);
     default:
       return state;
   }
@@ -89,15 +89,15 @@ const allSections = (state = [], action) => {
 const selectedSection = (state = null, action) => {
   switch(action.type) {
     case 'ADD_SECTION':
-      return action.payload.sectionID;
+      return action.payload.sectionId;
     default:
       return state;
   }
 };
 
 const sectionsReducer = combineReducers({
-  byID: sectionsByID,
-  allIDs: allSections,
+  byId: sectionsById,
+  allIds: allSections,
   selected: selectedSection,
 });
 

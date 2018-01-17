@@ -28,7 +28,7 @@ const Pattern = ({ pattern, sections, deletePattern, classes }) => {
   } else {
     return(
       <div className={classes.root}>
-        <ContentHeader buttonFunc={() => deletePattern(pattern.patternID)}>
+        <ContentHeader buttonFunc={() => deletePattern(pattern.patternId)}>
           {pattern.title}
         </ContentHeader>
         <Typography type="subheading" className={classes.info}>
@@ -37,13 +37,13 @@ const Pattern = ({ pattern, sections, deletePattern, classes }) => {
         <div className={classes.sectionCards}>
           {sections.map(section => (
             <SectionCard
-              key={section.sectionID}
+              key={section.sectionId}
               section={section}
             />
           ))}
         </div>
         <Hidden smDown>
-          <AddSection patternID={pattern.patternID} />
+          <AddSection patternId={pattern.patternId} />
         </Hidden>
       </div>
     );
@@ -54,11 +54,11 @@ Pattern.propTypes = {
   pattern: PropTypes.shape({
     title: PropTypes.string.isRequired,
     info: PropTypes.string.isRequired,
-    patternID: PropTypes.string.isRequired,
+    patternId: PropTypes.string.isRequired,
   }),
   sections: PropTypes.arrayOf(
     PropTypes.shape({
-      sectionID: PropTypes.string.isRequired
+      sectionId: PropTypes.string.isRequired
     }).isRequired
   ).isRequired,
   classes: PropTypes.object.isRequired,

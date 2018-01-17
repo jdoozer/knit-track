@@ -5,15 +5,15 @@ const addRowEntry = (state, action) => {
 
   return {
     ...state,
-    [row.rowID]: row,
+    [row.rowId]: row,
   };
 };
 
-const addRowID = (state, action) => (
-  state.concat(action.payload.rowID)
+const addRowId = (state, action) => (
+  state.concat(action.payload.rowId)
 );
 
-const rowsByID = (state = {}, action) => {
+const rowsById = (state = {}, action) => {
   switch(action.type) {
     case 'ADD_ROW':
       return addRowEntry(state, action);
@@ -25,15 +25,15 @@ const rowsByID = (state = {}, action) => {
 const allRows = (state = [], action) => {
   switch(action.type) {
     case 'ADD_ROW':
-      return addRowID(state, action);
+      return addRowId(state, action);
     default:
       return state;
   }
 };
 
 const rowsReducer = combineReducers({
-  byID: rowsByID,
-  allIDs: allRows,
+  byId: rowsById,
+  allIds: allRows,
 });
 
 export default rowsReducer;

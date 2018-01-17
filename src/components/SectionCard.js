@@ -67,7 +67,7 @@ class SectionCard extends React.Component {
     const { section, classes } = this.props;
     const { expanded } = this.state;
 
-    const { title, sectionID, currentRow, numRows, rows } = section;
+    const { title, sectionId, currentRow, numRows, rows } = section;
 
     const cardHeaderAction = (
       <IconButton
@@ -113,7 +113,7 @@ class SectionCard extends React.Component {
           <CardContent className={classes.rowCounter}>
             <RowCounterContainer
               currentRow={currentRow}
-              sectionID={sectionID}
+              sectionId={sectionId}
               rows={rows}
             />
           </CardContent>
@@ -126,7 +126,7 @@ class SectionCard extends React.Component {
 SectionCard.propTypes = {
   section: PropTypes.shape({
     title: PropTypes.string.isRequired,
-    sectionID: PropTypes.string.isRequired,
+    sectionId: PropTypes.string.isRequired,
     currentRow: PropTypes.number.isRequired,
     numRows: PropTypes.number.isRequired,
     rows: PropTypes.arrayOf(PropTypes.string),

@@ -73,7 +73,7 @@ class SectionSetup extends React.Component {
   }
 
   handleSubmit(event) {
-    const { history, sectionID, addRow, numRows } = this.props;
+    const { history, sectionId, addRow, numRows } = this.props;
 
     let rowInfo;
     for (let rowInd = 0; rowInd < numRows; rowInd++) {
@@ -81,7 +81,7 @@ class SectionSetup extends React.Component {
       for (let property in rowProps) {
         rowInfo[property] = (this.state[property + rowInd]);
       }
-      addRow(sectionID, rowInfo);
+      addRow(sectionId, rowInfo);
     }
 
     event.preventDefault();
@@ -134,8 +134,8 @@ class SectionSetup extends React.Component {
   }
 
   render() {
-    const { sectionID, classes } = this.props;
-    if (sectionID == null) {
+    const { sectionId, classes } = this.props;
+    if (sectionId == null) {
       return (
         <div>No active section!</div>
       );
@@ -161,7 +161,7 @@ class SectionSetup extends React.Component {
 
 SectionSetup.propTypes = {
   history: PropTypes.object.isRequired,
-  sectionID: PropTypes.string.isRequired,
+  sectionId: PropTypes.string.isRequired,
   addRow: PropTypes.func.isRequired,
   numRows: PropTypes.number.isRequired,
   classes: PropTypes.object.isRequired,

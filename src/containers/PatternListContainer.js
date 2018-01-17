@@ -4,8 +4,8 @@ import PatternList from 'components/PatternList';
 
 const mapStateToProps = state => {
   return {
-    patterns: state.patterns.allIDs.map(patternID =>
-      state.patterns.byID[patternID]
+    patterns: state.patterns.allIds.map(patternId =>
+      state.patterns.byId[patternId]
     )
   };
 };

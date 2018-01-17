@@ -3,19 +3,19 @@ import { addRow } from 'actions';
 import SectionSetup from 'components/SectionSetup';
 
 const mapStateToProps = (state) => {
-  const sectionID = state.sections.selected;
-  const numRows = sectionID ? state.sections.byID[sectionID].numRows : null;
+  const sectionId = state.sections.selected;
+  const numRows = sectionId ? state.sections.byId[sectionId].numRows : null;
 
   return {
     numRows,
-    sectionID
+    sectionId
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addRow: (sectionID, rowInfo) => {
-      dispatch(addRow(sectionID, rowInfo));
+    addRow: (sectionId, rowInfo) => {
+      dispatch(addRow(sectionId, rowInfo));
     }
   };
 };
