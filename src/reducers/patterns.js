@@ -17,16 +17,15 @@ const addPattern = (state, action) => {
 };
 
 const deletePattern = (state, action) => {
-  const { patternIDtoDelete } = action.payload;
+  const { patternIDToDelete } = action.payload;
 
   return (
     Object.keys(state).reduce(
       (patterns, patternID) => {
-        if (patternID == patternIDtoDelete) return patterns;
-        else {
+        if (patternID !== patternIDToDelete) {
           patterns[patternID] = state[patternID];
-          return patterns;
         }
+        return patterns;
       },
       {}
     )
@@ -38,7 +37,7 @@ const addPatternID = (state, action) => (
 );
 
 const deletePatternID = (state, action) => (
-  state.filter(pattID => pattID === action.payload.patternID)
+  state.filter(pattID => pattID !== action.payload.patternID)
 );
 
 const addSection = (state, action) => {
@@ -86,6 +85,7 @@ const selectedPattern = (state = null, action) => {
       if (state === action.payload.patternID) {
         return null;
       }
+      return state;
     default:
       return state;
   }

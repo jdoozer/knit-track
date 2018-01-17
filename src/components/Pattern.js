@@ -20,7 +20,7 @@ const styles = (theme) => ({
   },
 });
 
-const Pattern = ({ pattern, sections, classes }) => {
+const Pattern = ({ pattern, sections, deletePattern, classes }) => {
   if (pattern == null) {
     return (
       <ContentHeader>No pattern selected!</ContentHeader>
@@ -28,7 +28,9 @@ const Pattern = ({ pattern, sections, classes }) => {
   } else {
     return(
       <div className={classes.root}>
-        <ContentHeader>{pattern.title}</ContentHeader>
+        <ContentHeader buttonFunc={() => deletePattern(pattern.patternID)}>
+          {pattern.title}
+        </ContentHeader>
         <Typography type="subheading" className={classes.info}>
           {pattern.info}
         </Typography>

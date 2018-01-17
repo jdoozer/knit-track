@@ -10,13 +10,11 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onPatternClick: index => {
-      dispatch(selectPattern(index));
-    }
-  }
-};
+const mapDispatchToProps = dispatch => ({
+  onPatternClick: index => {
+    dispatch(selectPattern(index));
+  },
+});
 
 const PatternListContainer = connect(
   mapStateToProps,

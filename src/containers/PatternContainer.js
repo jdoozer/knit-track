@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { deletePattern } from 'actions';
 import Pattern from 'components/Pattern';
 
 const mapStateToProps = state => {
@@ -20,6 +21,13 @@ const mapStateToProps = state => {
   }
 };
 
-const PatternContainer = connect(mapStateToProps)(Pattern);
+const mapDispatchToProps = dispatch => ({
+  deletePattern: patternID => {
+    dispatch(deletePattern(patternID));
+  },
+});
+
+// const PatternContainer = connect(mapStateToProps)(Pattern);
+const PatternContainer = connect(mapStateToProps, mapDispatchToProps)(Pattern);
 
 export default PatternContainer;
