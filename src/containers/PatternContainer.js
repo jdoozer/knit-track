@@ -27,7 +27,6 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-// const PatternContainer = connect(mapStateToProps)(Pattern);
 const PatternContainer = connect(mapStateToProps, mapDispatchToProps)(Pattern);
 
 export default PatternContainer;

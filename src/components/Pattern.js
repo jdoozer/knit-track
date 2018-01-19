@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Hidden from 'material-ui/Hidden';
 import Typography from 'material-ui/Typography';
+import DeleteIcon from 'material-ui-icons/Delete';
+
 import ContentHeader from 'components/ContentHeader';
 import SectionCard from 'components/SectionCard';
 import AddSection from 'containers/AddSection';
@@ -28,7 +30,11 @@ const Pattern = ({ pattern, sections, deletePattern, classes }) => {
   } else {
     return(
       <div className={classes.root}>
-        <ContentHeader buttonFunc={() => deletePattern(pattern.patternId)}>
+        <ContentHeader buttonProps={{
+          onClick: () => deletePattern(pattern.patternId),
+          icon: (<DeleteIcon />),
+          newLocation: '/',
+        }}>
           {pattern.title}
         </ContentHeader>
         <Typography type="subheading" className={classes.info}>

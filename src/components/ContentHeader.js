@@ -4,8 +4,7 @@ import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
-import IconButton from 'material-ui/Button';
-import DeleteIcon from 'material-ui-icons/Delete';
+import HeaderAction from 'components/HeaderAction';
 
 const styles = theme => ({
   root: {
@@ -24,7 +23,7 @@ const styles = theme => ({
   },
 });
 
-const ContentHeader = ({ classes, children, buttonFunc }) => (
+const ContentHeader = ({ classes, children, buttonProps }) => (
   <AppBar
     position="static"
     elevation="0"
@@ -33,15 +32,11 @@ const ContentHeader = ({ classes, children, buttonFunc }) => (
   >
     <Toolbar>
       <Typography type="headline" color="inherit" className={
-        (typeof buttonFunc === "function") ? [classes.flex, classes.titleLeft].join(' ') : classes.flex
+        buttonProps ? [classes.flex, classes.titleLeft].join(' ') : classes.flex
       }>
         {children}
       </Typography>
-      {(typeof buttonFunc === "function") && (
-        <IconButton color="inherit" className={classes.button} onClick={() => buttonFunc()}>
-          <DeleteIcon />
-        </IconButton>
-      )}
+      {buttonProps && (<HeaderAction buttonProps={buttonProps} />)}
     </Toolbar>
   </AppBar>
 );
@@ -49,6 +44,7 @@ const ContentHeader = ({ classes, children, buttonFunc }) => (
 ContentHeader.propTypes = {
   classes: PropTypes.object.isRequired,
   children: PropTypes.node.isRequired,
+  buttonFunc: PropTypes.object,
 };
 
 export default withStyles(styles)(ContentHeader);
