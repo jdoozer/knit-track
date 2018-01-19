@@ -23,7 +23,7 @@ const styles = theme => ({
   },
 });
 
-const ContentHeader = ({ classes, children, buttonProps }) => (
+const ContentHeader = ({ classes, children, ...buttonProps }) => (
   <AppBar
     position="static"
     elevation="0"
@@ -32,11 +32,11 @@ const ContentHeader = ({ classes, children, buttonProps }) => (
   >
     <Toolbar>
       <Typography type="headline" color="inherit" className={
-        buttonProps ? [classes.flex, classes.titleLeft].join(' ') : classes.flex
+        buttonProps.onClick ? [classes.flex, classes.titleLeft].join(' ') : classes.flex
       }>
         {children}
       </Typography>
-      {buttonProps && (<HeaderAction buttonProps={buttonProps} />)}
+      {buttonProps.onClick && (<HeaderAction buttonProps={buttonProps} />)}
     </Toolbar>
   </AppBar>
 );
@@ -44,7 +44,7 @@ const ContentHeader = ({ classes, children, buttonProps }) => (
 ContentHeader.propTypes = {
   classes: PropTypes.object.isRequired,
   children: PropTypes.node.isRequired,
-  buttonFunc: PropTypes.object,
+  buttonProps: PropTypes.object,
 };
 
 export default withStyles(styles)(ContentHeader);

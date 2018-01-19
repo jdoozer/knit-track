@@ -20,11 +20,11 @@ class HeaderAction extends React.Component {
 
   handleButtonClick(event) {
     const { buttonProps, history } = this.props;
+    const { onClick, newLocation } = buttonProps;
 
-    buttonProps.onClick();
-
+    onClick();
     event.preventDefault();
-    history.push(buttonProps.newLocation);
+    history.push(newLocation);
   }
 
   render() {
@@ -41,7 +41,11 @@ class HeaderAction extends React.Component {
 HeaderAction.propTypes = {
   classes: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  buttonProps: PropTypes.object.isRequired,
+  buttonProps: PropTypes.shape({
+    onClick: PropTypes.func.isRequired,
+    newLocation: PropTypes.string.isRequired,
+    icon: PropTypes.element,
+  }).isRequired,
 };
 
 export default withStyles(styles)(withRouter(HeaderAction));

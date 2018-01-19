@@ -30,11 +30,11 @@ const Pattern = ({ pattern, sections, deletePattern, classes }) => {
   } else {
     return(
       <div className={classes.root}>
-        <ContentHeader buttonProps={{
-          onClick: () => deletePattern(pattern.patternId),
-          icon: (<DeleteIcon />),
-          newLocation: '/',
-        }}>
+        <ContentHeader
+          onClick={() => deletePattern(pattern.patternId)}
+          icon={<DeleteIcon />}
+          newLocation='/'
+        >
           {pattern.title}
         </ContentHeader>
         <Typography type="subheading" className={classes.info}>
