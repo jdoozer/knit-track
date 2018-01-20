@@ -17,7 +17,7 @@ const addPattern = (state, action) => {
 };
 
 const deletePattern = (state, action) => {
-  const { patternIdToDelete } = action.payload;
+  const patternIdToDelete = action.payload.patternId;
 
   return (
     Object.keys(state).reduce(

@@ -22,7 +22,7 @@ const styles = (theme) => ({
   },
 });
 
-const Pattern = ({ pattern, sections, deletePattern, classes }) => {
+const Pattern = ({ pattern, sections, rowIds, deletePattern, classes }) => {
   if (pattern == null) {
     return (
       <ContentHeader>No pattern selected!</ContentHeader>
@@ -31,7 +31,7 @@ const Pattern = ({ pattern, sections, deletePattern, classes }) => {
     return(
       <div className={classes.root}>
         <ContentHeader
-          onClick={() => deletePattern(pattern.patternId)}
+          onClick={() => deletePattern(pattern.patternId, pattern.sections, rowIds)}
           icon={<DeleteIcon />}
           newLocation='/'
         >

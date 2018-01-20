@@ -12,22 +12,30 @@ const styles = theme => ({
 });
 
 /* props here should match the keys used in SectionSetup component */
-const RowInfo = ({ currentRow, fullText, quickText, stitches, classes }) => (
-  <div>
-    <Typography type="body1">
-      {`Row ${currentRow+1}: ${fullText} [${stitches} sts]`}
-    </Typography>
-    <Typography type="subheading" className={classes.quickText}>
-      {quickText && quickText.trim() && <span>{quickText}</span>}
-    </Typography>
-  </div>
-);
+const RowInfo = ({ currentRow, fullText, quickText, stitches, classes }) => {
+
+  let infoString = `Row ${currentRow+1}: ${fullText}`;
+  if (stitches) {
+    infoString = infoString + ` [${stitches} sts]`;
+  }
+
+  return (
+    <div>
+      <Typography type="body1">
+        {infoString}
+      </Typography>
+      <Typography type="subheading" className={classes.quickText}>
+        {quickText && quickText.trim() && <span>{quickText}</span>}
+      </Typography>
+    </div>
+  );
+};
 
 RowInfo.propTypes = {
   currentRow: PropTypes.number.isRequired,
   fullText: PropTypes.string.isRequired,
   quickText: PropTypes.string.isRequired,
-  stitches: PropTypes.number.isRequired,
+  stitches: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired,
 };
 

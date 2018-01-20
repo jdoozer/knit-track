@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { deletePattern } from 'actions';
+import { deletePattern, deleteSection, deleteRow } from 'actions';
 import Pattern from 'components/Pattern';
 
 const mapStateToProps = state => {
@@ -11,19 +11,26 @@ const mapStateToProps = state => {
       sectionId => state.sections.byId[sectionId]
     );
 
-    return { pattern, sections };
+    const rowIds = sections.reduce(
+      (rows, section) => {
+        rows.push(...section.rows);
+        return rows;
+      }, []);
 
-  } else {
-    return {
-      pattern: null,
-      sections: []
-    };
+    return { pattern, sections, rowIds };
   }
+  return {
+    pattern: null,
+    sections: [],
+    rowIds: [],
+  };
 };
 
 const mapDispatchToProps = dispatch => ({
-  deletePattern: patternId => {
+  deletePattern: (patternId, sectionIds, rowIds) => {
     dispatch(deletePattern(patternId));
+    dispatch(deleteSection(sectionIds));
+    dispatch(deleteRow(rowIds));
   },
 });
 

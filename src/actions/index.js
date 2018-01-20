@@ -40,6 +40,12 @@ export function addSection(patternId, title, numRows) {
   };
 }
 
+export function deleteSection(sectionIds) {
+  return {
+    type: 'DELETE_SECTION',
+    payload: { sectionIds },
+  };
+}
 
 // ROW ACTIONS
 export function addRow(sectionId, rowInfo) {
@@ -61,5 +67,12 @@ export function updateRowCount(sectionId, updateType) {
       sectionId,
       updateType
     }
+  };
+}
+
+export function deleteRow(rowIds) {
+  return {
+    type: 'DELETE_ROW',
+    payload: { rowIds },
   };
 }
