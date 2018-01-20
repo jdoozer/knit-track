@@ -14,10 +14,9 @@ const styles = theme => ({
 /* props here should match the keys used in SectionSetup component */
 const RowInfo = ({ currentRow, fullText, quickText, stitches, classes }) => {
 
-  let infoString = `Row ${currentRow+1}: ${fullText}`;
-  if (stitches) {
-    infoString = infoString + ` [${stitches} sts]`;
-  }
+  let infoString = (fullText || stitches) ? `Row ${currentRow+1}: ` : '';
+  infoString += fullText ? `${fullText} ` : '';
+  infoString += stitches ? `[${stitches} sts]` : '';
 
   return (
     <div>
