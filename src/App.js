@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Hidden from 'material-ui/Hidden';
+import Reboot from 'material-ui/Reboot';
 
 import MainContentWrapper from 'muiwrappers/MainContentWrapper';
 import Header from 'components/Header';
@@ -12,6 +13,7 @@ import SectionSetupContainer from 'containers/SectionSetupContainer';
 const App = () => (
   <Router>
     <div>
+      <Reboot />
 
       <Header />
 
