@@ -18,7 +18,7 @@ const App = () => (
       <MainContentWrapper>
 
         <Route exact path="/" component={PatternListContainer} />
-        <Hidden smDown>
+        <Hidden xsDown>
           <Route exact path="/" component={AddPattern} />
         </Hidden>
 

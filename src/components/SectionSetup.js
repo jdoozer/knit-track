@@ -141,7 +141,7 @@ class SectionSetup extends React.Component {
       );
     } else {
       return (
-        <Hidden smDown>
+        <Hidden xsDown>
           <ContentHeader>Section Setup</ContentHeader>
           <form
             onSubmit={this.handleSubmit}

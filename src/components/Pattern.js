@@ -50,7 +50,7 @@ const Pattern = ({ pattern, sections, rowIds, deletePattern, classes }) => {
             />
           ))}
         </div>
-        <Hidden smDown>
+        <Hidden xsDown>
           <AddSection patternId={pattern.patternId} />
         </Hidden>
       </div>
