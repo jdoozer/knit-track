@@ -33,7 +33,9 @@ const Pattern = ({ pattern, sections, rowIds, deletePattern, classes }) => {
         <ContentHeader
           onClick={() => deletePattern(pattern.patternId, pattern.sections, rowIds)}
           icon={<DeleteIcon />}
-          newLocation='/'
+          newLocation="/"
+          dialogTitle="Delete Pattern"
+          dialogText="Are you sure you want to delete this pattern and all its contents?"
         >
           {pattern.title}
         </ContentHeader>
