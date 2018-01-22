@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -32,7 +33,7 @@ const ContentHeader = ({ classes, children, ...buttonProps }) => (
   >
     <Toolbar>
       <Typography type="headline" color="inherit" className={
-        buttonProps.onClick ? [classes.flex, classes.titleLeft].join(' ') : classes.flex
+        buttonProps.onClick ? classNames(classes.flex, classes.titleLeft) : classes.flex
       }>
         {children}
       </Typography>
