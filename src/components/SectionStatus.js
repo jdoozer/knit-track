@@ -4,14 +4,6 @@ import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 
 const styles = () => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-  },
-  numRows: {
-    paddingLeft: 4,
-  },
   background: {
     color: '#999',
     fontStyle: 'italic',
@@ -20,19 +12,18 @@ const styles = () => ({
 
 const SectionStatus = ({ currentRow, numRows, classes, displayStyle }) => {
 
-  if (displayStyle === 'row fraction') {
-    return(
-      <div className={classes.root}>
-        <Typography type="headline">{currentRow + 1}</Typography>
-        <Typography type="subheading" className={classes.numRows}>
-          / {numRows}
-        </Typography>
-      </div>
+  if (displayStyle === 'fraction') {
+    return (
+      <Typography type="subheading">
+        {currentRow + 1} / {numRows}
+      </Typography>
     );
   }
 
-  return(
-    <Typography type="subheading" className={classes.background}>total rows: {numRows}</Typography>
+  return (
+    <Typography type="subheading" className={classes.background}>
+      ROWS: {numRows}
+    </Typography>
   );
 };
 

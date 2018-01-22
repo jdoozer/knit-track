@@ -4,9 +4,8 @@ import { withStyles } from 'material-ui/styles';
 import Hidden from 'material-ui/Hidden';
 import Typography from 'material-ui/Typography';
 import DeleteIcon from 'material-ui-icons/Delete';
-
 import ContentHeader from 'components/ContentHeader';
-import SectionCard from 'components/SectionCard';
+import SectionPanel from 'components/SectionPanel';
 import AddSection from 'containers/AddSection';
 
 const styles = (theme) => ({
@@ -43,12 +42,12 @@ const Pattern = ({ pattern, sections, rowIds, deletePattern, classes }) => {
           {pattern.info}
         </Typography>
         <div className={classes.sectionCards}>
-          {sections.map(section => (
-            <SectionCard
-              key={section.sectionId}
-              section={section}
-            />
-          ))}
+        {sections.map(section => (
+          <SectionPanel
+            key={section.sectionId}
+            section={section}
+          />
+        ))}
         </div>
         <Hidden xsDown>
           <AddSection patternId={pattern.patternId} />

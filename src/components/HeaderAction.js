@@ -17,22 +17,19 @@ class HeaderAction extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { dialogOpen: false, continueAction: false };
-    this.handleClickOpen = this.handleClickOpen.bind(this);
-    this.handleCloseDefault = this.handleCloseDefault.bind(this);
-    this.handleCloseAction = this.handleCloseAction.bind(this);
+    this.state = { dialogOpen: false };
   }
 
-  handleClickOpen() {
+  handleClickOpen = () => {
     this.setState({ dialogOpen: true });
   }
 
-  handleCloseDefault() {
+  handleCloseDefault = () => {
     this.setState({ dialogOpen: false });
   }
 
-  handleCloseAction() {
-    this.setState({ dialogOpen: false });
+  handleCloseAction = () => {
+    this.handleCloseDefault();
     const { buttonProps, history } = this.props;
     const { onClick, newLocation } = buttonProps;
 
