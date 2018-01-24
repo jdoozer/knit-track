@@ -18,7 +18,7 @@ const styles = theme => ({
 const MainContentWrapper = ({ classes, children }) => (
   <Grid container className={classes.root}>
     <Grid item>
-      <Paper className={classes.paper} elevation="4">
+      <Paper className={classes.paper} elevation={4}>
         {children}
       </Paper>
     </Grid>

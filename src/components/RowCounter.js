@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
+import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/Button';
 import PlusIcon from 'material-ui-icons/Add';
 import MinusIcon from 'material-ui-icons/Remove';
@@ -27,7 +28,7 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     width: 100,
-    height: 86,
+    height: 94,
     marginRight: theme.spacing.unit,
   },
   rowDisplay: {
@@ -46,6 +47,7 @@ const styles = theme => ({
     minHeight: 0,
     padding: 2,
     margin: theme.spacing.unit / 2,
+    border: 'solid #333 1px',
   },
   plusIcon: {
     width: 50,
@@ -56,15 +58,15 @@ const styles = theme => ({
 const RowCounter = ({ currentRow, rowData, onUpdateCountClick, classes }) => (
   <div className={classes.root}>
     <div className={classes.rowCounter}>
-      <div className={classes.row}>
+      <Paper className={classes.row} elevation={2}>
         <Typography type="display2" className={classes.rowDisplay}>
           {currentRow + 1}
         </Typography>
-      </div>
+      </Paper>
       <div className={classes.rowButtons}>
         <IconButton
           raised
-          color="primary"
+          color="secondary"
           className={classes.iconButton}
           onClick={() => onUpdateCountClick("INCREMENT")}>
             <PlusIcon className={classes.plusIcon} />
@@ -72,14 +74,14 @@ const RowCounter = ({ currentRow, rowData, onUpdateCountClick, classes }) => (
         <div className={classes.rowButtonsSmall}>
           <IconButton
             raised
-            color="primary"
+            color="secondary"
             className={classes.iconButton}
             onClick={() => onUpdateCountClick("RESET")}>
               <ResetIcon />
           </IconButton>
           <IconButton
             raised
-            color="primary"
+            color="secondary"
             className={classes.iconButton}
             onClick={() => onUpdateCountClick("DECREMENT")}>
               <MinusIcon />

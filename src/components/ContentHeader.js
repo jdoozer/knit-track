@@ -11,6 +11,8 @@ const styles = theme => ({
   root: {
     width: '100%',
     borderBottom: '1px solid #AAA',
+    background: theme.palette.contrast,
+    color: theme.palette.contrastText,
   },
   flex: {
     flex: 1,
@@ -27,8 +29,7 @@ const styles = theme => ({
 const ContentHeader = ({ classes, children, ...buttonProps }) => (
   <AppBar
     position="static"
-    elevation="0"
-    color="accent"
+    elevation={0}
     className={classes.root}
   >
     <Toolbar>

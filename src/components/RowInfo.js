@@ -5,7 +5,7 @@ import Typography from 'material-ui/Typography';
 
 const styles = theme => ({
   quickText: {
-    color: theme.palette.secondary['A200'],
+    color: theme.palette.alert,
     fontWeight: 'bold',
     textTransform: 'uppercase',
   },
