@@ -21,7 +21,7 @@ const styles = (theme) => ({
   },
 });
 
-const Pattern = ({ pattern, sections, rowIds, deletePattern, classes }) => {
+const Pattern = ({ pattern, sections, rowIds, deletePattern, deleteSection, classes }) => {
   if (pattern == null) {
     return (
       <ContentHeader>No pattern selected!</ContentHeader>
@@ -46,6 +46,8 @@ const Pattern = ({ pattern, sections, rowIds, deletePattern, classes }) => {
           <SectionPanel
             key={section.sectionId}
             section={section}
+            deleteSection={deleteSection}
+            patternId={pattern.patternId}
           />
         ))}
         </div>

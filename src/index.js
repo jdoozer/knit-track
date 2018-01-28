@@ -17,7 +17,7 @@ const store = createStore(knitTrack, persistedState);
 
 store.subscribe(throttle(() => {
   saveState(store.getState())
-}, 1000));
+ }, 1000));
 
 ReactDOM.render(
   <Provider store={store}>

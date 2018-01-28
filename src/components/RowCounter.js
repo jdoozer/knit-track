@@ -7,7 +7,12 @@ import IconButton from 'material-ui/Button';
 import PlusIcon from 'material-ui-icons/Add';
 import MinusIcon from 'material-ui-icons/Remove';
 import ResetIcon from 'material-ui-icons/Undo';
+import blueGrey from 'material-ui/colors/blueGrey';
 import RowInfo from 'components/RowInfo';
+
+const greyText = blueGrey[900];
+const greyBorder = blueGrey[500];
+const greyBG = blueGrey[50];
 
 const styles = theme => ({
   root: {
@@ -19,11 +24,10 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: theme.spacing.unit * 2,
   },
   row: {
-    border: 'solid 2px #333',
-    background: '#DDD',
+    border: 'solid 2px ' + greyBorder,
+    background: greyBG,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -32,7 +36,7 @@ const styles = theme => ({
     marginRight: theme.spacing.unit,
   },
   rowDisplay: {
-    color: '#333',
+    color: greyText,
   },
   rowButtons: {
     display: 'flex',
@@ -47,7 +51,8 @@ const styles = theme => ({
     minHeight: 0,
     padding: 2,
     margin: theme.spacing.unit / 2,
-    border: 'solid #333 1px',
+    border: 'solid 1px ' + greyBorder,
+    color: greyText,
   },
   plusIcon: {
     width: 50,
@@ -58,7 +63,7 @@ const styles = theme => ({
 const RowCounter = ({ currentRow, rowData, onUpdateCountClick, classes }) => (
   <div className={classes.root}>
     <div className={classes.rowCounter}>
-      <Paper className={classes.row} elevation={2}>
+      <Paper className={classes.row} elevation={1}>
         <Typography type="display2" className={classes.rowDisplay}>
           {currentRow + 1}
         </Typography>

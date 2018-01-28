@@ -29,9 +29,13 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   deletePattern: (patternId, sectionIds, rowIds) => {
     dispatch(deletePattern(patternId));
-    dispatch(deleteSection(sectionIds));
+    dispatch(deleteSection(patternId, sectionIds));
     dispatch(deleteRow(rowIds));
   },
+  deleteSection: (patternId, sectionId, rowIds) => {
+    dispatch(deleteSection(patternId, sectionId));
+    dispatch(deleteRow(rowIds));
+  }
 });
 
 const PatternContainer = connect(mapStateToProps, mapDispatchToProps)(Pattern);

@@ -7,12 +7,17 @@ import ExpansionPanel, {
   ExpansionPanelSummary,
   ExpansionPanelDetails,
 } from 'material-ui/ExpansionPanel';
+import DeleteIcon from 'material-ui-icons/Delete';
 import SectionStatus from 'components/SectionStatus';
 import RowCounterContainer from 'containers/RowCounterContainer';
+import ActionIconButton from 'components/ActionIconButton';
 
 const styles = theme => ({
   titleColumn: {
     flex: '2 1 80%',
+  },
+  heading: {
+    textAlign: 'left',
   },
   statusColumn: {
     flex: '1 1 20%',
@@ -24,19 +29,14 @@ const styles = theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  rowCounter: {
-    paddingTop: 0,
-    '&:last-child': {
-      paddingBottom: theme.spacing.unit * 2,
-    },
-  },
   details: {
-    display: 'flex',
-    alignItems: 'column',
-    justifyContent: 'center'
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: theme.spacing.unit,
   },
-  heading: {
-    textAlign: 'left',
+  button: {
+    alignSelf: 'flex-end',
+    textAlign: 'right',
   },
 });
 
@@ -52,7 +52,7 @@ class SectionPanel extends React.Component {
   }
 
   render() {
-    const { section, classes } = this.props;
+    const { section, deleteSection, patternId, classes } = this.props;
     const { expanded } = this.state;
 
     const { title, sectionId, currentRow, numRows, rows } = section;
@@ -70,7 +70,7 @@ class SectionPanel extends React.Component {
             <SectionStatus
               currentRow={currentRow}
               numRows={numRows}
-              displayStyle={expanded ? "" : "fraction"}
+              displayStyle={expanded ? '' : 'fraction'}
             />
           </div>
         </ExpansionPanelSummary>
@@ -79,6 +79,13 @@ class SectionPanel extends React.Component {
             currentRow={currentRow}
             sectionId={sectionId}
             rows={rows}
+          />
+          <ActionIconButton
+            className={classes.button}
+            onClick={() => deleteSection(patternId, sectionId, rows)}
+            icon={<DeleteIcon />}
+            dialogTitle="Delete Section"
+            dialogText="Are you sure you want to delete this section and all its contents?"
           />
         </ExpansionPanelDetails>
       </ExpansionPanel>

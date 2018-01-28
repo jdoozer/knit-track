@@ -40,10 +40,10 @@ export function addSection(patternId, title, numRows) {
   };
 }
 
-export function deleteSection(sectionIds) {
+export function deleteSection(patternId, sectionIds) {
   return {
     type: 'DELETE_SECTION',
-    payload: { sectionIds },
+    payload: { patternId, sectionIds },
   };
 }
 

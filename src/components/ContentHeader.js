@@ -5,7 +5,7 @@ import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
-import HeaderAction from 'components/HeaderAction';
+import ActionIconButton from 'components/ActionIconButton';
 
 const styles = theme => ({
   root: {
@@ -34,11 +34,11 @@ const ContentHeader = ({ classes, children, ...buttonProps }) => (
   >
     <Toolbar>
       <Typography type="headline" color="inherit" className={
-        buttonProps.onClick ? classNames(classes.flex, classes.titleLeft) : classes.flex
+        buttonProps.icon ? classNames(classes.flex, classes.titleLeft) : classes.flex
       }>
         {children}
       </Typography>
-      {buttonProps.onClick && (<HeaderAction buttonProps={buttonProps} />)}
+      {buttonProps.icon && (<ActionIconButton {...buttonProps} />)}
     </Toolbar>
   </AppBar>
 );

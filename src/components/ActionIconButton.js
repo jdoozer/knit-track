@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from 'material-ui/styles';
 import IconButton from 'material-ui/Button';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogTitle, DialogContent, DialogContentText } from 'material-ui/Dialog';
+import classNames from 'classnames';
 
 const styles = theme => ({
   root: {
@@ -13,7 +14,7 @@ const styles = theme => ({
   },
 });
 
-class HeaderAction extends React.Component {
+class ActionIconButton extends React.Component {
 
   constructor(props) {
     super(props);
@@ -30,19 +31,24 @@ class HeaderAction extends React.Component {
 
   handleCloseAction = () => {
     this.handleCloseDefault();
-    const { buttonProps, history } = this.props;
-    const { onClick, newLocation } = buttonProps;
+    const { onClick, newLocation, history } = this.props;
 
     onClick();
-    history.push(newLocation);
+    if (newLocation) {
+      history.push(newLocation);
+    }
   }
 
   render() {
-    const { classes, buttonProps } = this.props;
-    const { icon, dialogTitle, dialogText } = buttonProps;
+    const { classes, icon, dialogTitle, dialogText, className } = this.props;
+
     return (
-      <div>
-        <IconButton color="inherit" className={classes.root} onClick={this.handleClickOpen}>
+      <Fragment>
+        <IconButton
+          color="inherit"
+          className={classNames(classes.root, className)}
+          onClick={this.handleClickOpen}
+        >
           {icon}
         </IconButton>
         {dialogTitle && (
@@ -64,21 +70,19 @@ class HeaderAction extends React.Component {
             </DialogActions>
           </Dialog>
         )}
-      </div>
+      </Fragment>
     );
   }
 
 };
 
-HeaderAction.propTypes = {
+ActionIconButton.propTypes = {
   classes: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  buttonProps: PropTypes.shape({
-    onClick: PropTypes.func.isRequired,
-    newLocation: PropTypes.string.isRequired,
-    icon: PropTypes.element,
-    dialogText: PropTypes.string.isRequired,
-  }).isRequired,
+  onClick: PropTypes.func.isRequired,
+  newLocation: PropTypes.string,
+  icon: PropTypes.element.isRequired,
+  dialogText: PropTypes.string.isRequired,
 };
 
-export default withStyles(styles)(withRouter(HeaderAction));
+export default withStyles(styles)(withRouter(ActionIconButton));

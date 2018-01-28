@@ -4,6 +4,9 @@ import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 
 const styles = theme => ({
+  root: {
+    marginTop: theme.spacing.unit * 2,
+  },
   quickText: {
     color: theme.palette.alert,
     fontWeight: 'bold',
@@ -19,7 +22,7 @@ const RowInfo = ({ currentRow, fullText, quickText, stitches, classes }) => {
   infoString += stitches ? `[${stitches} sts]` : '';
 
   return (
-    <div>
+    <div className={classes.root}>
       <Typography type="body1">
         {infoString}
       </Typography>
