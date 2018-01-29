@@ -47,6 +47,12 @@ export function deleteSection(patternId, sectionIds) {
   };
 }
 
+export function clearSection() {
+  return {
+    type: 'CLEAR_SECTION'
+  };
+}
+
 // ROW ACTIONS
 export function addRow(sectionId, rowInfo) {
   const rowId = generateId();

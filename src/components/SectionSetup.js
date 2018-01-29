@@ -73,7 +73,7 @@ class SectionSetup extends React.Component {
   }
 
   handleSubmit(event) {
-    const { history, sectionId, addRow, numRows } = this.props;
+    const { history, sectionId, addRow, numRows, clearSection } = this.props;
 
     let rowInfo;
     for (let rowInd = 0; rowInd < numRows; rowInd++) {
@@ -86,6 +86,7 @@ class SectionSetup extends React.Component {
 
     event.preventDefault();
     history.push('/pattern');
+    clearSection();
   }
 
   handleReset(event) {

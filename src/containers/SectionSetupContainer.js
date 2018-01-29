@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import { addRow } from 'actions';
+import { addRow, clearSection } from 'actions';
 import SectionSetup from 'components/SectionSetup';
 
 const mapStateToProps = (state) => {
-  const sectionId = state.sections.selected;
+  const sectionId = state.sections.sectionToEdit;
   const numRows = sectionId ? state.sections.byId[sectionId].numRows : null;
 
   return {
@@ -16,6 +16,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addRow: (sectionId, rowInfo) => {
       dispatch(addRow(sectionId, rowInfo));
+    },
+    clearSection: () => {
+      dispatch(clearSection());
     }
   };
 };

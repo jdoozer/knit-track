@@ -116,10 +116,10 @@ const selectedSection = (state = null, action) => {
     case 'ADD_SECTION':
       return action.payload.sectionId;
     case 'DELETE_SECTION':
-      if (action.payload.sectionIds.includes(state)) {
-        return null;
-      }
+      if (action.payload.sectionIds.includes(state)) return null;
       return state;
+    case 'CLEAR_SECTION':
+      return null;
     default:
       return state;
   }
@@ -128,7 +128,7 @@ const selectedSection = (state = null, action) => {
 const sectionsReducer = combineReducers({
   byId: sectionsById,
   allIds: allSections,
-  selected: selectedSection,
+  sectionToEdit: selectedSection,
 });
 
 export default sectionsReducer;
