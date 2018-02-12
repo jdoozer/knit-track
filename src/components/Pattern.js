@@ -38,7 +38,7 @@ const Pattern = ({ pattern, sections, rowIds, deletePattern, deleteSection, clas
         >
           {pattern.title}
         </ContentHeader>
-        <Typography type="subheading" className={classes.info}>
+        <Typography variant="subheading" className={classes.info}>
           {pattern.info}
         </Typography>
         <div className={classes.sectionCards}>

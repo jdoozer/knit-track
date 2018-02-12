@@ -53,7 +53,7 @@ class AddPattern extends React.Component {
             value={this.state.value}
             onChange={this.handleChange}
           />
-          <Button raised color="primary" type="submit">
+          <Button variant="raised" color="primary" type="submit">
             Add Pattern
           </Button>
         </form>

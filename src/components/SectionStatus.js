@@ -14,14 +14,14 @@ const SectionStatus = ({ currentRow, numRows, classes, displayStyle }) => {
 
   if (displayStyle === 'fraction') {
     return (
-      <Typography type="subheading">
+      <Typography variant="subheading">
         {currentRow + 1} / {numRows}
       </Typography>
     );
   }
 
   return (
-    <Typography type="subheading" className={classes.background}>
+    <Typography variant="subheading" className={classes.background}>
       ROWS: {numRows}
     </Typography>
   );

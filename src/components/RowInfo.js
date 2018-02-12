@@ -23,10 +23,10 @@ const RowInfo = ({ currentRow, fullText, quickText, stitches, classes }) => {
 
   return (
     <div className={classes.root}>
-      <Typography type="body1">
+      <Typography variant="body1">
         {infoString}
       </Typography>
-      <Typography type="subheading" className={classes.quickText}>
+      <Typography variant="subheading" className={classes.quickText}>
         {quickText && quickText.trim() && <span>{quickText}</span>}
       </Typography>
     </div>

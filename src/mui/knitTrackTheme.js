@@ -1,16 +1,21 @@
 import { createMuiTheme } from 'material-ui/styles';
-import deepPurple from 'material-ui/colors/deepPurple';
-import lime from 'material-ui/colors/lime';
-import pink from 'material-ui/colors/pink';
-import lightBlue from 'material-ui/colors/lightBlue';
 
 const theme = createMuiTheme({
   palette: {
-    primary: { main: deepPurple[400] },
-    secondary: { main: lightBlue['A400'] },
-    alert: pink['A400'],
-    contrast: lime['A400'],
-    contrastText: '#000',
+    primary: {
+      light: '#757de8',
+      main: '#3f51b5',
+      dark: '#002984',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#fdff58',
+      main: '#c6ff00', // lime['A400']
+      dark: '#90cc00',
+      contrastText: '#000',
+    },
+    alert: '#f50057',
+    contentHeader: '#4fc3f7',
   },
 });
 

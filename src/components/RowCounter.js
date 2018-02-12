@@ -7,12 +7,12 @@ import IconButton from 'material-ui/Button';
 import PlusIcon from 'material-ui-icons/Add';
 import MinusIcon from 'material-ui-icons/Remove';
 import ResetIcon from 'material-ui-icons/Undo';
-import blueGrey from 'material-ui/colors/blueGrey';
+import gray from 'material-ui/colors/blueGrey';
 import RowInfo from 'components/RowInfo';
 
-const greyText = blueGrey[900];
-const greyBorder = blueGrey[500];
-const greyBG = blueGrey[50];
+const textInd = 900;
+const borderInd = 500;
+const bgInd = 50;
 
 const styles = theme => ({
   root: {
@@ -26,8 +26,8 @@ const styles = theme => ({
     alignItems: 'center',
   },
   row: {
-    border: 'solid 2px ' + greyBorder,
-    background: greyBG,
+    border: 'solid 2px ' + gray[borderInd],
+    background: gray[bgInd],
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -36,23 +36,23 @@ const styles = theme => ({
     marginRight: theme.spacing.unit,
   },
   rowDisplay: {
-    color: greyText,
+    color: gray[textInd],
   },
-  rowButtons: {
+  counterButtonRoot: {
     display: 'flex',
     flexDirection: 'column',
   },
-  rowButtonsSmall: {
+  counterButtonSecondary: {
     display: 'flex',
     flexDirection: 'row',
   },
-  iconButton: {
+  counterButton: {
     minWidth: 0,
     minHeight: 0,
     padding: 2,
     margin: theme.spacing.unit / 2,
-    border: 'solid 1px ' + greyBorder,
-    color: greyText,
+    border: 'solid 1px ' + gray[borderInd],
+    color: gray[textInd],
   },
   plusIcon: {
     width: 50,
@@ -64,30 +64,30 @@ const RowCounter = ({ currentRow, rowData, onUpdateCountClick, classes }) => (
   <div className={classes.root}>
     <div className={classes.rowCounter}>
       <Paper className={classes.row} elevation={1}>
-        <Typography type="display2" className={classes.rowDisplay}>
+        <Typography variant="display2" className={classes.rowDisplay}>
           {currentRow + 1}
         </Typography>
       </Paper>
-      <div className={classes.rowButtons}>
+      <div className={classes.counterButtonRoot}>
         <IconButton
-          raised
+          variant="raised"
+          className={classes.counterButton}
           color="secondary"
-          className={classes.iconButton}
           onClick={() => onUpdateCountClick("INCREMENT")}>
             <PlusIcon className={classes.plusIcon} />
         </IconButton>
-        <div className={classes.rowButtonsSmall}>
+        <div className={classes.counterButtonSecondary}>
           <IconButton
-            raised
+            variant="raised"
+            className={classes.counterButton}
             color="secondary"
-            className={classes.iconButton}
             onClick={() => onUpdateCountClick("RESET")}>
               <ResetIcon />
           </IconButton>
           <IconButton
-            raised
+            variant="raised"
+            className={classes.counterButton}
             color="secondary"
-            className={classes.iconButton}
             onClick={() => onUpdateCountClick("DECREMENT")}>
               <MinusIcon />
           </IconButton>

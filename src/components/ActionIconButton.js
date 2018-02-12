@@ -64,7 +64,7 @@ class ActionIconButton extends React.Component {
               <Button onClick={this.handleCloseDefault} color="primary">
                 cancel
               </Button>
-              <Button onClick={this.handleCloseAction} raised color="primary" autoFocus>
+              <Button onClick={this.handleCloseAction} variant="raised" color="primary" autoFocus>
                 okay
               </Button>
             </DialogActions>

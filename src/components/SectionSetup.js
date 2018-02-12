@@ -117,7 +117,7 @@ class SectionSetup extends React.Component {
 
     return (
       <div className={classes.row} key={rowNum}>
-        <Typography type="subheading" className={classes.rowLabel}>
+        <Typography variant="subheading" className={classes.rowLabel}>
           Row {rowNum+1}
         </Typography>
         {Object.keys(rowProps).map(property =>
@@ -150,7 +150,7 @@ class SectionSetup extends React.Component {
             className={classes.root}
           >
             {this.allRowInputs()}
-            <Button raised color="primary" className={classes.button} type="submit">
+            <Button variant="raised" color="primary" className={classes.button} type="submit">
               Create Section
             </Button>
           </form>

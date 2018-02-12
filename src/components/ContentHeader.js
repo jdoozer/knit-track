@@ -11,8 +11,7 @@ const styles = theme => ({
   root: {
     width: '100%',
     borderBottom: '1px solid #AAA',
-    background: theme.palette.contrast,
-    color: theme.palette.contrastText,
+    background: theme.palette.contentHeader,
   },
   flex: {
     flex: 1,
@@ -31,9 +30,10 @@ const ContentHeader = ({ classes, children, ...buttonProps }) => (
     position="static"
     elevation={0}
     className={classes.root}
+    color="secondary"
   >
     <Toolbar>
-      <Typography type="headline" color="inherit" className={
+      <Typography variant="headline" color="inherit" className={
         buttonProps.icon ? classNames(classes.flex, classes.titleLeft) : classes.flex
       }>
         {children}

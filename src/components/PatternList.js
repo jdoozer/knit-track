@@ -18,7 +18,7 @@ const styles = theme => ({
 const PatternList = ({ patterns, onPatternClick, classes }) => {
 
   let patternListContent = (
-    <Typography type="subheading" className={classes.noPattern}>
+    <Typography variant="subheading" className={classes.noPattern}>
       No patterns created yet!
     </Typography>
   );

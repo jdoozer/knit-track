@@ -14,9 +14,9 @@ const styles = () => ({
 });
 
 const Header = ({ classes }) => (
-  <AppBar position="static" className={classes.root}>
+  <AppBar position="sticky" className={classes.root}>
     <Toolbar>
-      <Typography type="headline" color="inherit">
+      <Typography variant="headline" color="inherit">
         <Link to="/">
           Knit Track Smart Row Counter
         </Link>

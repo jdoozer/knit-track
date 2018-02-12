@@ -64,7 +64,7 @@ class SectionPanel extends React.Component {
           className={classes.summary}
         >
           <div className={classes.titleColumn}>
-            <Typography type="title" className={classes.heading}>{title}</Typography>
+            <Typography variant="title" className={classes.heading}>{title}</Typography>
           </div>
           <div className={classes.statusColumn}>
             <SectionStatus

@@ -67,7 +67,7 @@ class AddSection extends React.Component {
             onChange={this.handleRowsChange}
             style={{width:75}}
           />
-          <Button raised color="primary" className={classes.button} type="submit">
+          <Button variant="raised" color="primary" className={classes.button} type="submit">
             Add Section
           </Button>
         </form>
