@@ -7,10 +7,10 @@ import registerServiceWorker from './registerServiceWorker';
 import throttle from 'lodash/throttle';
 
 import 'typeface-roboto';
-import './index.css';
+import 'index.css';
 
-import knitTrack from './reducers';
-import { loadState, saveState } from './localStorage';
+import knitTrack from 'reducers';
+import { loadState, saveState } from 'utils/localStorage';
 
 const persistedState = loadState();
 const store = createStore(knitTrack, persistedState);

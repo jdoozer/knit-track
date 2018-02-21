@@ -1,12 +1,21 @@
 import { combineReducers } from 'redux';
-import patternsReducer from 'reducers/patterns';
-import sectionsReducer from 'reducers/sections';
-import rowsReducer from 'reducers/rows';
+import reduceReducers from 'reduce-reducers';
+import patterns from 'reducers/patterns';
+import sections from 'reducers/sections';
+import rows from 'reducers/rows';
+import { deleteSection } from 'reducers/crossState';
 
-const knitTrack = combineReducers({
-  patterns: patternsReducer,
-  sections: sectionsReducer,
-  rows: rowsReducer
-});
+const sliceReducers = combineReducers({ patterns, sections, rows });
+
+const crossSliceReducer = (state, action) => {
+  switch(action.type) {
+    case 'DELETE_SECTION':
+      return deleteSection(state, action.payload);
+    default:
+      return state;
+  }
+};
+
+const knitTrack = reduceReducers(sliceReducers, crossSliceReducer);
 
 export default knitTrack;

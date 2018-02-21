@@ -53,25 +53,6 @@ const addSection = (state, action) => {
   };
 };
 
-const deleteSection = (state, action) => {
-  const { patternId, sectionIds } = action.payload;
-  const pattern = state[patternId];
-
-  if (!pattern.sections) return state;
-  
-  const updatedSections = pattern.sections.filter(
-    sectId => !sectionIds.includes(sectId)
-  );
-
-  return {
-    ...state,
-    [patternId]: {
-      ...pattern,
-      sections: updatedSections,
-    },
-  };
-};
-
 const patternsById = (state = {}, action) => {
   switch(action.type) {
     case 'ADD_PATTERN':
@@ -80,8 +61,6 @@ const patternsById = (state = {}, action) => {
       return deletePattern(state, action);
     case 'ADD_SECTION':
       return addSection(state, action);
-    case 'DELETE_SECTION':
-      return deleteSection(state, action);
     default:
       return state;
   }

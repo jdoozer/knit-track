@@ -11,6 +11,9 @@ const styles = theme => ({
   root: {
     padding: theme.spacing.unit * 3,
     paddingTop: 0,
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
   },
   textField: {
     marginRight: theme.spacing.unit * 2,
@@ -51,27 +54,25 @@ class AddSection extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.root}>
-        <form onSubmit={this.handleSubmit}>
-          <TextField
-            label="Section Name"
-            className={classes.textField}
-            value={this.state.title}
-            onChange={this.handleTitleChange}
-            style={{width:200}}
-          />
-          <TextField
-            label="# Rows"
-            className={classes.textField}
-            value={this.state.numRows}
-            onChange={this.handleRowsChange}
-            style={{width:75}}
-          />
-          <Button variant="raised" color="primary" className={classes.button} type="submit">
-            Add Section
-          </Button>
-        </form>
-      </div>
+      <form onSubmit={this.handleSubmit} className={classes.root}>
+        <TextField
+          label="Section Name"
+          className={classes.textField}
+          value={this.state.title}
+          onChange={this.handleTitleChange}
+          style={{width:200}}
+        />
+        <TextField
+          label="# Rows"
+          className={classes.textField}
+          value={this.state.numRows}
+          onChange={this.handleRowsChange}
+          style={{width:75}}
+        />
+        <Button variant="raised" color="primary" className={classes.button} type="submit">
+          Add Section
+        </Button>
+      </form>
     );
   }
 }
