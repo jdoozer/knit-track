@@ -55,7 +55,7 @@ class SectionPanel extends React.Component {
     const { section, deleteSection, patternId, classes } = this.props;
     const { expanded } = this.state;
 
-    const { title, sectionId, currentRow, numRows, rows } = section;
+    const { title, sectionId, currentRow, numRows, rowIds } = section;
 
     return (
       <ExpansionPanel onChange={this.handleExpandClick}>
@@ -78,11 +78,11 @@ class SectionPanel extends React.Component {
           <RowCounterContainer
             currentRow={currentRow}
             sectionId={sectionId}
-            rows={rows}
+            rowIds={rowIds}
           />
           <ActionIconButton
             className={classes.button}
-            onClick={() => deleteSection(patternId, sectionId, rows)}
+            onClick={() => deleteSection(patternId, sectionId, rowIds)}
             icon={<DeleteIcon />}
             dialogTitle="Delete Section"
             dialogText="Are you sure you want to delete this section and all its contents?"
@@ -99,7 +99,7 @@ SectionPanel.propTypes = {
     sectionId: PropTypes.string.isRequired,
     currentRow: PropTypes.number.isRequired,
     numRows: PropTypes.number.isRequired,
-    rows: PropTypes.arrayOf(PropTypes.string),
+    rowIds: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
   classes: PropTypes.object.isRequired,
 };

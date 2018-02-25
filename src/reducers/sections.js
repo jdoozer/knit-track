@@ -3,10 +3,10 @@ import { combineReducers } from 'redux';
 const initialSection = ({ title, sectionId, patternId, numRows }) => ({
   title,
   sectionId,
-  pattern: patternId,
+  patternId: patternId,
   numRows: Number(numRows),
   currentRow: 0,
-  rows: [],
+  rowIds: [],
 });
 
 const addSection = (state, action) => {
@@ -26,7 +26,7 @@ const addRow = (state, action) => {
     ...state,
     [sectionId] : {
       ...section,
-      rows: section.rows.concat(rowId),
+      rowIds: section.rowIds.concat(rowId),
     },
   };
 };

@@ -7,13 +7,13 @@ const mapStateToProps = state => {
 
   if (selectedId != null) {
     const pattern = state.patterns.byId[selectedId];
-    const sections = pattern.sections.map(
+    const sections = pattern.sectionIds.map(
       sectionId => state.sections.byId[sectionId]
     );
 
     const rowIds = sections.reduce(
       (rows, section) => {
-        rows.push(...section.rows);
+        rows.push(...section.rowIds);
         return rows;
       }, []);
 

@@ -60,7 +60,7 @@ const styles = theme => ({
   },
 });
 
-const RowCounter = ({ currentRow, rowData, onUpdateCountClick, classes }) => (
+const RowCounter = ({ currentRow, rows, onUpdateCountClick, classes }) => (
   <div className={classes.root}>
     <div className={classes.rowCounter}>
       <Paper className={classes.row} elevation={1}>
@@ -95,16 +95,16 @@ const RowCounter = ({ currentRow, rowData, onUpdateCountClick, classes }) => (
       </div>
     </div>
     {(
-      rowData
-      && rowData[currentRow]
-      && <RowInfo currentRow={currentRow} {...rowData[currentRow]} />
+      rows
+      && rows[currentRow]
+      && <RowInfo currentRow={currentRow} {...rows[currentRow]} />
     )}
   </div>
 );
 
 RowCounter.propTypes = {
   currentRow: PropTypes.number.isRequired,
-  rowData: PropTypes.array.isRequired,
+  rows: PropTypes.array.isRequired,
   onUpdateCountClick: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 };

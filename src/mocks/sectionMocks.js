@@ -18,9 +18,9 @@ export const oneSection = {
   byId: {
     [sectionId1]: {
       sectionId: sectionId1,
-      pattern: patternId,
+      patternId,
       title: title1,
-      rows: [],
+      rowIds: [],
       numRows,
       currentRow: 0
     },
@@ -33,9 +33,9 @@ export const oneSectionRows = (rowCount) => ({
   byId: {
     [sectionId1]: {
       sectionId: sectionId1,
-      pattern: patternId,
+      patternId,
       title: title1,
-      rows: [],
+      rowIds: [],
       numRows,
       currentRow: rowCount,
     },
@@ -49,9 +49,9 @@ export const twoSections = {
     ...oneSection.byId,
     [sectionId2]: {
       sectionId: sectionId2,
-      pattern: patternId,
+      patternId,
       title: title2,
-      rows: [],
+      rowIds: [],
       numRows,
       currentRow: 0
     },
@@ -66,7 +66,7 @@ export const twoSectionsOneRow = {
     ...twoSections.byId,
     [sectionId1]: {
       ...twoSections.byId[sectionId1],
-      rows: [rowId1],
+      rowIds: [rowId1],
     },
   },
 };
@@ -78,7 +78,7 @@ export const twoSectionsTwoRows = {
     ...twoSections.byId,
     [sectionId1]: {
       ...twoSections.byId[sectionId1],
-      rows: [rowId1, rowId2],
+      rowIds: [rowId1, rowId2],
     },
   },
 };
@@ -88,41 +88,11 @@ export const twoSectionsOneRowEach = {
   byId: {
     [sectionId1]: {
       ...twoSections.byId[sectionId1],
-      rows: [rowId1],
+      rowIds: [rowId1],
     },
     [sectionId2]: {
       ...twoSections.byId[sectionId2],
-      rows: [rowId2],
+      rowIds: [rowId2],
     },
   },
 };
-
-
-/*
-export const twoPatternsSecondSelected = {
-  ...twoPatterns,
-  selected: patternId2
-};
-
-export const twoPatternsSecondSelectedOneSection = {
-  ...twoPatternsSecondSelected,
-  byId: {
-    ...twoPatternsSecondSelected.byId,
-    [patternId2]: {
-      ...twoPatternsSecondSelected.byId[patternId2],
-      sections: [sectionId1],
-    }
-  }
-};
-
-export const twoPatternsSecondSelectedTwoSections = {
-  ...twoPatternsSecondSelected,
-  byId: {
-    ...twoPatternsSecondSelected.byId,
-    [patternId2]: {
-      ...twoPatternsSecondSelected.byId[patternId2],
-      sections: [sectionId1, sectionId2],
-    }
-  }
-};
-*/

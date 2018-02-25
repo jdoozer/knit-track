@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 const initialPattern = ({ patternId, title }) => ({
   title,
   patternId,
-  sections: [],
+  sectionIds: [],
   info: '<pattern info placeholder>',
 });
 
@@ -48,7 +48,7 @@ const addSection = (state, action) => {
     ...state,
     [patternId]: {
       ...pattern,
-      sections: pattern.sections.concat(sectionId),
+      sectionIds: pattern.sectionIds.concat(sectionId),
     },
   };
 };

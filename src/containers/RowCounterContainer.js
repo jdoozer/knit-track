@@ -3,11 +3,11 @@ import { updateRowCount } from 'actions';
 import RowCounter from 'components/RowCounter';
 
 const mapStateToProps = (state, ownProps) => {
-  const { rows, sectionId, ...passThruProps } = ownProps;
-  const rowData = rows.map(rowId => state.rows.byId[rowId]);
+  const { rowIds, sectionId, ...passThruProps } = ownProps;
+  const rows = rowIds.map(rowId => state.rows.byId[rowId]);
 
   return {
-    rowData,
+    rows,
     ...passThruProps,
   };
 };

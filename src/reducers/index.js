@@ -5,6 +5,7 @@ import sections from 'reducers/sections';
 import rows from 'reducers/rows';
 import { deleteSection } from 'reducers/crossState';
 
+//const sliceReducers = combineReducers({ patterns, sections, rows, ui });
 const sliceReducers = combineReducers({ patterns, sections, rows });
 
 const crossSliceReducer = (state, action) => {

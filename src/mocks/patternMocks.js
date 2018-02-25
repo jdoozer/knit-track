@@ -19,7 +19,7 @@ export const onePattern = {
     [patternId1]: {
       patternId: patternId1,
       title: patternTitle1,
-      sections: [],
+      sectionIds: [],
       info: patternInfo,
     },
   },
@@ -33,7 +33,7 @@ export const twoPatterns = {
     [patternId2]: {
       patternId: patternId2,
       title: patternTitle2,
-      sections: [],
+      sectionIds: [],
       info: patternInfo,
     },
   },
@@ -52,7 +52,7 @@ export const twoPatternsSecondSelectedOneSection = {
     ...twoPatternsSecondSelected.byId,
     [patternId2]: {
       ...twoPatternsSecondSelected.byId[patternId2],
-      sections: [sectionId1],
+      sectionIds: [sectionId1],
     }
   }
 };
@@ -63,7 +63,7 @@ export const twoPatternsSecondSelectedTwoSections = {
     ...twoPatternsSecondSelected.byId,
     [patternId2]: {
       ...twoPatternsSecondSelected.byId[patternId2],
-      sections: [sectionId1, sectionId2],
+      sectionIds: [sectionId1, sectionId2],
     }
   }
 };
