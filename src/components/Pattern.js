@@ -21,11 +21,10 @@ const styles = (theme) => ({
   },
 });
 
-const Pattern = ({ pattern, sections, rowIds, deletePattern, deleteSection, classes }) => {
+const Pattern = ({ pattern, sections, rowIds, deletePattern, deleteSection, classes, history }) => {
   if (pattern == null) {
-    return (
-      <ContentHeader>No pattern selected!</ContentHeader>
-    );
+    history.push('/');
+    return;
   } else {
     return(
       <div className={classes.root}>

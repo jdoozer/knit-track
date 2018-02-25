@@ -59,6 +59,13 @@ class SectionSetup extends React.Component {
   }
 
   componentWillMount() {
+
+    const { history, sectionId } = this.props;
+
+    if (sectionId == null) {
+      history.push('/');
+    }
+
     let initialState = {};
     for (let rowInd = 0; rowInd < this.props.numRows; rowInd++) {
       for (let property in rowProps) {
@@ -162,7 +169,7 @@ class SectionSetup extends React.Component {
 
 SectionSetup.propTypes = {
   history: PropTypes.object.isRequired,
-  sectionId: PropTypes.string.isRequired,
+  sectionId: PropTypes.string,
   addRow: PropTypes.func.isRequired,
   numRows: PropTypes.number.isRequired,
   classes: PropTypes.object.isRequired,
