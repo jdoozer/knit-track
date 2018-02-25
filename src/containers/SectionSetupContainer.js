@@ -4,7 +4,7 @@ import SectionSetup from 'components/SectionSetup';
 
 const mapStateToProps = (state, ownProps) => {
 
-  const sectionToEdit = state.sections.sectionToEdit;
+  const sectionToEdit = state.ui.sectionToEdit;
   const numRows = sectionToEdit ? state.sections.byId[sectionToEdit].numRows : 0;
 
   return { numRows, sectionId: sectionToEdit, ...ownProps };

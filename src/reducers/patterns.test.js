@@ -25,17 +25,8 @@ describe('patterns reducer', () => {
 
   });
 
-  it('should handle SELECT_PATTERN', () => {
-    expect(reducer(patternMocks.twoPatterns,
-      {
-        type: 'SELECT_PATTERN',
-        payload: { patternId: patternMocks.patternId2 }
-      }
-    )).toEqual(patternMocks.twoPatternsSecondSelected);
-  });
-
   it('should handle ADD_SECTION', () => {
-    expect(reducer(patternMocks.twoPatternsSecondSelected,
+    expect(reducer(patternMocks.twoPatterns,
       {
         type: 'ADD_SECTION',
         payload: {
@@ -45,9 +36,9 @@ describe('patterns reducer', () => {
           sectionId: patternMocks.sectionId1,
         }
       }
-    )).toEqual(patternMocks.twoPatternsSecondSelectedOneSection);
+    )).toEqual(patternMocks.twoPatternsOneSection);
 
-    expect(reducer(patternMocks.twoPatternsSecondSelectedOneSection,
+    expect(reducer(patternMocks.twoPatternsOneSection,
       {
         type: 'ADD_SECTION',
         payload: {
@@ -57,7 +48,7 @@ describe('patterns reducer', () => {
           sectionId: patternMocks.sectionId2,
         }
       }
-    )).toEqual(patternMocks.twoPatternsSecondSelectedTwoSections)
+    )).toEqual(patternMocks.twoPatternsTwoSections)
 
   });
 });

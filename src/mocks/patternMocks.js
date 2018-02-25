@@ -11,7 +11,6 @@ export const sectionId2 = 'sectionIdString2';
 export const initialStatePatterns = {
   byId: {},
   allIds: [],
-  selected: null,
 };
 
 export const onePattern = {
@@ -24,7 +23,6 @@ export const onePattern = {
     },
   },
   allIds: [patternId1],
-  selected: null,
 };
 
 export const twoPatterns = {
@@ -38,31 +36,25 @@ export const twoPatterns = {
     },
   },
   allIds: [patternId1, patternId2],
-  selected: null,
 };
 
-export const twoPatternsSecondSelected = {
+export const twoPatternsOneSection = {
   ...twoPatterns,
-  selected: patternId2
-};
-
-export const twoPatternsSecondSelectedOneSection = {
-  ...twoPatternsSecondSelected,
   byId: {
-    ...twoPatternsSecondSelected.byId,
+    ...twoPatterns.byId,
     [patternId2]: {
-      ...twoPatternsSecondSelected.byId[patternId2],
+      ...twoPatterns.byId[patternId2],
       sectionIds: [sectionId1],
     }
   }
 };
 
-export const twoPatternsSecondSelectedTwoSections = {
-  ...twoPatternsSecondSelected,
+export const twoPatternsTwoSections = {
+  ...twoPatterns,
   byId: {
-    ...twoPatternsSecondSelected.byId,
+    ...twoPatterns.byId,
     [patternId2]: {
-      ...twoPatternsSecondSelected.byId[patternId2],
+      ...twoPatterns.byId[patternId2],
       sectionIds: [sectionId1, sectionId2],
     }
   }

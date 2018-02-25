@@ -4,16 +4,18 @@ const initialState = {
   patterns: {
     byId: {},
     allIds: [],
-    selected: null,
   },
   sections: {
     byId: {},
     allIds: [],
-    sectionToEdit: null,
   },
   rows: {
     byId: {},
     allIds: [],
+  },
+  ui: {
+    selectedPattern: null,
+    sectionToEdit: null,
   }
 };
 

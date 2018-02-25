@@ -11,7 +11,6 @@ export const numRows = 12;
 export const initialState = {
   byId: {},
   allIds: [],
-  sectionToEdit: null,
 };
 
 export const oneSection = {
@@ -26,7 +25,6 @@ export const oneSection = {
     },
   },
   allIds: [sectionId1],
-  sectionToEdit: sectionId1,
 };
 
 export const oneSectionRows = (rowCount) => ({
@@ -41,7 +39,6 @@ export const oneSectionRows = (rowCount) => ({
     },
   },
   allIds: [sectionId1],
-  sectionToEdit: null,
 });
 
 export const twoSections = {
@@ -57,7 +54,6 @@ export const twoSections = {
     },
   },
   allIds: [sectionId1, sectionId2],
-  sectionToEdit: sectionId2,
 };
 
 export const twoSectionsOneRow = {

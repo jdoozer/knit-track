@@ -87,21 +87,9 @@ const allSections = (state = [], action) => {
   }
 };
 
-const selectedSection = (state = null, action) => {
-  switch(action.type) {
-    case 'ADD_SECTION':
-      return action.payload.sectionId;
-    case 'CLEAR_SECTION':
-      return null;
-    default:
-      return state;
-  }
-};
-
 const sectionsReducer = combineReducers({
   byId: sectionsById,
   allIds: allSections,
-  sectionToEdit: selectedSection,
 });
 
 export default sectionsReducer;

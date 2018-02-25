@@ -4,7 +4,7 @@ import Pattern from 'components/Pattern';
 
 const mapStateToProps = (state, ownProps) => {
 
-  const selectedId = state.patterns.selected;
+  const selectedId = state.ui.selectedPattern;
 
   if (selectedId == null) {
     return { pattern: null, sections: [], rowIds: [], ...ownProps };

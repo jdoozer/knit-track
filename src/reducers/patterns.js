@@ -77,24 +77,9 @@ const allPatterns = (state = [], action) => {
   }
 };
 
-const selectedPattern = (state = null, action) => {
-  switch(action.type) {
-    case 'SELECT_PATTERN':
-      return action.payload.patternId;
-    case 'DELETE_PATTERN':
-      if (state === action.payload.patternId) {
-        return null;
-      }
-      return state;
-    default:
-      return state;
-  }
-};
-
 const patternsReducer = combineReducers({
   byId: patternsById,
   allIds: allPatterns,
-  selected: selectedPattern,
 });
 
 export default patternsReducer;
