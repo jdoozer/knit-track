@@ -4,12 +4,12 @@ import * as patternMocks from 'mocks/patternMocks';
 describe('patterns reducer', () => {
 
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(patternMocks.initialStatePatterns)
+    expect(reducer(undefined, {})).toEqual(patternMocks.initialState)
   });
 
   it('should handle ADD_PATTERN', () => {
 
-    expect(reducer(patternMocks.initialStatePatterns,
+    expect(reducer(patternMocks.initialState,
       {
         type: 'ADD_PATTERN',
         payload: { title: patternMocks.patternTitle1, patternId: patternMocks.patternId1 }

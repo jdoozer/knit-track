@@ -8,7 +8,7 @@ export const sectionId1 = 'sectionIdString';
 export const sectionId2 = 'sectionIdString2';
 
 
-export const initialStatePatterns = {
+export const initialState = {
   byId: {},
   allIds: [],
 };
