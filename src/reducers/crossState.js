@@ -1,41 +1,48 @@
-import deleteKeys from 'utils/deleteKeys';
-
-
-const patternsById = (state, payload) => {
-  const { patternId, sectionIds } = payload;
-  const pattern = state[patternId];
-
-  if (!pattern.sections) return state;
-
-  const updatedSections = pattern.sections.filter(
-    sectId => !sectionIds.includes(sectId)
-  );
-
-  return {
-    ...state,
-    [patternId]: {
-      ...pattern,
-      sections: updatedSections,
-    },
-  };
-};
-
+import deleteItems from 'utils/deleteItems';
+import deleteFromState from 'utils/deleteFromState';
 
 export function deleteSection(state, payload) {
 
   const { patterns, sections, rows } = state;
-  const { patternId, sectionIds } = payload;
+  const { sectionId } = payload;
+
+  const rowIds = sections.byId[sectionId].rowIds;
+  const patternId = sections.byId[sectionId].patternId;
+  const pattern = patterns.byId[patternId];
 
   return {
+    ...state,
     patterns: {
-      ...patterns,
-      byId: patternsById(patterns.byId, payload),
+      byId: {
+        ...patterns.byId,
+        [patternId]: {
+          ...pattern,
+          sectionIds: deleteItems(pattern.sectionIds, sectionId),
+        }
+      },
+      allIds: patterns.allIds,
     },
-    sections: {
-      byId: deleteKeys(sections.byId, sectionIds),
-      allIds: sections.allIds.filter(sectionId => !sectionIds.includes(sectionId)),
-      sectionToEdit: (sectionIds.includes(sections.sectionToEdit) ? null : sections.sectionToEdit),
-    },
-    rows,
+    rows: deleteFromState(rows, rowIds),
+    sections: deleteFromState(sections, sectionId),
   };
-}
+};
+
+export function deletePattern(state, payload) {
+
+  const { patterns, sections, rows } = state;
+  const { patternId } = payload;
+
+  const sectionIds = patterns.byId[patternId].sectionIds;
+
+  const rowIds = sectionIds.reduce(
+    (rowIds, sectionId) => rowIds.concat(sections.byId[sectionId].rowIds),
+    []
+  );
+
+  return {
+    ...state,
+    patterns: deleteFromState(patterns, patternId),
+    sections: deleteFromState(sections, sectionIds),
+    rows: deleteFromState(rows, rowIds),
+  };
+};

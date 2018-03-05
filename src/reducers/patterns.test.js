@@ -1,54 +1,54 @@
 import reducer from 'reducers/patterns';
-import * as patternMocks from 'mocks/patternMocks';
+import * as data from 'testData/patternData';
 
 describe('patterns reducer', () => {
 
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(patternMocks.initialState)
+    expect(reducer(undefined, {})).toEqual(data.initialState)
   });
 
   it('should handle ADD_PATTERN', () => {
 
-    expect(reducer(patternMocks.initialState,
+    expect(reducer(data.initialState,
       {
         type: 'ADD_PATTERN',
-        payload: { title: patternMocks.patternTitle1, patternId: patternMocks.patternId1 }
+        payload: { title: data.patternTitle1, patternId: data.patternId1 }
       }
-    )).toEqual(patternMocks.onePattern);
+    )).toEqual(data.onePattern);
 
-    expect(reducer(patternMocks.onePattern,
+    expect(reducer(data.onePattern,
       {
         type: 'ADD_PATTERN',
-        payload: { title: patternMocks.patternTitle2, patternId: patternMocks.patternId2 }
+        payload: { title: data.patternTitle2, patternId: data.patternId2 }
       }
-    )).toEqual(patternMocks.twoPatterns);
+    )).toEqual(data.twoPatterns);
 
   });
 
   it('should handle ADD_SECTION', () => {
-    expect(reducer(patternMocks.twoPatterns,
+    expect(reducer(data.twoPatterns,
       {
         type: 'ADD_SECTION',
         payload: {
           title: 'section title',
           numRows: 10,
-          patternId: patternMocks.patternId2,
-          sectionId: patternMocks.sectionId1,
+          patternId: data.patternId2,
+          sectionId: data.sectionId1,
         }
       }
-    )).toEqual(patternMocks.twoPatternsOneSection);
+    )).toEqual(data.twoPatternsOneSection);
 
-    expect(reducer(patternMocks.twoPatternsOneSection,
+    expect(reducer(data.twoPatternsOneSection,
       {
         type: 'ADD_SECTION',
         payload: {
           title: 'section title',
           numRows: 10,
-          patternId: patternMocks.patternId2,
-          sectionId: patternMocks.sectionId2,
+          patternId: data.patternId2,
+          sectionId: data.sectionId2,
         }
       }
-    )).toEqual(patternMocks.twoPatternsTwoSections)
+    )).toEqual(data.twoPatternsTwoSections)
 
   });
 });

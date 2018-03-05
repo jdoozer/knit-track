@@ -1,30 +1,64 @@
 import reducer from 'reducers';
-
-const initialState = {
-  patterns: {
-    byId: {},
-    allIds: [],
-  },
-  sections: {
-    byId: {},
-    allIds: [],
-  },
-  rows: {
-    byId: {},
-    allIds: [],
-  },
-  ui: {
-    selectedPattern: null,
-    sectionToEdit: null,
-  }
-};
+import * as data from 'testData/fullStateData';
 
 describe('full reducer test', () => {
 
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(initialState)
+    expect(reducer(undefined, {})).toEqual(data.initialState)
   });
 
-  // it('should handle DELETE_PATTERN');
-  // it('should handle DELETE_SECTION');
+  it('should handle DELETE_PATTERN without sections', () => {
+
+    expect(reducer(data.onePattern,
+      {
+        type: 'DELETE_PATTERN',
+        payload: { patternId: data.patternIds(1) }
+      }
+    )).toEqual(data.initialState);
+
+    expect(reducer(data.twoPatterns,
+      {
+        type: 'DELETE_PATTERN',
+        payload: { patternId: data.patternIds(2) }
+      }
+    )).toEqual(data.onePattern);
+
+  });
+
+  it('should handle DELETE_PATTERN with sections', () => {
+
+    expect(reducer(data.onePatternTwoSections,
+      {
+        type: 'DELETE_PATTERN',
+        payload: { patternId: data.patternIds(1) }
+      }
+    )).toEqual(data.initialState);
+
+    expect(reducer(data.twoPatternsTwoSections,
+      {
+        type: 'DELETE_PATTERN',
+        payload: { patternId: data.patternIds(2) }
+      }
+    )).toEqual(data.onePatternTwoSections);
+
+  });
+
+  it('should handle DELETE_SECTION', () => {
+
+    expect(reducer(data.onePatternOneSection,
+      {
+        type: 'DELETE_SECTION',
+        payload: { sectionId: data.sectionIds(1) }
+      }
+    )).toEqual(data.onePattern);
+
+    expect(reducer(data.onePatternTwoSections,
+      {
+        type: 'DELETE_SECTION',
+        payload: { sectionId: data.sectionIds(2) }
+      }
+    )).toEqual(data.onePatternOneSection);
+
+  });
+
 });

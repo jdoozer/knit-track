@@ -1,118 +1,118 @@
 import reducer from 'reducers/sections';
-import * as sectionMocks from 'mocks/sectionMocks';
+import * as data from 'testData/sectionData';
 
 describe('sections reducer', () => {
 
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(sectionMocks.initialState)
+    expect(reducer(undefined, {})).toEqual(data.initialState)
   });
 
   it('should handle ADD_SECTION', () => {
 
-    expect(reducer(sectionMocks.initialState,
+    expect(reducer(data.initialState,
       {
         type: 'ADD_SECTION',
         payload: {
-          title: sectionMocks.title1,
-          numRows: sectionMocks.numRows,
-          patternId: sectionMocks.patternId,
-          sectionId: sectionMocks.sectionId1
+          title: data.title1,
+          numRows: data.numRows,
+          patternId: data.patternId,
+          sectionId: data.sectionId1
         }
       }
-    )).toEqual(sectionMocks.oneSection);
+    )).toEqual(data.oneSection);
 
-    expect(reducer(sectionMocks.oneSection,
+    expect(reducer(data.oneSection,
       {
         type: 'ADD_SECTION',
         payload: {
-          title: sectionMocks.title2,
-          numRows: sectionMocks.numRows,
-          patternId: sectionMocks.patternId,
-          sectionId: sectionMocks.sectionId2,
+          title: data.title2,
+          numRows: data.numRows,
+          patternId: data.patternId,
+          sectionId: data.sectionId2,
         }
       }
-    )).toEqual(sectionMocks.twoSections);
+    )).toEqual(data.twoSections);
 
   });
 
   it('should handle ADD_ROW', () => {
-    expect(reducer(sectionMocks.twoSections,
+    expect(reducer(data.twoSections,
       {
         type: 'ADD_ROW',
         payload: {
-          sectionId: sectionMocks.sectionId1,
-          rowId: sectionMocks.rowId1,
+          sectionId: data.sectionId1,
+          rowId: data.rowId1,
         }
       }
-    )).toEqual(sectionMocks.twoSectionsOneRow);
+    )).toEqual(data.twoSectionsOneRow);
 
-    expect(reducer(sectionMocks.twoSectionsOneRow,
+    expect(reducer(data.twoSectionsOneRow,
       {
         type: 'ADD_ROW',
         payload: {
-          sectionId: sectionMocks.sectionId2,
-          rowId: sectionMocks.rowId2,
+          sectionId: data.sectionId2,
+          rowId: data.rowId2,
         }
       }
-    )).toEqual(sectionMocks.twoSectionsOneRowEach);
+    )).toEqual(data.twoSectionsOneRowEach);
 
-    expect(reducer(sectionMocks.twoSectionsOneRow,
+    expect(reducer(data.twoSectionsOneRow,
       {
         type: 'ADD_ROW',
         payload: {
-          sectionId: sectionMocks.sectionId1,
-          rowId: sectionMocks.rowId2,
+          sectionId: data.sectionId1,
+          rowId: data.rowId2,
         }
       }
-    )).toEqual(sectionMocks.twoSectionsTwoRows);
+    )).toEqual(data.twoSectionsTwoRows);
   });
 
   it('should handle UPDATE_ROW_COUNT', () => {
-    expect(reducer(sectionMocks.oneSectionRows(5),
+    expect(reducer(data.oneSectionRows(5),
       {
         type: 'UPDATE_ROW_COUNT',
         payload: {
-          sectionId: sectionMocks.sectionId1,
+          sectionId: data.sectionId1,
           updateType: 'INCREMENT'
         }
       }
-    )).toEqual(sectionMocks.oneSectionRows(6));
-    expect(reducer(sectionMocks.oneSectionRows(sectionMocks.numRows-1),
+    )).toEqual(data.oneSectionRows(6));
+    expect(reducer(data.oneSectionRows(data.numRows-1),
       {
         type: 'UPDATE_ROW_COUNT',
         payload: {
-          sectionId: sectionMocks.sectionId1,
+          sectionId: data.sectionId1,
           updateType: 'INCREMENT'
         }
       }
-    )).toEqual(sectionMocks.oneSectionRows(sectionMocks.numRows-1));
-    expect(reducer(sectionMocks.oneSectionRows(5),
+    )).toEqual(data.oneSectionRows(data.numRows-1));
+    expect(reducer(data.oneSectionRows(5),
       {
         type: 'UPDATE_ROW_COUNT',
         payload: {
-          sectionId: sectionMocks.sectionId1,
+          sectionId: data.sectionId1,
           updateType: 'DECREMENT'
         }
       }
-    )).toEqual(sectionMocks.oneSectionRows(4));
-    expect(reducer(sectionMocks.oneSectionRows(0),
+    )).toEqual(data.oneSectionRows(4));
+    expect(reducer(data.oneSectionRows(0),
       {
         type: 'UPDATE_ROW_COUNT',
         payload: {
-          sectionId: sectionMocks.sectionId1,
+          sectionId: data.sectionId1,
           updateType: 'DECREMENT'
         }
       }
-    )).toEqual(sectionMocks.oneSectionRows(0));
-    expect(reducer(sectionMocks.oneSectionRows(8),
+    )).toEqual(data.oneSectionRows(0));
+    expect(reducer(data.oneSectionRows(8),
       {
         type: 'UPDATE_ROW_COUNT',
         payload: {
-          sectionId: sectionMocks.sectionId1,
+          sectionId: data.sectionId1,
           updateType: 'RESET'
         }
       }
-    )).toEqual(sectionMocks.oneSectionRows(0));
+    )).toEqual(data.oneSectionRows(0));
   });
 
 });

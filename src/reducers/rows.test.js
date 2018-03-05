@@ -1,63 +1,63 @@
 import reducer from 'reducers/rows';
-import * as rowMocks from 'mocks/rowMocks';
+import * as data from 'testData/rowData';
 
 describe('rows reducer', () => {
 
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(rowMocks.initialState)
+    expect(reducer(undefined, {})).toEqual(data.initialState)
   });
 
   it('should handle ADD_ROW', () => {
 
-    expect(reducer(rowMocks.initialState,
+    expect(reducer(data.initialState,
       {
         type: 'ADD_ROW',
         payload: {
-          sectionId: rowMocks.sectionId1,
-          rowId: rowMocks.rowId1,
+          sectionId: data.sectionId1,
+          rowId: data.rowId1,
           dummyInfo: 'dummy info',
         }
       }
-    )).toEqual(rowMocks.oneRow);
+    )).toEqual(data.oneRow);
 
-    expect(reducer(rowMocks.oneRow,
+    expect(reducer(data.oneRow,
       {
         type: 'ADD_ROW',
         payload: {
-          sectionId: rowMocks.sectionId1,
-          rowId: rowMocks.rowId2,
+          sectionId: data.sectionId1,
+          rowId: data.rowId2,
           dummyInfo: 'dummy info',
         }
       }
-    )).toEqual(rowMocks.twoRows);
+    )).toEqual(data.twoRows);
 
-    expect(reducer(rowMocks.twoRows,
+    expect(reducer(data.twoRows,
       {
         type: 'ADD_ROW',
         payload: {
-          sectionId: rowMocks.sectionId2,
-          rowId: rowMocks.rowId3,
+          sectionId: data.sectionId2,
+          rowId: data.rowId3,
           dummyInfo: 'dummy info',
         }
       }
-    )).toEqual(rowMocks.threeRows);
+    )).toEqual(data.threeRows);
   });
 
   it('should handle DELETE_ROW', () => {
 
-    expect(reducer(rowMocks.threeRows,
+    expect(reducer(data.threeRows,
       {
         type: 'DELETE_ROW',
-        payload: { rowIds: rowMocks.rowId3, }
+        payload: { rowIds: data.rowId3, }
       }
-    )).toEqual(rowMocks.twoRows);
+    )).toEqual(data.twoRows);
 
-    expect(reducer(rowMocks.twoRows,
+    expect(reducer(data.twoRows,
       {
         type: 'DELETE_ROW',
-        payload: { rowIds: [rowMocks.rowId1, rowMocks.rowId2], }
+        payload: { rowIds: [data.rowId1, data.rowId2], }
       }
-    )).toEqual(rowMocks.initialState);
+    )).toEqual(data.initialState);
   });
 
 });

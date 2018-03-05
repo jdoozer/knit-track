@@ -4,13 +4,14 @@ import patterns from 'reducers/patterns';
 import sections from 'reducers/sections';
 import rows from 'reducers/rows';
 import ui from 'reducers/ui';
-import { deleteSection } from 'reducers/crossState';
+import { deleteSection, deletePattern } from 'reducers/crossState';
 
 const sliceReducers = combineReducers({ patterns, sections, rows, ui });
-// const sliceReducers = combineReducers({ patterns, sections, rows });
 
 const crossSliceReducer = (state, action) => {
   switch(action.type) {
+    case 'DELETE_PATTERN':
+      return deletePattern(state, action.payload);
     case 'DELETE_SECTION':
       return deleteSection(state, action.payload);
     default:

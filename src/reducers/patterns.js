@@ -16,28 +16,8 @@ const addPattern = (state, action) => {
   };
 };
 
-const deletePattern = (state, action) => {
-  const patternIdToDelete = action.payload.patternId;
-
-  return (
-    Object.keys(state).reduce(
-      (patterns, patternId) => {
-        if (patternId !== patternIdToDelete) {
-          patterns[patternId] = state[patternId];
-        }
-        return patterns;
-      },
-      {}
-    )
-  );
-};
-
 const addPatternId = (state, action) => (
   state.concat(action.payload.patternId)
-);
-
-const deletePatternId = (state, action) => (
-  state.filter(pattId => pattId !== action.payload.patternId)
 );
 
 const addSection = (state, action) => {
@@ -57,8 +37,6 @@ const patternsById = (state = {}, action) => {
   switch(action.type) {
     case 'ADD_PATTERN':
       return addPattern(state, action);
-    case 'DELETE_PATTERN':
-      return deletePattern(state, action);
     case 'ADD_SECTION':
       return addSection(state, action);
     default:
@@ -70,8 +48,6 @@ const allPatterns = (state = [], action) => {
   switch(action.type) {
     case 'ADD_PATTERN':
       return addPatternId(state, action);
-    case 'DELETE_PATTERN':
-      return deletePatternId(state, action);
     default:
       return state;
   }

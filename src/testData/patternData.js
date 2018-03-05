@@ -1,10 +1,10 @@
 
 export const patternTitle1 = 'pattern title';
 export const patternTitle2 = 'pattern title 2';
-export const patternId1 = 'patternIdString';
+export const patternId1 = 'patternIdString1';
 export const patternId2 = 'patternIdString2';
 export const patternInfo = '<pattern info placeholder>';
-export const sectionId1 = 'sectionIdString';
+export const sectionId1 = 'sectionIdString1';
 export const sectionId2 = 'sectionIdString2';
 
 

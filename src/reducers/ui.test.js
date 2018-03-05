@@ -1,55 +1,55 @@
 import reducer from 'reducers/ui';
-import * as uiMocks from 'mocks/uiMocks';
+import * as data from 'testData/uiData';
 
 describe('UI reducer', () => {
 
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(uiMocks.initialState)
+    expect(reducer(undefined, {})).toEqual(data.initialState)
   });
 
   it('should handle SELECT_PATTERN', () => {
-    expect(reducer(uiMocks.initialState,
+    expect(reducer(data.initialState,
       {
         type: 'SELECT_PATTERN',
-        payload: { patternId: uiMocks.patternId }
+        payload: { patternId: data.patternId }
       }
-    )).toEqual(uiMocks.pattern);
+    )).toEqual(data.pattern);
   });
 
   it('should handle DELETE_PATTERN', () => {
-    expect(reducer(uiMocks.pattern,
+    expect(reducer(data.pattern,
       {
         type: 'DELETE_PATTERN',
-        payload: { patternId: uiMocks.patternId }
+        payload: { patternId: data.patternId }
       }
-    )).toEqual(uiMocks.initialState);
+    )).toEqual(data.initialState);
   });
 
   it('should handle CLEAR_PATTERN', () => {
-    expect(reducer(uiMocks.pattern,
+    expect(reducer(data.pattern,
       {
         type: 'DELETE_PATTERN',
-        payload: { patternId: uiMocks.patternId }
+        payload: { patternId: data.patternId }
       }
-    )).toEqual(uiMocks.initialState);
+    )).toEqual(data.initialState);
   });
 
   it('should handle ADD_SECTION', () => {
-    expect(reducer(uiMocks.initialState,
+    expect(reducer(data.initialState,
       {
         type: 'ADD_SECTION',
-        payload: { sectionId: uiMocks.sectionId }
+        payload: { sectionId: data.sectionId }
       }
-    )).toEqual(uiMocks.section);
+    )).toEqual(data.section);
   });
 
   it('should handle CLEAR_SECTION', () => {
-    expect(reducer(uiMocks.section,
+    expect(reducer(data.section,
       {
         type: 'CLEAR_SECTION',
-        payload: { sectionId: uiMocks.sectionId }
+        payload: { sectionId: data.sectionId }
       }
-    )).toEqual(uiMocks.initialState);
+    )).toEqual(data.initialState);
   });
 
 });
