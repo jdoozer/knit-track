@@ -7,7 +7,7 @@ const mapStateToProps = (state, ownProps) => {
   const selectedId = state.ui.selectedPattern;
 
   if (selectedId == null) {
-    return { pattern: null, sections: [], rowIds: [], ...ownProps };
+    return { pattern: null, sections: [], ...ownProps };
   }
 
   const pattern = state.patterns.byId[selectedId];
@@ -15,25 +15,16 @@ const mapStateToProps = (state, ownProps) => {
     sectionId => state.sections.byId[sectionId]
   );
 
-  const rowIds = sections.reduce(
-    (rows, section) => {
-      rows.push(...section.rowIds);
-      return rows;
-    }, []);
-
-  return { pattern, sections, rowIds, ...ownProps };
+  return { pattern, sections, ...ownProps };
 
 };
 
 const mapDispatchToProps = dispatch => ({
-  deletePattern: (patternId, sectionIds, rowIds) => {
+  deletePattern: patternId => {
     dispatch(deletePattern(patternId));
-    dispatch(deleteSection(patternId, sectionIds));
-    dispatch(deleteRow(rowIds));
   },
-  deleteSection: (patternId, sectionId, rowIds) => {
-    dispatch(deleteSection(patternId, sectionId));
-    dispatch(deleteRow(rowIds));
+  deleteSection: sectionId => {
+    dispatch(deleteSection(sectionId));
   }
 });
 

@@ -21,7 +21,7 @@ const styles = (theme) => ({
   },
 });
 
-const Pattern = ({ pattern, sections, rowIds, deletePattern, deleteSection, classes, history }) => {
+const Pattern = ({ pattern, sections, deletePattern, deleteSection, classes, history }) => {
   if (pattern == null) {
     history.push('/');
     return;
@@ -29,7 +29,7 @@ const Pattern = ({ pattern, sections, rowIds, deletePattern, deleteSection, clas
     return(
       <div className={classes.root}>
         <ContentHeader
-          onClick={() => deletePattern(pattern.patternId, pattern.sections, rowIds)}
+          onClick={() => deletePattern(pattern.patternId)}
           icon={<DeleteIcon />}
           newLocation="/"
           dialogTitle="Delete Pattern"
@@ -69,7 +69,10 @@ Pattern.propTypes = {
       sectionId: PropTypes.string.isRequired
     }).isRequired
   ).isRequired,
+  deletePattern: PropTypes.func.isRequired,
+  deleteSection: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Pattern);
