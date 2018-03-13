@@ -15,7 +15,7 @@ const styles = theme => ({
   },
 });
 
-const PatternList = ({ patterns, onPatternClick, classes }) => {
+const PatternListItems = ({ patterns, onPatternClick, classes }) => {
 
   let patternListContent = (
     <Typography variant="subheading" className={classes.noPattern}>
@@ -45,7 +45,7 @@ const PatternList = ({ patterns, onPatternClick, classes }) => {
   );
 };
 
-PatternList.propTypes = {
+PatternListItems.propTypes = {
   patterns: PropTypes.arrayOf(
     PropTypes.shape({
       patternId: PropTypes.string.isRequired
@@ -55,4 +55,4 @@ PatternList.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(PatternList);
+export default withStyles(styles)(PatternListItems);

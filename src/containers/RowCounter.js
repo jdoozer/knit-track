@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { updateRowCount } from 'actions';
-import RowCounter from 'components/RowCounter';
+import RowCounterDisplay from 'components/RowCounterDisplay';
 
 const mapStateToProps = (state, ownProps) => {
   const { rowIds, sectionId, ...passThruProps } = ownProps;
@@ -21,9 +21,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   };
 };
 
-const RowCounterContainer = connect(
+const RowCounter = connect(
   mapStateToProps,
   mapDispatchToProps
-)(RowCounter);
+)(RowCounterDisplay);
 
-export default RowCounterContainer;
+export default RowCounter;

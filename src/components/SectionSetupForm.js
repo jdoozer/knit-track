@@ -50,7 +50,7 @@ const styles = theme => {
   return Object.assign(mainStyles, rowPropStyles);
 }
 
-class SectionSetup extends React.Component {
+class SectionSetupForm extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -167,7 +167,7 @@ class SectionSetup extends React.Component {
   }
 };
 
-SectionSetup.propTypes = {
+SectionSetupForm.propTypes = {
   history: PropTypes.object.isRequired,
   sectionId: PropTypes.string,
   addRow: PropTypes.func.isRequired,
@@ -175,4 +175,4 @@ SectionSetup.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SectionSetup);
+export default withStyles(styles)(SectionSetupForm);

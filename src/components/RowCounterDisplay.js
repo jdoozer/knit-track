@@ -60,7 +60,7 @@ const styles = theme => ({
   },
 });
 
-const RowCounter = ({ currentRow, rows, onUpdateCountClick, classes }) => (
+const RowCounterDisplay = ({ currentRow, rows, onUpdateCountClick, classes }) => (
   <div className={classes.root}>
     <div className={classes.rowCounter}>
       <Paper className={classes.row} elevation={1}>
@@ -102,11 +102,11 @@ const RowCounter = ({ currentRow, rows, onUpdateCountClick, classes }) => (
   </div>
 );
 
-RowCounter.propTypes = {
+RowCounterDisplay.propTypes = {
   currentRow: PropTypes.number.isRequired,
   rows: PropTypes.array.isRequired,
   onUpdateCountClick: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(RowCounter);
+export default withStyles(styles)(RowCounterDisplay);

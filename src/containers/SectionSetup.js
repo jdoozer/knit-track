@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { addRow, clearSection } from 'actions';
-import SectionSetup from 'components/SectionSetup';
+import SectionSetupForm from 'components/SectionSetupForm';
 
 const mapStateToProps = (state, ownProps) => {
 
@@ -21,9 +21,9 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const SectionSetupContainer = connect(
+const SectionSetup = connect(
   mapStateToProps,
   mapDispatchToProps
-)(SectionSetup);
+)(SectionSetupForm);
 
-export default SectionSetupContainer;
+export default SectionSetup;

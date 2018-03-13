@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { deletePattern, deleteSection, deleteRow } from 'actions';
-import Pattern from 'components/Pattern';
+import { deletePattern, deleteSection } from 'actions';
+import PatternContent from 'components/PatternContent';
 
 const mapStateToProps = (state, ownProps) => {
 
@@ -28,6 +28,6 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-const PatternContainer = connect(mapStateToProps, mapDispatchToProps)(Pattern);
+const Pattern = connect(mapStateToProps, mapDispatchToProps)(PatternContent);
 
-export default PatternContainer;
+export default Pattern;

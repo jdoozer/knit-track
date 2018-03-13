@@ -21,7 +21,7 @@ const styles = (theme) => ({
   },
 });
 
-const Pattern = ({ pattern, sections, deletePattern, deleteSection, classes, history }) => {
+const PatternContent = ({ pattern, sections, deletePattern, deleteSection, classes, history }) => {
   if (pattern == null) {
     history.push('/');
     return;
@@ -58,7 +58,7 @@ const Pattern = ({ pattern, sections, deletePattern, deleteSection, classes, his
   }
 };
 
-Pattern.propTypes = {
+PatternContent.propTypes = {
   pattern: PropTypes.shape({
     title: PropTypes.string.isRequired,
     info: PropTypes.string.isRequired,
@@ -75,4 +75,4 @@ Pattern.propTypes = {
   history: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Pattern);
+export default withStyles(styles)(PatternContent);

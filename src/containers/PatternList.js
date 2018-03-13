@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { selectPattern } from 'actions';
-import PatternList from 'components/PatternList';
+import PatternListItems from 'components/PatternListItems';
 
 const mapStateToProps = state => {
   return {
@@ -16,9 +16,9 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-const PatternListContainer = connect(
+const PatternList = connect(
   mapStateToProps,
   mapDispatchToProps
-)(PatternList);
+)(PatternListItems);
 
-export default PatternListContainer;
+export default PatternList;

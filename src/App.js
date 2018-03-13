@@ -8,10 +8,10 @@ import MainContentWrapper from 'mui/MainContentWrapper';
 import theme from 'mui/knitTrackTheme';
 
 import Header from 'components/Header';
-import PatternListContainer from 'containers/PatternListContainer';
-import PatternContainer from 'containers/PatternContainer';
+import PatternList from 'containers/PatternList';
+import Pattern from 'containers/Pattern';
 import AddPattern from 'containers/AddPattern';
-import SectionSetupContainer from 'containers/SectionSetupContainer';
+import SectionSetup from 'containers/SectionSetup';
 
 
 const App = () => (
@@ -23,14 +23,14 @@ const App = () => (
 
       <MainContentWrapper>
 
-        <Route exact path="/" component={PatternListContainer} />
+        <Route exact path="/" component={PatternList} />
         <Hidden xsDown>
           <Route exact path="/" component={AddPattern} />
         </Hidden>
 
-        <Route path="/pattern" component={PatternContainer} />
+        <Route path="/pattern" component={Pattern} />
 
-        <Route path="/section" component={SectionSetupContainer} />
+        <Route path="/section" component={SectionSetup} />
 
       </MainContentWrapper>
 

@@ -8,6 +8,7 @@ import { withStyles } from 'material-ui/styles';
 const styles = () => ({
   listItemText: {
     paddingRight: 0,
+    textAlign: 'center',
   },
 });
 

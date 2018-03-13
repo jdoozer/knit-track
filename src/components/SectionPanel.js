@@ -9,7 +9,7 @@ import ExpansionPanel, {
 } from 'material-ui/ExpansionPanel';
 import DeleteIcon from 'material-ui-icons/Delete';
 import SectionStatus from 'components/SectionStatus';
-import RowCounterContainer from 'containers/RowCounterContainer';
+import RowCounter from 'containers/RowCounter';
 import ActionIconButton from 'components/ActionIconButton';
 
 const styles = theme => ({
@@ -75,7 +75,7 @@ class SectionPanel extends React.Component {
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>
-          <RowCounterContainer
+          <RowCounter
             currentRow={currentRow}
             sectionId={sectionId}
             rowIds={rowIds}
