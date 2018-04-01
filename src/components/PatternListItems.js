@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import List from 'material-ui/List';
+import Divider from 'material-ui/Divider';
 import Typography from 'material-ui/Typography';
 import ContentHeader from 'components/ContentHeader';
-import PatternTitleBlock from 'components/PatternTitleBlock';
+import ListLinkBlock from 'components/ListLinkBlock';
 
 const styles = theme => ({
   list: {
@@ -27,11 +28,14 @@ const PatternListItems = ({ patterns, onPatternClick, classes }) => {
     patternListContent = (
       <List className={classes.list}>
         {patterns.map(pattern => (
-          <PatternTitleBlock
-            key={pattern.patternId}
-            {...pattern}
-            onClick={() => onPatternClick(pattern.patternId)}
-          />
+          <React.Fragment key={pattern.patternId}>
+            <ListLinkBlock
+              link="/pattern"
+              title={pattern.title}
+              onClick={() => onPatternClick(pattern.patternId)}
+            />
+            <Divider />
+          </React.Fragment>
         ))}
       </List>
     );
@@ -48,7 +52,8 @@ const PatternListItems = ({ patterns, onPatternClick, classes }) => {
 PatternListItems.propTypes = {
   patterns: PropTypes.arrayOf(
     PropTypes.shape({
-      patternId: PropTypes.string.isRequired
+      patternId: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
     }).isRequired
   ).isRequired,
   onPatternClick: PropTypes.func.isRequired,

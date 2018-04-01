@@ -1,19 +1,18 @@
 import { connect } from 'react-redux';
 import { updateRowCount } from 'actions';
 import RowCounterDisplay from 'components/RowCounterDisplay';
+import { getRowsFromSection, getCurrentRow } from 'selectors';
 
-const mapStateToProps = (state, ownProps) => {
-  const { rowIds, sectionId, ...passThruProps } = ownProps;
-  const rows = rowIds.map(rowId => state.rows.byId[rowId]);
-
+const mapStateToProps = (state, props) => {
   return {
-    rows,
-    ...passThruProps,
+    rows: getRowsFromSection(state, props),
+    currentRow: getCurrentRow(state, props),
+    ...props,
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  const { sectionId } = ownProps;
+const mapDispatchToProps = (dispatch, props) => {
+  const { sectionId } = props;
   return {
     onUpdateCountClick: updateType => {
       dispatch(updateRowCount(sectionId, updateType))

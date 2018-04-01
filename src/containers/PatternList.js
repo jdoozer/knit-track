@@ -1,14 +1,11 @@
 import { connect } from 'react-redux';
 import { selectPattern } from 'actions';
 import PatternListItems from 'components/PatternListItems';
+import { getPatterns } from 'selectors';
 
-const mapStateToProps = state => {
-  return {
-    patterns: state.patterns.allIds.map(patternId =>
-      state.patterns.byId[patternId]
-    )
-  };
-};
+const mapStateToProps = state => ({
+  patterns: getPatterns(state),
+});
 
 const mapDispatchToProps = dispatch => ({
   onPatternClick: index => {

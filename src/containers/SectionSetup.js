@@ -1,16 +1,15 @@
 import { connect } from 'react-redux';
 import { addRow, clearSection } from 'actions';
 import SectionSetupForm from 'components/SectionSetupForm';
+import { getNumRowsSection, getSectionIdToEdit } from 'selectors';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state, props) => ({
+    numRows: getNumRowsSection(state),
+    sectionId: getSectionIdToEdit(state),
+    ...props
+});
 
-  const sectionToEdit = state.ui.sectionToEdit;
-  const numRows = sectionToEdit ? state.sections.byId[sectionToEdit].numRows : 0;
-
-  return { numRows, sectionId: sectionToEdit, ...ownProps };
-}
-
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     addRow: (sectionId, rowInfo) => {
       dispatch(addRow(sectionId, rowInfo));
