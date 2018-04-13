@@ -82,7 +82,8 @@ ActionIconButton.propTypes = {
   onClick: PropTypes.func.isRequired,
   newLocation: PropTypes.string,
   icon: PropTypes.element.isRequired,
-  dialogText: PropTypes.string.isRequired,
+  dialogTitle: PropTypes.string,
+  dialogText: PropTypes.string,
 };
 
 export default withStyles(styles)(withRouter(ActionIconButton));
