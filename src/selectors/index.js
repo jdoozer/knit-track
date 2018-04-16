@@ -21,7 +21,7 @@ export const getNumRowsSection = createSelector(
 
 export const getPatterns = createSelector(
   [getPatternsById],
-  patternsById => Object.values(patternsById)
+  patternsById => Object.keys(patternsById).map(key => obj[patternsById])
 );
 
 export const getSelectedPattern = createSelector(

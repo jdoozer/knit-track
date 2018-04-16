@@ -1,4 +1,5 @@
-import { combineReducers } from 'redux';
+import addToState from 'utils/addToState';
+import initialState from 'utils/initialState';
 
 const initialSection = ({ title, sectionId, patternId, numRows }) => ({
   title,
@@ -8,15 +9,6 @@ const initialSection = ({ title, sectionId, patternId, numRows }) => ({
   currentRow: 0,
   rowIds: [],
 });
-
-const addSection = (state, action) => {
-  const { payload } = action;
-
-  return {
-    ...state,
-    [payload.sectionId]: initialSection(payload),
-  };
-};
 
 const addRow = (state, action) => {
   const { sectionId, rowId } = action.payload;
@@ -61,35 +53,24 @@ const updateRowCount = (state, action) => {
   };
 };
 
-const addSectionId = (state, action) => (
-  state.concat(action.payload.sectionId)
-);
-
-const sectionsById = (state = {}, action) => {
+const sectionsReducer = (state = initialState, action) => {
   switch(action.type) {
     case 'ADD_SECTION':
-      return addSection(state, action);
+      const { payload } = action;
+      return addToState(state, payload.sectionId, initialSection(payload));
     case 'ADD_ROW':
-      return addRow(state, action);
+      return {
+        ...state,
+        byId: addRow(state.byId, action)
+      };
     case 'UPDATE_ROW_COUNT':
-      return updateRowCount(state, action);
+      return {
+        ...state,
+        byId: updateRowCount(state.byId, action)
+      };
     default:
       return state;
   }
 };
-
-const allSections = (state = [], action) => {
-  switch(action.type) {
-    case 'ADD_SECTION':
-      return addSectionId(state, action);
-    default:
-      return state;
-  }
-};
-
-const sectionsReducer = combineReducers({
-  byId: sectionsById,
-  allIds: allSections,
-});
 
 export default sectionsReducer;

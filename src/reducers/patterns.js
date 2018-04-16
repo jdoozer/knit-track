@@ -1,4 +1,5 @@
-import { combineReducers } from 'redux';
+import addToState from 'utils/addToState';
+import initialState from 'utils/initialState';
 
 const initialPattern = ({ patternId, title }) => ({
   title,
@@ -6,19 +7,6 @@ const initialPattern = ({ patternId, title }) => ({
   sectionIds: [],
   info: '<pattern info placeholder>',
 });
-
-const addPattern = (state, action) => {
-  const { payload } = action;
-
-  return {
-    ...state,
-    [payload.patternId]: initialPattern(payload),
-  };
-};
-
-const addPatternId = (state, action) => (
-  state.concat(action.payload.patternId)
-);
 
 const addSection = (state, action) => {
   const { patternId, sectionId } = action.payload;
@@ -33,29 +21,19 @@ const addSection = (state, action) => {
   };
 };
 
-const patternsById = (state = {}, action) => {
+const patternsReducer = (state = initialState, action) => {
   switch(action.type) {
     case 'ADD_PATTERN':
-      return addPattern(state, action);
+      const { payload } = action;
+      return addToState(state, payload.patternId, initialPattern(payload));
     case 'ADD_SECTION':
-      return addSection(state, action);
+      return {
+        ...state,
+        byId: addSection(state.byId, action)
+      };
     default:
       return state;
   }
 };
-
-const allPatterns = (state = [], action) => {
-  switch(action.type) {
-    case 'ADD_PATTERN':
-      return addPatternId(state, action);
-    default:
-      return state;
-  }
-};
-
-const patternsReducer = combineReducers({
-  byId: patternsById,
-  allIds: allPatterns,
-});
 
 export default patternsReducer;
