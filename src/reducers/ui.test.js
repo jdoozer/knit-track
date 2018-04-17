@@ -1,5 +1,5 @@
 import reducer from 'reducers/ui';
-import * as data from 'testData/uiData';
+import * as data from 'stateData/uiData';
 
 describe('UI reducer', () => {
 

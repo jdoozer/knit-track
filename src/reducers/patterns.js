@@ -1,5 +1,7 @@
 import addToState from 'utils/addToState';
-import initialState from 'utils/initialState';
+import { initialStateNormal } from 'stateData/initialState';
+import { handleActions } from 'redux-actions';
+
 
 const initialPattern = ({ patternId, title }) => ({
   title,
@@ -21,19 +23,16 @@ const addSection = (state, action) => {
   };
 };
 
-const patternsReducer = (state = initialState, action) => {
-  switch(action.type) {
-    case 'ADD_PATTERN':
-      const { payload } = action;
-      return addToState(state, payload.patternId, initialPattern(payload));
-    case 'ADD_SECTION':
-      return {
-        ...state,
-        byId: addSection(state.byId, action)
-      };
-    default:
-      return state;
-  }
-};
+const patternsReducer = handleActions({
+  ADD_PATTERN: (state, action) => (
+    addToState(state, action.payload.patternId, initialPattern(action.payload))
+  ),
+
+  ADD_SECTION: (state, action) => ({
+    ...state,
+    byId: addSection(state.byId, action)
+  }),
+}, initialStateNormal);
+
 
 export default patternsReducer;

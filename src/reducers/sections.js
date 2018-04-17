@@ -1,5 +1,7 @@
 import addToState from 'utils/addToState';
-import initialState from 'utils/initialState';
+import { initialStateNormal } from 'stateData/initialState';
+import { handleActions } from 'redux-actions';
+
 
 const initialSection = ({ title, sectionId, patternId, numRows }) => ({
   title,
@@ -53,24 +55,22 @@ const updateRowCount = (state, action) => {
   };
 };
 
-const sectionsReducer = (state = initialState, action) => {
-  switch(action.type) {
-    case 'ADD_SECTION':
-      const { payload } = action;
-      return addToState(state, payload.sectionId, initialSection(payload));
-    case 'ADD_ROW':
-      return {
-        ...state,
-        byId: addRow(state.byId, action)
-      };
-    case 'UPDATE_ROW_COUNT':
-      return {
-        ...state,
-        byId: updateRowCount(state.byId, action)
-      };
-    default:
-      return state;
-  }
-};
+
+const sectionsReducer = handleActions({
+  ADD_SECTION: (state, action) => (
+    addToState(state, action.payload.sectionId, initialSection(action.payload))
+  ),
+
+  ADD_ROW: (state, action) => ({
+    ...state,
+    byId: addRow(state.byId, action)
+  }),
+
+  UPDATE_ROW_COUNT: (state, action) => ({
+    ...state,
+    byId: updateRowCount(state.byId, action)
+  }),
+}, initialStateNormal);
+
 
 export default sectionsReducer;

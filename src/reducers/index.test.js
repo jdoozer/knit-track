@@ -1,5 +1,5 @@
 import reducer from 'reducers';
-import * as data from 'testData/fullStateData';
+import * as data from 'stateData/fullStateData';
 
 describe('full reducer test', () => {
 

@@ -1,16 +1,18 @@
 import deleteFromState from 'utils/deleteFromState';
 import addToState from 'utils/addToState';
-import initialState from 'utils/initialState';
+import { initialStateNormal } from 'stateData/initialState';
+import { handleActions } from 'redux-actions';
 
-const rowsReducer = (state = initialState, action) => {
-  switch(action.type) {
-    case 'ADD_ROW':
-      return addToState(state, action.payload.rowId, action.payload);
-    case 'DELETE_ROW':
-      return deleteFromState(state, action.payload.rowIds);
-    default:
-      return state;
-  }
-};
+
+const rowsReducer = handleActions({
+  ADD_ROW: (state, action) => (
+    addToState(state, action.payload.rowId, action.payload)
+  ),
+
+  DELETE_ROW: (state, action) => (
+    deleteFromState(state, action.payload.rowIds)
+  ),
+}, initialStateNormal);
+
 
 export default rowsReducer;

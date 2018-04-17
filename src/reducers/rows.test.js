@@ -1,5 +1,5 @@
 import reducer from 'reducers/rows';
-import * as data from 'testData/rowData';
+import * as data from 'stateData/rowData';
 
 describe('rows reducer', () => {
 

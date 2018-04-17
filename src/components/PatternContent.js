@@ -22,7 +22,7 @@ const styles = (theme) => ({
 });
 
 const PatternContent = ({ pattern, sections, deletePattern, deleteSection, classes, history }) => {
-  if (pattern == null) {
+  if (pattern === null) {
     history.push('/');
     return;
   } else {

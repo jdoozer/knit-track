@@ -1,5 +1,5 @@
 import reducer from 'reducers/patterns';
-import * as data from 'testData/patternData';
+import * as data from 'stateData/patternData';
 
 describe('patterns reducer', () => {
 

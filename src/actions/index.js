@@ -1,84 +1,39 @@
 import generateId from 'uuid/v4';
+import { createAction } from 'redux-actions';
 
-// PATTERN ACTIONS
-export function addPattern(title) {
-  const patternId = generateId();
-  return {
-    type: 'ADD_PATTERN',
-    payload: {
-      patternId,
-      title
-    }
-  };
-}
 
-export function selectPattern(patternId) {
-  return {
-    type: 'SELECT_PATTERN',
-    payload: { patternId },
-  };
-}
+export const addPattern = createAction(
+  'ADD_PATTERN',
+  title => ({
+    title,
+    patternId: generateId(),
+  })
+);
 
-export function deletePattern(patternId) {
-  return {
-    type: 'DELETE_PATTERN',
-    payload: { patternId },
-  };
-}
+export const addSection = createAction(
+  'ADD_SECTION',
+  (patternId, title, numRows) => ({
+    title,
+    numRows,
+    patternId,
+    sectionId: generateId(),
+  })
+);
 
-// SECTION ACTIONS
-export function addSection(patternId, title, numRows) {
-  const sectionId = generateId();
-  return {
-    type: 'ADD_SECTION',
-    payload: {
-      title,
-      numRows,
-      patternId,
-      sectionId
-    }
-  };
-}
+export const addRow = createAction(
+  'ADD_ROW',
+  (sectionId, rowInfo) => ({
+    sectionId,
+    ...rowInfo,
+    rowId: generateId(),
+  })
+);
 
-export function deleteSection(sectionId) {
-  return {
-    type: 'DELETE_SECTION',
-    payload: { sectionId },
-  };
-}
+export const deletePattern = createAction('DELETE_PATTERN');
+export const deleteSection = createAction('DELETE_SECTION');
+export const deleteRow = createAction('DELETE_ROW');
 
-export function clearSection() {
-  return {
-    type: 'CLEAR_SECTION'
-  };
-}
+export const selectPattern = createAction('SELECT_PATTERN');
+export const clearSection = createAction('CLEAR_SECTION');
 
-// ROW ACTIONS
-export function addRow(sectionId, rowInfo) {
-  const rowId = generateId();
-  return {
-    type: 'ADD_ROW',
-    payload: {
-      sectionId,
-      rowId,
-      ...rowInfo
-    }
-  }
-}
-
-export function updateRowCount(sectionId, updateType) {
-  return {
-    type: 'UPDATE_ROW_COUNT',
-    payload: {
-      sectionId,
-      updateType
-    }
-  };
-}
-
-export function deleteRow(rowIds) {
-  return {
-    type: 'DELETE_ROW',
-    payload: { rowIds },
-  };
-}
+export const updateRowCount = createAction('UPDATE_ROW_COUNT');
