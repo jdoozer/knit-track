@@ -11,7 +11,7 @@ describe('UI reducer', () => {
     expect(reducer(data.initialState,
       {
         type: 'SELECT_PATTERN',
-        payload: { patternId: data.patternId }
+        payload: data.patternId
       }
     )).toEqual(data.pattern);
   });
@@ -20,7 +20,7 @@ describe('UI reducer', () => {
     expect(reducer(data.pattern,
       {
         type: 'DELETE_PATTERN',
-        payload: { patternId: data.patternId }
+        payload: data.patternId
       }
     )).toEqual(data.initialState);
   });
@@ -29,7 +29,7 @@ describe('UI reducer', () => {
     expect(reducer(data.pattern,
       {
         type: 'DELETE_PATTERN',
-        payload: { patternId: data.patternId }
+        payload: data.patternId
       }
     )).toEqual(data.initialState);
   });
@@ -38,7 +38,7 @@ describe('UI reducer', () => {
     expect(reducer(data.initialState,
       {
         type: 'ADD_SECTION',
-        payload: { sectionId: data.sectionId }
+        payload: data.sectionId
       }
     )).toEqual(data.section);
   });
@@ -47,7 +47,7 @@ describe('UI reducer', () => {
     expect(reducer(data.section,
       {
         type: 'CLEAR_SECTION',
-        payload: { sectionId: data.sectionId }
+        payload: data.sectionId
       }
     )).toEqual(data.initialState);
   });

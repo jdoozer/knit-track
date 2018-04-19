@@ -12,14 +12,14 @@ describe('full reducer test', () => {
     expect(reducer(data.onePattern,
       {
         type: 'DELETE_PATTERN',
-        payload: { patternId: data.patternIds(1) }
+        payload: data.patternIds(1)
       }
     )).toEqual(data.initialState);
 
     expect(reducer(data.twoPatterns,
       {
         type: 'DELETE_PATTERN',
-        payload: { patternId: data.patternIds(2) }
+        payload: data.patternIds(2)
       }
     )).toEqual(data.onePattern);
 
@@ -30,14 +30,14 @@ describe('full reducer test', () => {
     expect(reducer(data.onePatternTwoSections,
       {
         type: 'DELETE_PATTERN',
-        payload: { patternId: data.patternIds(1) }
+        payload: data.patternIds(1)
       }
     )).toEqual(data.initialState);
 
     expect(reducer(data.twoPatternsTwoSections,
       {
         type: 'DELETE_PATTERN',
-        payload: { patternId: data.patternIds(2) }
+        payload: data.patternIds(2)
       }
     )).toEqual(data.onePatternTwoSections);
 
@@ -48,14 +48,14 @@ describe('full reducer test', () => {
     expect(reducer(data.onePatternOneSection,
       {
         type: 'DELETE_SECTION',
-        payload: { sectionId: data.sectionIds(1) }
+        payload: data.sectionIds(1)
       }
     )).toEqual(data.onePattern);
 
     expect(reducer(data.onePatternTwoSections,
       {
         type: 'DELETE_SECTION',
-        payload: { sectionId: data.sectionIds(2) }
+        payload: data.sectionIds(2)
       }
     )).toEqual(data.onePatternOneSection);
 
