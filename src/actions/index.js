@@ -28,8 +28,13 @@ export const addRow = createAction(
   })
 );
 
-///// NEEDS UPDATING!!!
-export const updateRowCount = createAction('UPDATE_ROW_COUNT');
+export const updateRowCount = createAction(
+  'UPDATE_ROW_COUNT',
+  (sectionId, updateType) => ({
+    sectionId,
+    updateType
+  })
+);
 
 export const deletePattern = createAction('DELETE_PATTERN');
 export const deleteSection = createAction('DELETE_SECTION');
