@@ -1,31 +1,15 @@
 import { combineReducers } from 'redux';
+import { handleActions } from 'redux-actions';
 
-const selectedPattern = (state = null, action) => {
-  switch(action.type) {
-    case 'SELECT_PATTERN':
-      return action.payload.patternId;
-    case 'DELETE_PATTERN':
-      if (state === action.payload.patternId) {
-        return null;
-      }
-      return state;
-    case 'CLEAR_PATTERN':
-      return null;
-    default:
-      return state;
-  }
-};
+const selectedPattern = handleActions({
+  SELECT_PATTERN: (state, action) => action.payload,
+  DELETE_PATTERN: (state, action) => (state === action.payload) ? null : state,
+}, null);
 
-const sectionToEdit = (state = null, action) => {
-  switch(action.type) {
-    case 'ADD_SECTION':
-      return action.payload.sectionId;
-    case 'CLEAR_SECTION':
-      return null;
-    default:
-      return state;
-  }
-};
+const sectionToEdit = handleActions({
+  ADD_SECTION: (state, action) => action.payload,
+  CLEAR_SECTION: (state, action) => null,
+}, null);
 
 const uiReducer = combineReducers({
   selectedPattern,

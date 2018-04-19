@@ -1,5 +1,5 @@
 import reducer from 'reducers/sections';
-import * as data from 'testData/sectionData';
+import * as data from 'stateData/sectionData';
 
 describe('sections reducer', () => {
 

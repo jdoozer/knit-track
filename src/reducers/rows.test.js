@@ -1,5 +1,5 @@
 import reducer from 'reducers/rows';
-import * as data from 'testData/rowData';
+import * as data from 'stateData/rowData';
 
 describe('rows reducer', () => {
 
@@ -48,14 +48,14 @@ describe('rows reducer', () => {
     expect(reducer(data.threeRows,
       {
         type: 'DELETE_ROW',
-        payload: { rowIds: data.rowId3, }
+        payload: data.rowId3
       }
     )).toEqual(data.twoRows);
 
     expect(reducer(data.twoRows,
       {
         type: 'DELETE_ROW',
-        payload: { rowIds: [data.rowId1, data.rowId2], }
+        payload: [data.rowId1, data.rowId2]
       }
     )).toEqual(data.initialState);
   });
