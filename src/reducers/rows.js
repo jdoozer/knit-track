@@ -10,7 +10,7 @@ const rowsReducer = handleActions({
   ),
 
   DELETE_ROW: (state, action) => (
-    deleteFromState(state, action.payload.rowIds)
+    deleteFromState(state, action.payload)
   ),
 }, initialStateNormal);
 

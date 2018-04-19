@@ -1,7 +1,6 @@
 import generateId from 'uuid/v4';
 import { createAction } from 'redux-actions';
 
-
 export const addPattern = createAction(
   'ADD_PATTERN',
   title => ({
@@ -29,11 +28,12 @@ export const addRow = createAction(
   })
 );
 
+///// NEEDS UPDATING!!!
+export const updateRowCount = createAction('UPDATE_ROW_COUNT');
+
 export const deletePattern = createAction('DELETE_PATTERN');
 export const deleteSection = createAction('DELETE_SECTION');
 export const deleteRow = createAction('DELETE_ROW');
 
 export const selectPattern = createAction('SELECT_PATTERN');
 export const clearSection = createAction('CLEAR_SECTION');
-
-export const updateRowCount = createAction('UPDATE_ROW_COUNT');

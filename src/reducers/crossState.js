@@ -1,10 +1,9 @@
 import deleteItems from 'utils/deleteItems';
 import deleteFromState from 'utils/deleteFromState';
 
-export function deleteSection(state, payload) {
+export function deleteSection(state, sectionId) {
 
   const { patterns, sections, rows } = state;
-  const { sectionId } = payload;
 
   const rowIds = sections.byId[sectionId].rowIds;
   const patternId = sections.byId[sectionId].patternId;
@@ -27,10 +26,9 @@ export function deleteSection(state, payload) {
   };
 };
 
-export function deletePattern(state, payload) {
+export function deletePattern(state, patternId) {
 
   const { patterns, sections, rows } = state;
-  const { patternId } = payload;
 
   const sectionIds = patterns.byId[patternId].sectionIds;
 
