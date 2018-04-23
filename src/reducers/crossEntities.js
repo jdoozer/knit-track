@@ -12,6 +12,7 @@ export function deleteSection(state, sectionId) {
   return {
     ...state,
     patterns: {
+      ...patterns,
       byId: {
         ...patterns.byId,
         [patternId]: {

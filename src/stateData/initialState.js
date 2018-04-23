@@ -1,6 +1,7 @@
 export const initialStateNormal = {
   byId: {},
   allIds: [],
+  isFetching: false,
 };
 
 export const initialStateUi = {

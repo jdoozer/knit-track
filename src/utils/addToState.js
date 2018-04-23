@@ -1,4 +1,5 @@
 const addToState = (state, itemId, item) => ({
+  ...state,
   byId: {
     ...state.byId,
     [itemId]: item,

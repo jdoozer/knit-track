@@ -9,6 +9,7 @@ export const rowId3 = 'rowIdString3';
 export const initialState = initialStateNormal;
 
 export const oneRow = {
+  ...initialStateNormal,
   byId: {
     [rowId1]: {
       sectionId: sectionId1,
@@ -20,6 +21,7 @@ export const oneRow = {
 };
 
 export const twoRows = {
+  ...initialStateNormal,
   byId: {
     [rowId1]: {
       sectionId: sectionId1,
@@ -36,6 +38,7 @@ export const twoRows = {
 };
 
 export const threeRows = {
+  ...initialStateNormal,
   byId: {
     [rowId1]: {
       sectionId: sectionId1,

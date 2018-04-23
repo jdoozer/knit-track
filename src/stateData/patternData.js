@@ -11,6 +11,7 @@ export const sectionId2 = 'sectionIdString2';
 export const initialState = initialStateNormal;
 
 export const onePattern = {
+  ...initialState,
   byId: {
     [patternId1]: {
       patternId: patternId1,
@@ -23,6 +24,7 @@ export const onePattern = {
 };
 
 export const twoPatterns = {
+  ...initialState,
   byId: {
     ...onePattern.byId,
     [patternId2]: {

@@ -5,18 +5,18 @@ import patterns from 'reducers/patterns';
 import sections from 'reducers/sections';
 import rows from 'reducers/rows';
 import ui from 'reducers/ui';
+import { deleteSection, deletePattern } from 'reducers/crossEntities';
+
 import { initialStateFull } from 'stateData/initialState';
-import { deleteSection, deletePattern } from 'reducers/crossState';
 
+const entitiesBySlice = combineReducers({ patterns, sections, rows, ui });
 
-const sliceReducers = combineReducers({ patterns, sections, rows, ui });
-
-const crossSliceReducer = handleActions({
+const crossEntities = handleActions({
   DELETE_PATTERN: (state, action) => deletePattern(state, action.payload),
   DELETE_SECTION: (state, action) => deleteSection(state, action.payload),
 },
 initialStateFull);
 
-const knitTrack = reduceReducers(sliceReducers, crossSliceReducer);
+const knitTrack = reduceReducers(entitiesBySlice, crossEntities);
 
 export default knitTrack;

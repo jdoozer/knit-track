@@ -1,4 +1,4 @@
-import { initialStateFull } from 'stateData/initialState';
+import { initialStateFull, initialStateNormal } from 'stateData/initialState';
 
 export const patternTitles = num => ('pattern title ' + num);
 export const patternInfo = '<pattern info placeholder>';
@@ -11,6 +11,7 @@ export const initialState = initialStateFull;
 export const onePattern = {
   ...initialState,
   patterns: {
+    ...initialStateNormal,
     byId: {
       [patternIds(1)]: {
         patternId: patternIds(1),
@@ -35,6 +36,7 @@ export const onePatternOneSection = {
     },
   },
   sections: {
+    ...initialStateNormal,
     allIds: [sectionIds(1)],
     byId: {
       [sectionIds(1)]: {
@@ -45,6 +47,7 @@ export const onePatternOneSection = {
     },
   },
   rows: {
+    ...initialStateNormal,
     allIds: [rowIds(1), rowIds(2)],
     byId: {
       [rowIds(1)]: {
@@ -71,6 +74,7 @@ export const onePatternTwoSections = {
     },
   },
   sections: {
+    ...initialStateNormal,
     allIds: [sectionIds(1), sectionIds(2)],
     byId: {
       [sectionIds(1)]: {
@@ -86,6 +90,7 @@ export const onePatternTwoSections = {
     },
   },
   rows: {
+    ...initialStateNormal,
     allIds: [rowIds(1), rowIds(2), rowIds(3), rowIds(4)],
     byId: {
       [rowIds(1)]: {
@@ -111,6 +116,7 @@ export const onePatternTwoSections = {
 export const twoPatterns = {
   ...onePattern,
   patterns: {
+    ...initialStateNormal,
     byId: {
       ...onePattern.patterns.byId,
       [patternIds(2)]: {
@@ -140,6 +146,7 @@ export const twoPatternsTwoSections = {
     },
   },
   sections: {
+    ...initialStateNormal,
     allIds: [sectionIds(1), sectionIds(2), sectionIds(3), sectionIds(4)],
     byId: {
       [sectionIds(1)]: {
@@ -165,6 +172,7 @@ export const twoPatternsTwoSections = {
     },
   },
   rows: {
+    ...initialStateNormal,
     allIds: [rowIds(1), rowIds(2), rowIds(3), rowIds(4), rowIds(5), rowIds(6), rowIds(7), rowIds(8)],
     byId: {
       [rowIds(1)]: {

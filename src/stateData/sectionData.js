@@ -12,6 +12,7 @@ export const numRows = 12;
 export const initialState = initialStateNormal;
 
 export const oneSection = {
+  ...initialState,
   byId: {
     [sectionId1]: {
       sectionId: sectionId1,
@@ -26,6 +27,7 @@ export const oneSection = {
 };
 
 export const oneSectionRows = (rowCount) => ({
+  ...initialState,
   byId: {
     [sectionId1]: {
       sectionId: sectionId1,
@@ -40,6 +42,7 @@ export const oneSectionRows = (rowCount) => ({
 });
 
 export const twoSections = {
+  ...initialState,
   byId: {
     ...oneSection.byId,
     [sectionId2]: {
