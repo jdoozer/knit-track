@@ -1,11 +1,9 @@
+import { initialStateUi } from 'stateData/initialState';
 
 export const patternId = 'patternIdString';
 export const sectionId = 'sectionIdString';
 
-export const initialState = {
-  selectedPattern: null,
-  sectionToEdit: null,
-};
+export const initialState = initialStateUi;
 
 export const pattern = {
   selectedPattern: patternId,

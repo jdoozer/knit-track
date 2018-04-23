@@ -1,3 +1,4 @@
+import { initialStateFull } from 'stateData/initialState';
 
 export const patternTitles = num => ('pattern title ' + num);
 export const patternInfo = '<pattern info placeholder>';
@@ -5,20 +6,7 @@ export const patternIds = num => ('patternIdString' + num);
 export const sectionIds = num => ('sectionIdString' + num);
 export const rowIds = num => ('rowIdString' + num);
 
-const normalizedInitialState = {
-  byId: {},
-  allIds: [],
-};
-
-export const initialState = {
-  patterns: normalizedInitialState,
-  sections: normalizedInitialState,
-  rows: normalizedInitialState,
-  ui: {
-    selectedPattern: null,
-    sectionToEdit: null,
-  },
-};
+export const initialState = initialStateFull;
 
 export const onePattern = {
   ...initialState,

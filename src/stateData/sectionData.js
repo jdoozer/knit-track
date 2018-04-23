@@ -1,3 +1,4 @@
+import { initialStateNormal } from 'stateData/initialState';
 
 export const title1 = 'section title';
 export const title2 = 'section title 2';
@@ -8,10 +9,7 @@ export const rowId1 = 'rowIdString1';
 export const rowId2 = 'rowIdString2';
 export const numRows = 12;
 
-export const initialState = {
-  byId: {},
-  allIds: [],
-};
+export const initialState = initialStateNormal;
 
 export const oneSection = {
   byId: {

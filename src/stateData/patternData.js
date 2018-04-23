@@ -1,3 +1,4 @@
+import { initialStateNormal } from 'stateData/initialState';
 
 export const patternTitle1 = 'pattern title';
 export const patternTitle2 = 'pattern title 2';
@@ -7,11 +8,7 @@ export const patternInfo = '<pattern info placeholder>';
 export const sectionId1 = 'sectionIdString1';
 export const sectionId2 = 'sectionIdString2';
 
-
-export const initialState = {
-  byId: {},
-  allIds: [],
-};
+export const initialState = initialStateNormal;
 
 export const onePattern = {
   byId: {
