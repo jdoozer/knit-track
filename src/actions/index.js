@@ -42,3 +42,14 @@ export const deleteRow = createAction('DELETE_ROW');
 
 export const selectPattern = createAction('SELECT_PATTERN');
 export const clearSection = createAction('CLEAR_SECTION');
+
+// ASYNC
+export const requestPatterns = createAction('REQUEST_PATTERNS');
+
+export const receivePatterns = createAction(
+  'RECEIVE_PATTERNS',
+  json => ({
+    patterns: json.data.children.map(child => child.data),
+    receivedAt: Date.now()
+  })
+);

@@ -24,6 +24,7 @@ const addSection = (state, action) => {
 };
 
 const patternsReducer = handleActions({
+
   ADD_PATTERN: (state, action) => (
     addToState(state, action.payload.patternId, initialPattern(action.payload))
   ),
@@ -32,6 +33,20 @@ const patternsReducer = handleActions({
     ...state,
     byId: addSection(state.byId, action)
   }),
+
+  REQUEST_PATTERNS: (state, action) => ({
+    ...state,
+    isFetching: true
+  }),
+
+  RECEIVE_PATTERNS: (state, action) => ({
+    ...state,
+    isFetching: false,
+    byId: action.patterns,
+    allIds: Object.keys(action.patterns),
+    lastUpdated: action.receivedAt
+  }),
+
 }, initialStateNormal);
 
 
