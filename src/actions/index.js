@@ -1,5 +1,8 @@
 import generateId from 'uuid/v4';
 import { createAction } from 'redux-actions';
+import fetch from 'cross-fetch';
+
+const MOCK_SERVER_URL = 'https://5a44c527-42a5-44d1-9fd7-198d43934b65.mock.pstmn.io/';
 
 export const addPattern = createAction(
   'ADD_PATTERN',
@@ -49,7 +52,24 @@ export const requestPatterns = createAction('REQUEST_PATTERNS');
 export const receivePatterns = createAction(
   'RECEIVE_PATTERNS',
   json => ({
-    patterns: json.data.children.map(child => child.data),
+    patterns: json.patterns,
     receivedAt: Date.now()
   })
 );
+
+
+export function fetchPatterns() {
+
+  return function (dispatch) {
+
+    dispatch(requestPatterns());
+
+    return fetch(`${MOCK_SERVER_URL}/get/patterns`, { method: 'GET' })
+      .then(
+        response => response.json(),
+        error => console.log('An error occurred.', error)
+      )
+      .then(json => dispatch(receivePatterns(json))
+    );
+  }
+}

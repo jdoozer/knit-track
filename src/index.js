@@ -1,23 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import App from './App';
+import { createStore, applyMiddleware } from 'redux';
+import { createLogger } from 'redux-logger';
+import thunkMiddleware from 'redux-thunk';
 import registerServiceWorker from './registerServiceWorker';
 import throttle from 'lodash/throttle';
-
+import App from './App';
+import rootReducer from 'reducers';
+import { loadState, saveState } from 'utils/localStorage';
 import 'typeface-roboto';
 import 'index.css';
 
-import knitTrack from 'reducers';
-import { loadState, saveState } from 'utils/localStorage';
+const HYDRATE_STATE = true;
+const SAVE_STATE = true;
 
 const persistedState = loadState();
-const store = createStore(knitTrack, persistedState);
+const loggerMiddleware = createLogger();
+const middleware = applyMiddleware(thunkMiddleware, loggerMiddleware);
 
-store.subscribe(throttle(() => {
-  saveState(store.getState())
- }, 1000));
+const storeInputArgs = HYDRATE_STATE
+  ? [rootReducer, persistedState, middleware]
+  : [rootReducer, middleware];
+
+const store = createStore(...storeInputArgs);
+
+if (SAVE_STATE) {
+  store.subscribe(throttle(() => {
+    saveState(store.getState())
+   }, 1000));
+}
 
 ReactDOM.render(
   <Provider store={store}>

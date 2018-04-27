@@ -17,6 +17,6 @@ const crossEntities = handleActions({
 },
 initialStateFull);
 
-const knitTrack = reduceReducers(entitiesBySlice, crossEntities);
+const rootReducer = reduceReducers(entitiesBySlice, crossEntities);
 
-export default knitTrack;
+export default rootReducer;
