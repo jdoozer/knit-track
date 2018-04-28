@@ -4,6 +4,7 @@ import { withStyles } from 'material-ui/styles';
 import List from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import Typography from 'material-ui/Typography';
+import { CircularProgress } from 'material-ui/Progress';
 import ContentHeader from 'components/ContentHeader';
 import ListLinkBlock from 'components/ListLinkBlock';
 
@@ -16,15 +17,16 @@ const styles = theme => ({
   },
 });
 
-const PatternListItems = ({ patterns, onPatternClick, classes }) => {
+const PatternListItems = ({ patterns, onPatternClick, isFetching, classes }) => {
 
-  let patternListContent = (
-    <Typography variant="subheading" className={classes.noPattern}>
-      No patterns created yet!
-    </Typography>
-  );
+  let patternListContent;
 
-  if (patterns.length) {
+  if (isFetching) {
+
+    patternListContent = (<CircularProgress />);
+
+  } else if (patterns.length) {
+
     patternListContent = (
       <List className={classes.list}>
         {patterns.map(pattern => (
@@ -39,6 +41,15 @@ const PatternListItems = ({ patterns, onPatternClick, classes }) => {
         ))}
       </List>
     );
+
+  } else {
+
+    patternListContent = (
+     <Typography variant="subheading" className={classes.noPattern}>
+       No patterns created yet!
+     </Typography>
+   );
+
   }
 
   return(

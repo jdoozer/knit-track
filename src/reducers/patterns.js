@@ -42,9 +42,9 @@ const patternsReducer = handleActions({
   RECEIVE_PATTERNS: (state, action) => ({
     ...state,
     isFetching: false,
-    byId: action.patterns,
-    allIds: Object.keys(action.patterns),
-    lastUpdated: action.receivedAt
+    byId: action.payload.patterns,
+    allIds: Object.keys(action.payload.patterns),
+    lastUpdated: action.payload.receivedAt
   }),
 
 }, initialStateNormal);

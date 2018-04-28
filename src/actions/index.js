@@ -48,6 +48,8 @@ export const clearSection = createAction('CLEAR_SECTION');
 
 // ASYNC
 export const requestPatterns = createAction('REQUEST_PATTERNS');
+export const requestSections = createAction('REQUEST_SECTIONS');
+export const requestRows = createAction('REQUEST_ROWS');
 
 export const receivePatterns = createAction(
   'RECEIVE_PATTERNS',
@@ -57,19 +59,60 @@ export const receivePatterns = createAction(
   })
 );
 
+export const receiveSections = createAction(
+  'RECEIVE_SECTIONS',
+  json => ({
+    sections: json.sections,
+    receivedAt: Date.now()
+  })
+);
 
-export function fetchPatterns() {
+// export const receiveRows = createAction(
+//   'RECEIVE_ROWS',
+//   json => ({
+//     rows: json.rows,
+//     receivedAt: Date.now()
+//   })
+// );
 
-  return function (dispatch) {
+const shouldFetchPatterns = state => {
+  const patterns = state.patterns;
+  return !patterns.isFetching && !patterns.allIds.length;
+};
 
-    dispatch(requestPatterns());
+const shouldFetchSections = state => {
+  const pattern = state.ui.selectedPattern;
+  const sectionsInPattern = state.patterns.byId[pattern].sections;
+  const sections = state.sections;
+  return !sections.isFetching && (
+    !sections.allIds.length || !sections.includes(sectionsInPattern[0]));
+};
 
-    return fetch(`${MOCK_SERVER_URL}/get/patterns`, { method: 'GET' })
-      .then(
-        response => response.json(),
-        error => console.log('An error occurred.', error)
-      )
-      .then(json => dispatch(receivePatterns(json))
-    );
+// const shouldFetchRows = state => {
+//   const rows = state.rows;
+//   return !rows.allIds.length && !rows.isFetching;
+// };
+
+export const fetchPatterns = () => dispatch => {
+
+  console.log('there');
+
+  dispatch(requestPatterns());
+
+  return fetch(`${MOCK_SERVER_URL}/get/patterns`, { method: 'GET' })
+    .then(
+      response => response.json(),
+      error => console.log('An error occurred.', error)
+    )
+    .then(json => dispatch(receivePatterns(json))
+  );
+};
+
+export const fetchPatternsIfNeeded = () => (dispatch, getState) => {
+  if (shouldFetchPatterns(getState())) {
+    return dispatch(fetchPatterns());
   }
-}
+  else {
+    return Promise.resolve();
+  }
+};
