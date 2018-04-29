@@ -5,7 +5,7 @@ import { handleActions } from 'redux-actions';
 const initialSection = ({ title, sectionId, patternId, numRows }) => ({
   title,
   sectionId,
-  patternId: patternId,
+  patternId,
   numRows: Number(numRows),
   currentRow: 0,
   rowIds: [],
@@ -69,6 +69,24 @@ const sectionsReducer = handleActions({
     ...state,
     byId: updateRowCount(state.byId, action)
   }),
+
+  REQUEST_SECTIONS: (state, action) => ({
+    ...state,
+    isFetching: true
+  }),
+
+  RECEIVE_SECTIONS: (state, action) => {
+    return {
+    ...state,
+    isFetching: false,
+    byId: {
+      ...state.byId,
+      ...action.payload.sections,
+    },
+    allIds: state.allIds.concat(Object.keys(action.payload.sections)),
+    lastUpdated: action.payload.receivedAt
+  }},
+
 }, initialStateNormal);
 
 

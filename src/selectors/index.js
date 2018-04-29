@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { isEmpty } from 'lodash';
 
 const getPatternsById = state => state.patterns.byId;
 const getSectionsById = state => state.sections.byId;
@@ -27,7 +28,7 @@ export const getPatterns = createSelector(
 export const getSelectedPattern = createSelector(
   [getPatternsById, getSelectedPatternId],
   (patterns, selectedPatternId) => {
-    if (selectedPatternId == null) {
+    if (selectedPatternId === null) {
       return null;
     }
     return patterns[selectedPatternId];
@@ -37,10 +38,12 @@ export const getSelectedPattern = createSelector(
 export const getSelectedPatternSections = createSelector(
   [getSelectedPattern, getSectionsById],
   (selectedPattern, sections) => {
-    if (selectedPattern == null) {
+
+    if (selectedPattern === null || isEmpty(sections)) {
       return null;
     }
-    return selectedPattern.sectionIds.map(sectionId => sections[sectionId]);
+    const selectedPatternSections = selectedPattern.sectionIds.map(sectionId => sections[sectionId]);
+    return selectedPatternSections.filter(section => section);
   }
 );
 

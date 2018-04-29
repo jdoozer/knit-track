@@ -4,6 +4,7 @@ import { withStyles } from 'material-ui/styles';
 import Hidden from 'material-ui/Hidden';
 import Typography from 'material-ui/Typography';
 import DeleteIcon from 'material-ui-icons/Delete';
+import { CircularProgress } from 'material-ui/Progress';
 import ContentHeader from 'components/ContentHeader';
 import SectionPanel from 'components/SectionPanel';
 import AddSection from 'containers/AddSection';
@@ -21,11 +22,28 @@ const styles = (theme) => ({
   },
 });
 
-const PatternContent = ({ pattern, sections, deletePattern, deleteSection, classes, history }) => {
+const PatternContent = ({ pattern, sections, deletePattern, deleteSection, classes, history, isFetching }) => {
   if (pattern === null) {
     history.push('/');
     return;
+
   } else {
+
+    let sectionContent;
+
+    if (isFetching) {
+      sectionContent = (<CircularProgress />);
+    } else {
+      sectionContent = sections.map(section => (
+        <SectionPanel
+          key={section.sectionId}
+          section={section}
+          deleteSection={deleteSection}
+          patternId={pattern.patternId}
+        />
+      ));
+    }
+
     return(
       <div className={classes.root}>
         <ContentHeader
@@ -41,14 +59,7 @@ const PatternContent = ({ pattern, sections, deletePattern, deleteSection, class
           {pattern.info}
         </Typography>
         <div className={classes.sectionCards}>
-        {sections.map(section => (
-          <SectionPanel
-            key={section.sectionId}
-            section={section}
-            deleteSection={deleteSection}
-            patternId={pattern.patternId}
-          />
-        ))}
+          {sectionContent}
         </div>
         <Hidden xsDown>
           <AddSection patternId={pattern.patternId} />
@@ -73,6 +84,7 @@ PatternContent.propTypes = {
   deleteSection: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
+  isFetching: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(PatternContent);

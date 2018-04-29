@@ -69,6 +69,7 @@ PatternListItems.propTypes = {
   ).isRequired,
   onPatternClick: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
+  isFetching: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(PatternListItems);

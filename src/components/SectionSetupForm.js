@@ -62,7 +62,7 @@ class SectionSetupForm extends React.Component {
 
     const { history, sectionId } = this.props;
 
-    if (sectionId == null) {
+    if (sectionId === null) {
       history.push('/');
     }
 
@@ -143,7 +143,7 @@ class SectionSetupForm extends React.Component {
 
   render() {
     const { sectionId, classes } = this.props;
-    if (sectionId == null) {
+    if (sectionId === null) {
       return (
         <div>No active section!</div>
       );
