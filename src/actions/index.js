@@ -77,23 +77,13 @@ export const receiveSections = createAction(
   }
 );
 
-// export const receiveRows = createAction(
-//   'RECEIVE_ROWS',
-//   json => ({
-//     rows: json.rows,
-//     receivedAt: Date.now()
-//   })
-// );
-//
-// const shouldFetchPatterns = state => {
-//   const patterns = state.patterns;
-//   return !patterns.isFetching && !patterns.allIds.length;
-// };
-
-// const shouldFetchRows = state => {
-//   const rows = state.rows;
-//   return !rows.allIds.length && !rows.isFetching;
-// };
+export const receiveRows = createAction(
+  'RECEIVE_ROWS',
+  json => ({
+    rows: json.rows,
+    receivedAt: Date.now()
+  })
+);
 
 const fetchPatterns = () => dispatch => {
 
@@ -108,7 +98,8 @@ const fetchPatterns = () => dispatch => {
   );
 };
 
-const fetchSections = patternId => dispatch => {
+//// TO DO - MAKE THIS ACTUALLY USE SECTIONIDS IN SERVER REQUEST
+const fetchSections = sectionIds => dispatch => {
 
   dispatch(requestSections());
 
@@ -118,6 +109,20 @@ const fetchSections = patternId => dispatch => {
       error => console.log('An error occurred.', error)
     )
     .then(json => dispatch(receiveSections(json))
+  );
+};
+
+//// TO DO - MAKE THIS ACTUALLY USE ROWIDS IN SERVER REQUEST
+const fetchRows = rowIds => dispatch => {
+
+  dispatch(requestRows());
+
+  return fetch(`${MOCK_SERVER_URL}/api/rows`, { method: 'GET' })
+    .then(
+      response => response.json(),
+      error => console.log('An error occurred.', error)
+    )
+    .then(json => dispatch(receiveRows(json))
   );
 };
 
@@ -152,9 +157,29 @@ export const fetchSectionsIfNeeded = () => (dispatch, getState) => {
     )
   );
 
-  if (shouldFetchSections) {
-    return dispatch(fetchSections(sectionsInPattern));
-  } else {
-    return Promise.resolve();
-  }
+  if (shouldFetchSections) return dispatch(fetchSections(sectionsInPattern));
+
+  return Promise.resolve();
+
+};
+
+export const fetchRowsIfNeeded = sectionId => (dispatch, getState) => {
+
+  const state = getState();
+  const rowsInSection = state.sections.byId[sectionId].rowIds;
+  const rows = state.rows;
+
+  const shouldFetchRows = (
+    rowsInSection.length
+    && !rows.isFetching
+    && (
+      !rows.allIds.length
+      || !rows.allIds.includes(rowsInSection[0])
+    )
+  );
+
+  if (shouldFetchRows) return dispatch(fetchRows(rowsInSection));
+
+  return Promise.resolve();
+
 };

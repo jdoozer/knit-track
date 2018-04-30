@@ -42,6 +42,7 @@ export const getSelectedPatternSections = createSelector(
     if (selectedPattern === null || isEmpty(sections)) {
       return null;
     }
+
     const selectedPatternSections = selectedPattern.sectionIds.map(sectionId => sections[sectionId]);
     return selectedPatternSections.filter(section => section);
   }
@@ -49,5 +50,8 @@ export const getSelectedPatternSections = createSelector(
 
 export const getRowsFromSection = createSelector(
   [getRowIdsFromSection, getRowsById],
-  (rowIds, rows) => rowIds.map(rowId => rows[rowId])
+  (rowIds, rows) => {
+    const rowsFromSection = rowIds.map(rowId => rows[rowId]);
+    return rowsFromSection.filter(row => row);
+  }
 );

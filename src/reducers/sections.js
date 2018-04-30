@@ -75,8 +75,7 @@ const sectionsReducer = handleActions({
     isFetching: true
   }),
 
-  RECEIVE_SECTIONS: (state, action) => {
-    return {
+  RECEIVE_SECTIONS: (state, action) => ({
     ...state,
     isFetching: false,
     byId: {
@@ -85,7 +84,7 @@ const sectionsReducer = handleActions({
     },
     allIds: state.allIds.concat(Object.keys(action.payload.sections)),
     lastUpdated: action.payload.receivedAt
-  }},
+  }),
 
 }, initialStateNormal);
 

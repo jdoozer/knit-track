@@ -18,7 +18,7 @@ const mapDispatchToProps = dispatch => ({
   deleteSection: sectionId => {
     dispatch(deleteSection(sectionId));
   },
-  fetchSectionsIfNeeded: patternId => {
+  fetchSectionsIfNeeded: () => {
     dispatch(fetchSectionsIfNeeded());
   },
 });

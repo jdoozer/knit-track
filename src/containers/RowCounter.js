@@ -1,13 +1,16 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { updateRowCount } from 'actions';
+import { updateRowCount, fetchRowsIfNeeded } from 'actions';
 import RowCounterDisplay from 'components/RowCounterDisplay';
 import { getRowsFromSection, getCurrentRow } from 'selectors';
 
 const mapStateToProps = (state, props) => {
   return {
-    rows: getRowsFromSection(state, props),
+    rows: getRowsFromSection(state, props), /// why is props here?
     currentRow: getCurrentRow(state, props),
-    ...props,
+    isFetching: state.rows.isFetching,
+    // isFetching: false
   };
 };
 
@@ -16,13 +19,33 @@ const mapDispatchToProps = (dispatch, props) => {
   return {
     onUpdateCountClick: updateType => {
       dispatch(updateRowCount(sectionId, updateType))
+    },
+    fetchRowsIfNeeded: () => {
+      dispatch(fetchRowsIfNeeded(sectionId));
     }
   };
 };
 
-const RowCounter = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RowCounterDisplay);
+class RowCounter extends React.Component {
 
-export default RowCounter;
+  componentDidMount() {
+    this.props.fetchRowsIfNeeded();
+  }
+
+  render() {
+    const { fetchRowsIfNeeded, sectionId, ...otherProps } = this.props;
+    return (
+      <RowCounterDisplay {...otherProps} />
+    );
+  }
+}
+
+RowCounter.propTypes = {
+  sectionId: PropTypes.string.isRequired,
+  currentRow: PropTypes.number.isRequired,
+  rows: PropTypes.array.isRequired,
+  onUpdateCountClick: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RowCounter);

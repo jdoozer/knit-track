@@ -8,6 +8,7 @@ import PlusIcon from 'material-ui-icons/Add';
 import MinusIcon from 'material-ui-icons/Remove';
 import ResetIcon from 'material-ui-icons/Undo';
 import gray from 'material-ui/colors/blueGrey';
+import { CircularProgress } from 'material-ui/Progress';
 import RowInfo from 'components/RowInfo';
 
 const textInd = 900;
@@ -60,53 +61,65 @@ const styles = theme => ({
   },
 });
 
-const RowCounterDisplay = ({ currentRow, rows, onUpdateCountClick, classes }) => (
-  <div className={classes.root}>
-    <div className={classes.rowCounter}>
-      <Paper className={classes.row} elevation={1}>
-        <Typography variant="display2" className={classes.rowDisplay}>
-          {currentRow + 1}
-        </Typography>
-      </Paper>
-      <div className={classes.counterButtonRoot}>
-        <IconButton
-          variant="raised"
-          className={classes.counterButton}
-          color="secondary"
-          onClick={() => onUpdateCountClick("INCREMENT")}>
-            <PlusIcon className={classes.plusIcon} />
-        </IconButton>
-        <div className={classes.counterButtonSecondary}>
-          <IconButton
-            variant="raised"
-            className={classes.counterButton}
-            color="secondary"
-            onClick={() => onUpdateCountClick("RESET")}>
-              <ResetIcon />
-          </IconButton>
-          <IconButton
-            variant="raised"
-            className={classes.counterButton}
-            color="secondary"
-            onClick={() => onUpdateCountClick("DECREMENT")}>
-              <MinusIcon />
-          </IconButton>
-        </div>
-      </div>
-    </div>
-    {(
+const RowCounterDisplay = ({ currentRow, rows, onUpdateCountClick, classes, isFetching }) => {
+
+  let rowInfo;
+
+  if (isFetching) {
+    rowInfo = (<CircularProgress />);
+  } else {
+    rowInfo = (
       rows
       && rows[currentRow]
       && <RowInfo currentRow={currentRow} {...rows[currentRow]} />
-    )}
-  </div>
-);
+    );
+  }
+
+  return (
+    <div className={classes.root}>
+      <div className={classes.rowCounter}>
+        <Paper className={classes.row} elevation={1}>
+          <Typography variant="display2" className={classes.rowDisplay}>
+            {currentRow + 1}
+          </Typography>
+        </Paper>
+        <div className={classes.counterButtonRoot}>
+          <IconButton
+            variant="raised"
+            className={classes.counterButton}
+            color="secondary"
+            onClick={() => onUpdateCountClick("INCREMENT")}>
+              <PlusIcon className={classes.plusIcon} />
+          </IconButton>
+          <div className={classes.counterButtonSecondary}>
+            <IconButton
+              variant="raised"
+              className={classes.counterButton}
+              color="secondary"
+              onClick={() => onUpdateCountClick("RESET")}>
+                <ResetIcon />
+            </IconButton>
+            <IconButton
+              variant="raised"
+              className={classes.counterButton}
+              color="secondary"
+              onClick={() => onUpdateCountClick("DECREMENT")}>
+                <MinusIcon />
+            </IconButton>
+          </div>
+        </div>
+      </div>
+      {rowInfo}
+    </div>
+  );
+}
 
 RowCounterDisplay.propTypes = {
   currentRow: PropTypes.number.isRequired,
   rows: PropTypes.array.isRequired,
   onUpdateCountClick: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
+  isFetching: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(RowCounterDisplay);

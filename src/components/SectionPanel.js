@@ -75,7 +75,7 @@ class SectionPanel extends React.Component {
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>
-          <RowCounter sectionId={sectionId} />
+          {expanded && <RowCounter sectionId={sectionId} />}
           <ActionIconButton
             className={classes.button}
             onClick={() => deleteSection(sectionId)}
