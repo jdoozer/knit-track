@@ -6,11 +6,11 @@ import RowCounterDisplay from 'components/RowCounterDisplay';
 import { getRowsFromSection, getCurrentRow } from 'selectors';
 
 const mapStateToProps = (state, props) => {
+  const { sectionId } = props;
   return {
-    rows: getRowsFromSection(state, props), /// why is props here?
-    currentRow: getCurrentRow(state, props),
+    rows: getRowsFromSection(state, sectionId),
+    currentRow: getCurrentRow(state, sectionId),
     isFetching: state.rows.isFetching,
-    // isFetching: false
   };
 };
 

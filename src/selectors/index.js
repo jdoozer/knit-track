@@ -7,12 +7,12 @@ const getRowsById = state => state.rows.byId;
 const getSelectedPatternId = state => state.ui.selectedPattern;
 export const getSectionIdToEdit = state => state.ui.sectionToEdit;
 
-const getRowIdsFromSection = (state, props) => (
-  getSectionsById(state)[props.sectionId].rowIds
+const getRowIdsFromSection = (state, sectionId) => (
+  getSectionsById(state)[sectionId].rowIds
 );
 
-export const getCurrentRow = (state, props) => (
-  getSectionsById(state)[props.sectionId].currentRow
+export const getCurrentRow = (state, sectionId) => (
+  getSectionsById(state)[sectionId].currentRow
 );
 
 export const getNumRowsSection = createSelector(
