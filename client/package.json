@@ -1,0 +1,31 @@
+{
+  "name": "knit-track-simple",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "cross-fetch": "^2.1.1",
+    "lodash": "^4.17.5",
+    "material-ui": "^1.0.0-beta.33",
+    "material-ui-icons": "^1.0.0-beta.17",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.0.17",
+    "reduce-reducers": "^0.1.2",
+    "redux": "^3.7.2",
+    "redux-actions": "^2.3.0",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0",
+    "reselect": "^3.0.1",
+    "typeface-roboto": "0.0.45",
+    "uuid": "^3.1.0"
+  },
+  "scripts": {
+    "start": "NODE_PATH=src react-scripts start",
+    "build": "NODE_PATH=src react-scripts build",
+    "test": "NODE_PATH=src react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "proxy": "http://localhost:5000/"
+}

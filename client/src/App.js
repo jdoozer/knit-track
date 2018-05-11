@@ -13,6 +13,8 @@ import Pattern from 'containers/Pattern';
 import AddPattern from 'containers/AddPattern';
 import SectionSetup from 'containers/SectionSetup';
 
+// import TestAPIComponent from 'TestAPIComponent';
+
 
 const App = () => (
   <Router>
