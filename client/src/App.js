@@ -15,7 +15,6 @@ import SectionSetup from 'containers/SectionSetup';
 
 // import TestAPIComponent from 'TestAPIComponent';
 
-
 const App = () => (
   <Router>
     <MuiThemeProvider theme={theme}>

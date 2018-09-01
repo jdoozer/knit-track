@@ -13,7 +13,7 @@ import 'typeface-roboto';
 import 'index.css';
 
 const HYDRATE_STATE = true;
-const SAVE_STATE = true;
+const SAVE_STATE = false;
 
 const persistedState = loadState();
 const loggerMiddleware = createLogger();

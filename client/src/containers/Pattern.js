@@ -25,7 +25,7 @@ const mapDispatchToProps = dispatch => ({
 
 class Pattern extends React.Component {
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchSectionsIfNeeded();
   }
 

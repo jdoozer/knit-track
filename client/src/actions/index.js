@@ -2,7 +2,8 @@ import generateId from 'uuid/v4';
 import { createAction } from 'redux-actions';
 import fetch from 'cross-fetch';
 
-const MOCK_SERVER_URL = 'https://5a44c527-42a5-44d1-9fd7-198d43934b65.mock.pstmn.io';
+// const MOCK_SERVER_URL = 'https://5a44c527-42a5-44d1-9fd7-198d43934b65.mock.pstmn.io';
+const MOCK_SERVER_URL = 'api/';
 
 export const addPattern = createAction(
   'ADD_PATTERN',
@@ -61,20 +62,10 @@ export const receivePatterns = createAction(
 
 export const receiveSections = createAction(
   'RECEIVE_SECTIONS',
-  json => {
-    if ('sections' in json) {
-      console.log('sections!');
-      return {
-        sections: json.sections,
-        receivedAt: Date.now()
-      }
-    } else {
-      return {
-        sections: json,
-        receivedAt: Date.now()
-      }
-    }
-  }
+  json => ({
+    sections: json.sections,
+    receivedAt: Date.now()
+  })
 );
 
 export const receiveRows = createAction(
@@ -89,7 +80,7 @@ const fetchPatterns = () => dispatch => {
 
   dispatch(requestPatterns());
 
-  return fetch(`${MOCK_SERVER_URL}/api/patterns`, { method: 'GET' })
+  return fetch(`${MOCK_SERVER_URL}/patterns`, { method: 'GET' })
     .then(
       response => response.json(),
       error => console.log('An error occurred.', error)
@@ -98,12 +89,11 @@ const fetchPatterns = () => dispatch => {
   );
 };
 
-//// TO DO - MAKE THIS ACTUALLY USE SECTIONIDS IN SERVER REQUEST
-const fetchSections = sectionIds => dispatch => {
+const fetchSectionsFromPattern = patternId => dispatch => {
 
   dispatch(requestSections());
 
-  return fetch(`${MOCK_SERVER_URL}/api/sections`, { method: 'GET' })
+  return fetch(`${MOCK_SERVER_URL}/patterns/${patternId}/sections`, { method: 'GET' })
     .then(
       response => response.json(),
       error => console.log('An error occurred.', error)
@@ -141,11 +131,11 @@ export const fetchPatternsIfNeeded = () => (dispatch, getState) => {
 export const fetchSectionsIfNeeded = () => (dispatch, getState) => {
 
   const state = getState();
-  const pattern = state.ui.selectedPattern;
+  const patternId = state.ui.selectedPattern;
 
-  if (pattern === null) return Promise.resolve();
+  if (patternId === null) return Promise.resolve();
 
-  const sectionsInPattern = state.patterns.byId[pattern].sectionIds;
+  const sectionsInPattern = state.patterns.byId[patternId].sectionIds;
   const sections = state.sections;
 
   const shouldFetchSections = (
@@ -153,11 +143,13 @@ export const fetchSectionsIfNeeded = () => (dispatch, getState) => {
     && !sections.isFetching
     && (
       !sections.allIds.length
-      || !sections.allIds.includes(sectionsInPattern[0])
+      || !sections.allIds.includes(sectionsInPattern[0]) // need to check all here instead of just one?
     )
   );
 
-  if (shouldFetchSections) return dispatch(fetchSections(sectionsInPattern));
+  if (shouldFetchSections) {
+    return dispatch(fetchSectionsFromPattern(patternId));
+  }
 
   return Promise.resolve();
 
