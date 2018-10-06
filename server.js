@@ -21,4 +21,18 @@ app.get('/api/patterns/:patternId/sections', (req, res) => {
   res.send({ sections });
 });
 
+app.get('/api/patterns/:sectionId', (req, res) => {
+  res.send({ section: mockServerData.sections.byId[req.params.sectionId] });
+});
+
+app.get('/api/patterns/:sectionId/rows', (req, res) => {
+  const rowIds = mockServerData.sections.byId[req.params.sectionId].rowIds;
+  const rows = utils.reduceObject(mockServerData.rows.byId, rowIds);
+  res.send({ rows });
+});
+
+app.get('/api/patterns/:rowId', (req, res) => {
+  res.send({ row: mockServerData.rows.byId[req.params.rowId] });
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}`));

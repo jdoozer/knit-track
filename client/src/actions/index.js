@@ -2,9 +2,9 @@ import generateId from 'uuid/v4';
 import { createAction } from 'redux-actions';
 import fetch from 'cross-fetch';
 
-// const MOCK_SERVER_URL = 'https://5a44c527-42a5-44d1-9fd7-198d43934b65.mock.pstmn.io';
 const MOCK_SERVER_URL = 'api/';
 
+// SYNCRONOUS ACTIONS
 export const addPattern = createAction(
   'ADD_PATTERN',
   title => ({
@@ -47,10 +47,19 @@ export const deleteRow = createAction('DELETE_ROW');
 export const selectPattern = createAction('SELECT_PATTERN');
 export const clearSection = createAction('CLEAR_SECTION');
 
-// ASYNC
+// ASYNC SETUP ACTIONS
 export const requestPatterns = createAction('REQUEST_PATTERNS');
+export const requestPatternWithSections = createAction('REQUEST_PATTERN_WITH_SECTIONS');
 export const requestSections = createAction('REQUEST_SECTIONS');
 export const requestRows = createAction('REQUEST_ROWS');
+
+export const receivePattern = createAction(
+  'RECEIVE_PATTERN',
+  json => ({
+    ...json,
+    receivedAt: Date.now()
+  })
+);
 
 export const receivePatterns = createAction(
   'RECEIVE_PATTERNS',
@@ -76,6 +85,7 @@ export const receiveRows = createAction(
   })
 );
 
+// ASYNC
 const fetchPatterns = () => dispatch => {
 
   dispatch(requestPatterns());
@@ -88,6 +98,29 @@ const fetchPatterns = () => dispatch => {
     .then(json => dispatch(receivePatterns(json))
   );
 };
+
+const fetchPattern = patternId => dispatch => {
+
+  dispatch(requestPatterns());
+  console.log(patternId);
+
+  return fetch(`${MOCK_SERVER_URL}/patterns/${patternId}`, { method: 'GET' })
+    .then(
+      response => response.json(),
+      error => console.log('An error occurred.', error)
+    )
+    .then(json => {
+      console.log(json);
+      return dispatch(receivePattern(json))
+    }
+  );
+};
+
+const fetchPatternWithSections = patternId => dispatch => (
+  dispatch(fetchPattern(patternId)).then(() => (
+    dispatch(fetchSectionsFromPattern(patternId))
+  ))
+);
 
 const fetchSectionsFromPattern = patternId => dispatch => {
 
@@ -116,28 +149,29 @@ const fetchRows = rowIds => dispatch => {
   );
 };
 
+// CONDITIONAL ASYNC
 export const fetchPatternsIfNeeded = () => (dispatch, getState) => {
-
-  const state = getState();
-  const patterns = state.patterns;
+  const { patterns } = getState();
   const shouldFetchPatterns = !patterns.isFetching && !patterns.allIds.length;
-
   if (shouldFetchPatterns) return dispatch(fetchPatterns());
-
   return Promise.resolve();
-
 };
 
-export const fetchSectionsIfNeeded = () => (dispatch, getState) => {
+export const fetchPatternSectionsIfNeeded = patternId => (dispatch, getState) => {
 
-  const state = getState();
-  const patternId = state.ui.selectedPattern;
+  if (!patternId) return Promise.resolve();
 
-  if (patternId === null) return Promise.resolve();
+  const { patterns, sections } = getState();
 
-  const sectionsInPattern = state.patterns.byId[patternId].sectionIds;
-  const sections = state.sections;
+  const shouldFetchPattern = (
+    !patterns.isFetching && !patterns.allIds.includes(patternId)
+  );
 
+  if (shouldFetchPattern) {
+    return dispatch(fetchPatternWithSections(patternId));
+  }
+
+  const sectionsInPattern = patterns.byId[patternId].sectionIds;
   const shouldFetchSections = (
     sectionsInPattern.length
     && !sections.isFetching
@@ -153,7 +187,8 @@ export const fetchSectionsIfNeeded = () => (dispatch, getState) => {
 
   return Promise.resolve();
 
-};
+}
+
 
 export const fetchRowsIfNeeded = sectionId => (dispatch, getState) => {
 

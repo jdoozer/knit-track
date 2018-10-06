@@ -27,8 +27,11 @@ export const getPatterns = createSelector(
 export const getSelectedPattern = createSelector(
   [getPatternsById, getSelectedPatternId],
   (patterns, selectedPatternId) => {
-    if (selectedPatternId === null) {
+    if (!selectedPatternId) {
       return null;
+    }
+    if (!patterns[selectedPatternId]) {
+      return { patternId: selectedPatternId }
     }
     return patterns[selectedPatternId];
   }
@@ -38,7 +41,7 @@ export const getSelectedPatternSections = createSelector(
   [getSelectedPattern, getSectionsById],
   (selectedPattern, sections) => {
 
-    if (selectedPattern === null) return null;
+    if (!selectedPattern || !selectedPattern.sectionIds) return [];
 
     const selectedPatternSections = selectedPattern.sectionIds.map(sectionId => sections[sectionId]);
     return selectedPatternSections.filter(section => section);

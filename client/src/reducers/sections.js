@@ -75,6 +75,11 @@ const sectionsReducer = handleActions({
     isFetching: true
   }),
 
+  REQUEST_PATTERN_WITH_SECTIONS: (state, action) => ({
+    ...state,
+    isFetching: true
+  }),
+
   RECEIVE_SECTIONS: (state, action) => ({
     ...state,
     isFetching: false,

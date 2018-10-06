@@ -45,7 +45,7 @@ const ContentHeader = ({ classes, children, ...buttonProps }) => (
 
 ContentHeader.propTypes = {
   classes: PropTypes.object.isRequired,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   buttonProps: PropTypes.object,
 };
 

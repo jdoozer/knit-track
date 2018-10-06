@@ -22,57 +22,74 @@ const styles = (theme) => ({
   },
 });
 
-const PatternContent = ({ pattern, sections, deletePattern, deleteSection, classes, history, isFetching }) => {
+const PatternContent = ({
+  pattern, sections,
+  deletePattern, deleteSection,
+  patternIsFetching, sectionsIsFetching,
+  classes, history
+}) => {
+
   if (pattern === null) {
     history.push('/');
     return;
-
   } else {
 
-    let sectionContent;
+    let mainContent, sectionContent;
 
-    if (isFetching) {
-      sectionContent = (<CircularProgress />);
+    if (patternIsFetching || !pattern) {
+      mainContent = (
+        <div className={classes.root}>
+          <CircularProgress />
+        </div>
+      );
+
     } else {
-      sectionContent = sections.map(section => (
-        <SectionPanel
-          key={section.sectionId}
-          section={section}
-          deleteSection={deleteSection}
-          patternId={pattern.patternId}
-        />
-      ));
+
+      if (sectionsIsFetching) {
+        sectionContent = (<CircularProgress />);
+      } else {
+        sectionContent = sections.map(section => (
+          <SectionPanel
+            key={section.sectionId}
+            section={section}
+            deleteSection={deleteSection}
+            patternId={pattern.patternId}
+          />
+        ));
+      }
+
+      mainContent =  (
+        <div className={classes.root}>
+          <ContentHeader
+            onClick={() => deletePattern(pattern.patternId)}
+            icon={<DeleteIcon />}
+            newLocation="/"
+            dialogTitle="Delete Pattern"
+            dialogText="Are you sure you want to delete this pattern and all its contents?"
+          >
+            {pattern.title}
+          </ContentHeader>
+          <Typography variant="subheading" className={classes.info}>
+            {pattern.info}
+          </Typography>
+          <div className={classes.sectionCards}>
+            {sectionContent}
+          </div>
+          <Hidden xsDown>
+            <AddSection patternId={pattern.patternId} />
+          </Hidden>
+        </div>
+      )
     }
 
-    return(
-      <div className={classes.root}>
-        <ContentHeader
-          onClick={() => deletePattern(pattern.patternId)}
-          icon={<DeleteIcon />}
-          newLocation="/"
-          dialogTitle="Delete Pattern"
-          dialogText="Are you sure you want to delete this pattern and all its contents?"
-        >
-          {pattern.title}
-        </ContentHeader>
-        <Typography variant="subheading" className={classes.info}>
-          {pattern.info}
-        </Typography>
-        <div className={classes.sectionCards}>
-          {sectionContent}
-        </div>
-        <Hidden xsDown>
-          <AddSection patternId={pattern.patternId} />
-        </Hidden>
-      </div>
-    );
+    return mainContent;
   }
 };
 
 PatternContent.propTypes = {
   pattern: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    info: PropTypes.string.isRequired,
+    title: PropTypes.string,
+    info: PropTypes.string,
     patternId: PropTypes.string.isRequired,
   }),
   sections: PropTypes.arrayOf(
@@ -84,7 +101,8 @@ PatternContent.propTypes = {
   deleteSection: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  isFetching: PropTypes.bool.isRequired,
+  patternIsFetching: PropTypes.bool.isRequired,
+  sectionsIsFetching: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(PatternContent);

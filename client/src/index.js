@@ -19,6 +19,7 @@ const persistedState = loadState();
 const loggerMiddleware = createLogger();
 const middleware = applyMiddleware(thunkMiddleware, loggerMiddleware);
 
+// TODO: modify save and hydrate to NOT factor in UI portion of state
 const storeInputArgs = HYDRATE_STATE
   ? [rootReducer, persistedState, middleware]
   : [rootReducer, middleware];
