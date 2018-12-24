@@ -24,6 +24,7 @@ export const getPatterns = createSelector(
   patternsById => Object.keys(patternsById).map(key => patternsById[key])
 );
 
+// TODO: get rid of this once routing is changed to put selected pattern into URL
 export const getSelectedPattern = createSelector(
   [getPatternsById, getSelectedPatternId],
   (patterns, selectedPatternId) => {
@@ -37,6 +38,7 @@ export const getSelectedPattern = createSelector(
   }
 );
 
+// TODO: get rid of this once routing is changed to put selected pattern into URL
 export const getSelectedPatternSections = createSelector(
   [getSelectedPattern, getSectionsById],
   (selectedPattern, sections) => {
