@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { createLogger } from 'redux-logger';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
 import registerServiceWorker from './registerServiceWorker';
 import throttle from 'lodash/throttle';
@@ -17,7 +18,9 @@ const SAVE_STATE = false;
 
 const persistedState = loadState();
 const loggerMiddleware = createLogger();
-const middleware = applyMiddleware(thunkMiddleware, loggerMiddleware);
+const middleware = composeWithDevTools(
+  applyMiddleware(thunkMiddleware, loggerMiddleware)
+);
 
 // TODO: modify save and hydrate to NOT factor in UI portion of state
 const storeInputArgs = HYDRATE_STATE
