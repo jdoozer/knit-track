@@ -9,3 +9,10 @@ exports.reduceObject = (obj, keys) => {
   return keys.reduce(objectAccum, {});
 
 };
+
+exports.combineIds = (objArray, idField) => {
+
+  const ids = objArray.map(obj => obj.idField);
+  return [].concat(...ids);
+
+}
