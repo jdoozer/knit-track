@@ -5,17 +5,8 @@ const MOCK_SERVER_URL = 'api/';
 
 // SETUP ACTIONS
 export const requestPatterns = createAction('REQUEST_PATTERNS');
-export const requestPatternWithSections = createAction('REQUEST_PATTERN_WITH_SECTIONS');
-export const requestSections = createAction('REQUEST_SECTIONS');
-export const requestRows = createAction('REQUEST_ROWS');
-
-export const receivePattern = createAction(
-  'RECEIVE_PATTERN',
-  json => ({
-    ...json,
-    receivedAt: Date.now()
-  })
-);
+export const requestPatternExpanded = createAction('REQUEST_PATTERN_EXPANDED');
+export const requestSectionExpanded = createAction('REQUEST_SECTION_EXPANDED');
 
 export const receivePatterns = createAction(
   'RECEIVE_PATTERNS',
@@ -25,23 +16,26 @@ export const receivePatterns = createAction(
   })
 );
 
-export const receiveSections = createAction(
-  'RECEIVE_SECTIONS',
+export const receivePatternExpanded = createAction(
+  'RECEIVE_PATTERN_EXPANDED',
   json => ({
+    pattern: json.pattern,
     sections: json.sections,
-    receivedAt: Date.now()
-  })
-);
-
-export const receiveRows = createAction(
-  'RECEIVE_ROWS',
-  json => ({
     rows: json.rows,
     receivedAt: Date.now()
   })
 );
 
-// FETCHING
+export const receiveSectionExpanded = createAction(
+  'RECEIVE_SECTION_EXPANDED',
+  json => ({
+    section: json.section,
+    rows: json.rows,
+    receivedAt: Date.now()
+  })
+);
+
+// ACTION CREATORS FOR FETCHING
 const fetchPatterns = () => dispatch => {
 
   dispatch(requestPatterns());
@@ -55,57 +49,35 @@ const fetchPatterns = () => dispatch => {
   );
 };
 
-const fetchPattern = patternId => dispatch => {
+const fetchPatternExpanded = patternId => dispatch => {
 
-  dispatch(requestPatterns());
-  console.log(patternId);
+  dispatch(requestPatternExpanded());
 
   return fetch(`${MOCK_SERVER_URL}/patterns/${patternId}`, { method: 'GET' })
     .then(
       response => response.json(),
       error => console.log('An error occurred.', error)
     )
-    .then(json => {
-      console.log(json);
-      return dispatch(receivePattern(json))
-    }
+    .then(json => dispatch(receivePatternExpanded(json))
   );
 };
 
-const fetchPatternWithSections = patternId => dispatch => (
-  dispatch(fetchPattern(patternId)).then(() => (
-    dispatch(fetchSectionsFromPattern(patternId))
-  ))
-);
+const fetchSectionExpanded = sectionId => dispatch => {
 
-const fetchSectionsFromPattern = patternId => dispatch => {
+  dispatch(requestSectionExpanded());
 
-  dispatch(requestSections());
-
-  return fetch(`${MOCK_SERVER_URL}/patterns/${patternId}/sections`, { method: 'GET' })
+  return fetch(`${MOCK_SERVER_URL}/sections/${sectionId}`, { method: 'GET' })
     .then(
       response => response.json(),
       error => console.log('An error occurred.', error)
     )
-    .then(json => dispatch(receiveSections(json))
+    .then(json => dispatch(receiveSectionExpanded(json))
   );
 };
 
-//// TO DO - MAKE THIS ACTUALLY USE ROWIDS IN SERVER REQUEST
-const fetchRows = rowIds => dispatch => {
 
-  dispatch(requestRows());
-
-  return fetch(`${MOCK_SERVER_URL}/api/rows`, { method: 'GET' })
-    .then(
-      response => response.json(),
-      error => console.log('An error occurred.', error)
-    )
-    .then(json => dispatch(receiveRows(json))
-  );
-};
-
-// CONDITIONAL ASYNC
+// CONDITIONAL ASYNC (TODO: this might need some work later on)
+//     -> check reducers to make sure we SKIP updating the pattern
 export const fetchPatternsIfNeeded = () => (dispatch, getState) => {
   const { patterns } = getState();
   const shouldFetchPatterns = !patterns.isFetching && !patterns.allIds.length;
@@ -113,56 +85,43 @@ export const fetchPatternsIfNeeded = () => (dispatch, getState) => {
   return Promise.resolve();
 };
 
-export const fetchPatternSectionsIfNeeded = patternId => (dispatch, getState) => {
+export const fetchPatternExpandedIfNeeded = patternId => (dispatch, getState) => {
 
   if (!patternId) return Promise.resolve();
 
   const { patterns, sections } = getState();
 
-  const shouldFetchPattern = (
-    !patterns.isFetching && !patterns.allIds.includes(patternId)
+  const patternLoaded = (
+    !patterns.isFetching && patterns.allIds.includes(patternId)
   );
 
-  if (shouldFetchPattern) {
-    return dispatch(fetchPatternWithSections(patternId));
+  const sectionsLoaded = false;
+
+  if (patternLoaded) {
+    const sectionsInPattern = patterns.byId[patternId].sectionIds;
+    const sectionsLoaded = (
+      sectionsInPattern.length
+      && !sections.isFetching
+      && sectionsInPattern.reduce(
+          (idsIncluded, id) => idsIncluded && sections.allIds.includes(id), true
+        )
+    );
   }
 
-  const sectionsInPattern = patterns.byId[patternId].sectionIds;
-  const shouldFetchSections = (
-    sectionsInPattern.length
-    && !sections.isFetching
-    && (
-      !sections.allIds.length
-      || !sections.allIds.includes(sectionsInPattern[0]) // need to check all here instead of just one?
-    )
-  );
-
-  if (shouldFetchSections) {
-    return dispatch(fetchSectionsFromPattern(patternId));
-  }
-
-  return Promise.resolve();
+  return sectionsLoaded ? Promise.resolve() : dispatch(fetchPatternExpanded(patternId));
 
 }
 
+export const fetchSectionExpandedIfNeeded = sectionId => (dispatch, getState) => {
 
-export const fetchRowsIfNeeded = sectionId => (dispatch, getState) => {
+  if (!sectionId) return Promise.resolve();
 
-  const state = getState();
-  const rowsInSection = state.sections.byId[sectionId].rowIds;
-  const rows = state.rows;
+  const { sections } = getState();
 
-  const shouldFetchRows = (
-    rowsInSection.length
-    && !rows.isFetching
-    && (
-      !rows.allIds.length
-      || !rows.allIds.includes(rowsInSection[0])
-    )
+  const sectionLoaded = (
+    !sections.isFetching && sections.allIds.includes(sectionId)
   );
 
-  if (shouldFetchRows) return dispatch(fetchRows(rowsInSection));
+  return sectionsLoaded ? Promise.resolve() : dispatch(fetchSectionExpanded(sectionId));
 
-  return Promise.resolve();
-
-};
+}

@@ -39,22 +39,9 @@ const patternsReducer = handleActions({
     isFetching: true
   }),
 
-  REQUEST_PATTERN_WITH_SECTIONS: (state, action) => ({
+  REQUEST_PATTERN_EXPANDED: (state, action) => ({
     ...state,
     isFetching: true
-  }),
-
-  RECEIVE_PATTERN: (state, action) => ({
-    ...state,
-    isFetching: false,
-    byId: {
-      ...state.byId,
-      [action.payload.pattern.patternId]: {
-        ...action.payload.pattern
-      },
-    },
-    allIds: state.allIds.concat(action.payload.pattern.patternId),
-    lastUpdated: action.payload.receivedAt
   }),
 
   RECEIVE_PATTERNS: (state, action) => ({
@@ -65,6 +52,19 @@ const patternsReducer = handleActions({
       ...action.payload.patterns,
     },
     allIds: state.allIds.concat(Object.keys(action.payload.patterns)),
+    lastUpdated: action.payload.receivedAt
+  }),
+
+  RECEIVE_PATTERN_EXPANDED: (state, action) => ({
+    ...state,
+    isFetching: false,
+    byId: {
+      ...state.byId,
+      [action.payload.pattern.patternId]: {
+        ...action.payload.pattern
+      },
+    },
+    allIds: state.allIds.concat(action.payload.pattern.patternId),
     lastUpdated: action.payload.receivedAt
   }),
 

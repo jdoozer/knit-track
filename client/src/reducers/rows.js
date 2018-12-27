@@ -3,6 +3,10 @@ import addToState from 'utils/addToState';
 import { initialStateNormal } from 'stateData/initialState';
 import { handleActions } from 'redux-actions';
 
+const setFetching = (state, action) => ({
+  ...state,
+  isFetching: true
+});
 
 const rowsReducer = handleActions({
   ADD_ROW: (state, action) => (
@@ -13,12 +17,21 @@ const rowsReducer = handleActions({
     deleteFromState(state, action.payload)
   ),
 
-  REQUEST_ROWS: (state, action) => ({
+  REQUEST_PATTERN_EXPANDED: setFetching,
+  REQUEST_SECTION_EXPANDED: setFetching,
+
+  RECEIVE_PATTERN_EXPANDED: (state, action) => ({
     ...state,
-    isFetching: true
+    isFetching: false,
+    byId: {
+      ...state.byId,
+      ...action.payload.rows,
+    },
+    allIds: state.allIds.concat(Object.keys(action.payload.rows)),
+    lastUpdated: action.payload.receivedAt
   }),
 
-  RECEIVE_ROWS: (state, action) => ({
+  RECEIVE_SECTION_EXPANDED: (state, action) => ({
     ...state,
     isFetching: false,
     byId: {

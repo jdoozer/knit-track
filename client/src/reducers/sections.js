@@ -54,6 +54,10 @@ const updateRowCount = (state, action) => {
   };
 };
 
+const setFetching = (state, action) => ({
+  ...state,
+  isFetching: true
+});
 
 const sectionsReducer = handleActions({
   ADD_SECTION: (state, action) => (
@@ -70,17 +74,10 @@ const sectionsReducer = handleActions({
     byId: updateRowCount(state.byId, action)
   }),
 
-  REQUEST_SECTIONS: (state, action) => ({
-    ...state,
-    isFetching: true
-  }),
+  REQUEST_PATTERN_EXPANDED: setFetching(state, action),
+  REQUEST_SECTION_EXPANDED: setFetching(state, action),
 
-  REQUEST_PATTERN_WITH_SECTIONS: (state, action) => ({
-    ...state,
-    isFetching: true
-  }),
-
-  RECEIVE_SECTIONS: (state, action) => ({
+  RECEIVE_PATTERN_EXPANDED: (state, action) => ({
     ...state,
     isFetching: false,
     byId: {
@@ -88,6 +85,19 @@ const sectionsReducer = handleActions({
       ...action.payload.sections,
     },
     allIds: state.allIds.concat(Object.keys(action.payload.sections)),
+    lastUpdated: action.payload.receivedAt
+  }),
+
+  RECEIVE_SECTION_EXPANDED: (state, action) => ({
+    ...state,
+    isFetching: false,
+    byId: {
+      ...state.byId,
+      [action.payload.section.sectionId]: {
+        ...action.payload.section
+      },
+    },
+    allIds: state.allIds.concat(action.payload.section.sectionId),
     lastUpdated: action.payload.receivedAt
   }),
 
