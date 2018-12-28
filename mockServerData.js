@@ -1068,16 +1068,16 @@ exports.rows = {
     '37fcaa75-de8d-433b-9e35-663d377eb972': {
       sectionId: '9887826c-b53a-4ac3-b6e7-c9a0268aaf7d',
       rowId: '37fcaa75-de8d-433b-9e35-663d377eb972',
-      fullText: '',
+      fullText: 'row 1 instructions here',
       quickText: '',
-      stitches: ''
+      stitches: '10'
     },
     'd5358508-a68a-4f3a-9a24-d957fefe98c3': {
       sectionId: '9887826c-b53a-4ac3-b6e7-c9a0268aaf7d',
       rowId: 'd5358508-a68a-4f3a-9a24-d957fefe98c3',
-      fullText: '',
+      fullText: 'row 2 instructions here',
       quickText: '',
-      stitches: ''
+      stitches: '10'
     },
     '198fdced-425b-4e0f-89f4-3f2d354d94e9': {
       fullText: 'instructions here',

@@ -74,8 +74,8 @@ const sectionsReducer = handleActions({
     byId: updateRowCount(state.byId, action)
   }),
 
-  REQUEST_PATTERN_EXPANDED: setFetching(state, action),
-  REQUEST_SECTION_EXPANDED: setFetching(state, action),
+  REQUEST_PATTERN_EXPANDED: setFetching,
+  REQUEST_SECTION_EXPANDED: setFetching,
 
   RECEIVE_PATTERN_EXPANDED: (state, action) => ({
     ...state,

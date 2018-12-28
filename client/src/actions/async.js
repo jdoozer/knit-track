@@ -95,11 +95,11 @@ export const fetchPatternExpandedIfNeeded = patternId => (dispatch, getState) =>
     !patterns.isFetching && patterns.allIds.includes(patternId)
   );
 
-  const sectionsLoaded = false;
+  let sectionsLoaded = false;
 
   if (patternLoaded) {
     const sectionsInPattern = patterns.byId[patternId].sectionIds;
-    const sectionsLoaded = (
+    sectionsLoaded = (
       sectionsInPattern.length
       && !sections.isFetching
       && sectionsInPattern.reduce(
@@ -122,6 +122,6 @@ export const fetchSectionExpandedIfNeeded = sectionId => (dispatch, getState) =>
     !sections.isFetching && sections.allIds.includes(sectionId)
   );
 
-  return sectionsLoaded ? Promise.resolve() : dispatch(fetchSectionExpanded(sectionId));
+  return sectionLoaded ? Promise.resolve() : dispatch(fetchSectionExpanded(sectionId));
 
 }

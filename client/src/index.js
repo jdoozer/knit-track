@@ -13,7 +13,7 @@ import { loadState, saveState } from 'utils/localStorage';
 import 'typeface-roboto';
 import 'index.css';
 
-const HYDRATE_STATE = true;
+const HYDRATE_STATE = false;
 const SAVE_STATE = false;
 
 const persistedState = loadState();
