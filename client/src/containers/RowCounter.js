@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { updateRowCount, fetchRowsIfNeeded } from 'actions';
+import { updateRowCount } from 'actions';
 import RowCounterDisplay from 'components/RowCounterDisplay';
 import { getRowsFromSection, getCurrentRow } from 'selectors';
 
@@ -19,21 +19,14 @@ const mapDispatchToProps = (dispatch, props) => {
   return {
     onUpdateCountClick: updateType => {
       dispatch(updateRowCount(sectionId, updateType))
-    },
-    fetchRowsIfNeeded: () => {
-      dispatch(fetchRowsIfNeeded(sectionId));
     }
   };
 };
 
 class RowCounter extends React.Component {
 
-  componentDidMount() {
-    this.props.fetchRowsIfNeeded();
-  }
-
   render() {
-    const { fetchRowsIfNeeded, sectionId, ...otherProps } = this.props;
+    const { sectionId, ...otherProps } = this.props;
     return (
       <RowCounterDisplay {...otherProps} />
     );
