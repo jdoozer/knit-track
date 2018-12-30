@@ -10,6 +10,8 @@ const initialPattern = ({ patternId, title }) => ({
   info: '<pattern info placeholder>',
 });
 
+const setFetching = (state, action) => ({ ...state, isFetching: true });
+
 const addSection = (state, action) => {
   const { patternId, sectionId } = action.payload;
   const pattern = state[patternId];
@@ -34,15 +36,8 @@ const patternsReducer = handleActions({
     byId: addSection(state.byId, action)
   }),
 
-  REQUEST_PATTERNS: (state, action) => ({
-    ...state,
-    isFetching: true
-  }),
-
-  REQUEST_PATTERN_EXPANDED: (state, action) => ({
-    ...state,
-    isFetching: true
-  }),
+  REQUEST_PATTERNS: setFetching,
+  REQUEST_PATTERN_EXPANDED: setFetching,
 
   RECEIVE_PATTERNS: (state, action) => ({
     ...state,

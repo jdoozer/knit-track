@@ -11,6 +11,8 @@ const initialSection = ({ title, sectionId, patternId, numRows }) => ({
   rowIds: [],
 });
 
+const setFetching = (state, action) => ({ ...state, isFetching: true });
+
 const addRow = (state, action) => {
   const { sectionId, rowId } = action.payload;
   const section = state[sectionId];
@@ -53,11 +55,6 @@ const updateRowCount = (state, action) => {
     },
   };
 };
-
-const setFetching = (state, action) => ({
-  ...state,
-  isFetching: true
-});
 
 const sectionsReducer = handleActions({
   ADD_SECTION: (state, action) => (

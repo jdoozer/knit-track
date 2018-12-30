@@ -3,10 +3,7 @@ import addToState from 'utils/addToState';
 import { initialStateNormal } from 'stateData/initialState';
 import { handleActions } from 'redux-actions';
 
-const setFetching = (state, action) => ({
-  ...state,
-  isFetching: true
-});
+const setFetching = (state, action) => ({ ...state, isFetching: true });
 
 const rowsReducer = handleActions({
   ADD_ROW: (state, action) => (

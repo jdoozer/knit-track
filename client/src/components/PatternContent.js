@@ -25,8 +25,7 @@ const styles = (theme) => ({
 const PatternContent = ({
   pattern, sections,
   deletePattern, deleteSection,
-  patternIsFetching, sectionsIsFetching,
-  classes, history
+  isFetching, classes, history
 }) => {
 
   if (pattern === null) {
@@ -36,7 +35,7 @@ const PatternContent = ({
 
     let mainContent, sectionContent;
 
-    if (patternIsFetching || !pattern) {
+    if (isFetching || !pattern) {
       mainContent = (
         <div className={classes.root}>
           <CircularProgress />
@@ -44,19 +43,14 @@ const PatternContent = ({
       );
 
     } else {
-
-      if (sectionsIsFetching) {
-        sectionContent = (<CircularProgress />);
-      } else {
-        sectionContent = sections.map(section => (
-          <SectionPanel
-            key={section.sectionId}
-            section={section}
-            deleteSection={deleteSection}
-            patternId={pattern.patternId}
-          />
-        ));
-      }
+      sectionContent = sections.map(section => (
+        <SectionPanel
+          key={section.sectionId}
+          section={section}
+          deleteSection={deleteSection}
+          patternId={pattern.patternId}
+        />
+      ));
 
       mainContent =  (
         <div className={classes.root}>
@@ -101,8 +95,7 @@ PatternContent.propTypes = {
   deleteSection: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  patternIsFetching: PropTypes.bool.isRequired,
-  sectionsIsFetching: PropTypes.bool.isRequired,
+  isFetching: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(PatternContent);
