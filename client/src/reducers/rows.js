@@ -22,9 +22,9 @@ const rowsReducer = handleActions({
     isFetching: false,
     byId: {
       ...state.byId,
-      ...action.payload.rows,
+      ...action.payload.rows.byId,
     },
-    allIds: state.allIds.concat(Object.keys(action.payload.rows)),
+    allIds: state.allIds.concat(action.payload.rows.allIds),
     lastUpdated: action.payload.receivedAt
   }),
 
@@ -33,9 +33,9 @@ const rowsReducer = handleActions({
     isFetching: false,
     byId: {
       ...state.byId,
-      ...action.payload.rows,
+      ...action.payload.rows.byId,
     },
-    allIds: state.allIds.concat(Object.keys(action.payload.rows)),
+    allIds: state.allIds.concat(action.payload.rows.allIds),
     lastUpdated: action.payload.receivedAt
   }),
 

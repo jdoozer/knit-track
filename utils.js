@@ -1,5 +1,5 @@
 
-exports.reduceObject = (obj, keys) => {
+exports.filterObject = (obj, keys) => {
 
   const objectAccum = (newObj, key) => {
     newObj[key] = obj[key];
@@ -11,9 +11,9 @@ exports.reduceObject = (obj, keys) => {
 };
 
 
-exports.combineIds = (obj, idField) => {
+exports.combineObjectArrays = (obj, field) => {
 
-  const ids = Object.keys(obj).map(key => obj[key][idField]);
-  return [].concat(...ids);
+  const arr = Object.keys(obj).map(key => obj[key][field]);
+  return [].concat(...arr);
 
 };

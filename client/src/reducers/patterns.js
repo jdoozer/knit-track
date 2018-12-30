@@ -44,9 +44,9 @@ const patternsReducer = handleActions({
     isFetching: false,
     byId: {
       ...state.byId,
-      ...action.payload.patterns,
+      ...action.payload.patterns.byId,
     },
-    allIds: state.allIds.concat(Object.keys(action.payload.patterns)),
+    allIds: state.allIds.concat(action.payload.patterns.allIds),
     lastUpdated: action.payload.receivedAt
   }),
 
