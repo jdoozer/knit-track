@@ -1,4 +1,5 @@
-import addToState from 'utils/addToState';
+import addItemToState from 'utils/addItemToState';
+import mergeNormalized from 'utils/mergeNormalized';
 import { initialStateNormal } from 'stateData/initialState';
 import { handleActions } from 'redux-actions';
 
@@ -27,8 +28,28 @@ const addSection = (state, action) => {
 
 const patternsReducer = handleActions({
 
+  REQUEST_PATTERNS: setFetching,
+  REQUEST_PATTERN_EXPANDED: setFetching,
+
+  RECEIVE_PATTERNS: (state, action) => (
+    mergeNormalized(
+      state,
+      action.payload.patterns,
+      { isFetching: false, lastUpdated: action.payload.receivedAt }
+    )
+  ),
+
+  RECEIVE_PATTERN_EXPANDED: (state, action) => (
+    addItemToState(
+      state,
+      action.payload.pattern.patternId,
+      action.payload.pattern,
+      { isFetching: false, lastUpdated: action.payload.receivedAt }
+    )
+  ),
+
   ADD_PATTERN: (state, action) => (
-    addToState(state, action.payload.patternId, initialPattern(action.payload))
+    addItemToState(state, action.payload.patternId, initialPattern(action.payload))
   ),
 
   ADD_SECTION: (state, action) => ({
@@ -36,32 +57,6 @@ const patternsReducer = handleActions({
     byId: addSection(state.byId, action)
   }),
 
-  REQUEST_PATTERNS: setFetching,
-  REQUEST_PATTERN_EXPANDED: setFetching,
-
-  RECEIVE_PATTERNS: (state, action) => ({
-    ...state,
-    isFetching: false,
-    byId: {
-      ...state.byId,
-      ...action.payload.patterns.byId,
-    },
-    allIds: state.allIds.concat(action.payload.patterns.allIds),
-    lastUpdated: action.payload.receivedAt
-  }),
-
-  RECEIVE_PATTERN_EXPANDED: (state, action) => ({
-    ...state,
-    isFetching: false,
-    byId: {
-      ...state.byId,
-      [action.payload.pattern.patternId]: {
-        ...action.payload.pattern
-      },
-    },
-    allIds: state.allIds.concat(action.payload.pattern.patternId),
-    lastUpdated: action.payload.receivedAt
-  }),
 
 }, initialStateNormal);
 

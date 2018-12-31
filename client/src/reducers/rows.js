@@ -1,43 +1,32 @@
 import deleteFromState from 'utils/deleteFromState';
-import addToState from 'utils/addToState';
+import addItemToState from 'utils/addItemToState';
+import mergeNormalized from 'utils/mergeNormalized';
 import { initialStateNormal } from 'stateData/initialState';
 import { handleActions } from 'redux-actions';
 
 const setFetching = (state, action) => ({ ...state, isFetching: true });
 
+const addRows = (state, action) => mergeNormalized(
+  state,
+  action.payload.rows,
+  { isFetching: false, lastUpdated: action.payload.receivedAt }
+);
+
 const rowsReducer = handleActions({
+
+  REQUEST_PATTERN_EXPANDED: setFetching,
+  REQUEST_SECTION_EXPANDED: setFetching,
+
+  RECEIVE_PATTERN_EXPANDED: addRows,
+  RECEIVE_SECTION_EXPANDED: addRows,
+
   ADD_ROW: (state, action) => (
-    addToState(state, action.payload.rowId, action.payload)
+    addItemToState(state, action.payload.rowId, action.payload)
   ),
 
   DELETE_ROW: (state, action) => (
     deleteFromState(state, action.payload)
   ),
-
-  REQUEST_PATTERN_EXPANDED: setFetching,
-  REQUEST_SECTION_EXPANDED: setFetching,
-
-  RECEIVE_PATTERN_EXPANDED: (state, action) => ({
-    ...state,
-    isFetching: false,
-    byId: {
-      ...state.byId,
-      ...action.payload.rows.byId,
-    },
-    allIds: state.allIds.concat(action.payload.rows.allIds),
-    lastUpdated: action.payload.receivedAt
-  }),
-
-  RECEIVE_SECTION_EXPANDED: (state, action) => ({
-    ...state,
-    isFetching: false,
-    byId: {
-      ...state.byId,
-      ...action.payload.rows.byId,
-    },
-    allIds: state.allIds.concat(action.payload.rows.allIds),
-    lastUpdated: action.payload.receivedAt
-  }),
 
 }, initialStateNormal);
 

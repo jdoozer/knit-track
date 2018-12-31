@@ -1,4 +1,5 @@
-import addToState from 'utils/addToState';
+import addItemToState from 'utils/addItemToState';
+import mergeNormalized from 'utils/mergeNormalized';
 import { initialStateNormal } from 'stateData/initialState';
 import { handleActions } from 'redux-actions';
 
@@ -29,36 +30,53 @@ const addRow = (state, action) => {
 const updateRowCount = (state, action) => {
   const { sectionId, updateType } = action.payload;
   const section = state[sectionId];
-  const { currentRow, numRows } = section;
-
-  let nextRow = currentRow;
-
-  switch(updateType) {
-    case 'INCREMENT':
-      nextRow = Math.min(currentRow + 1, numRows - 1);
-      break;
-    case 'DECREMENT':
-      nextRow = Math.max(currentRow - 1, 0);
-      break;
-    case 'RESET':
-      nextRow = 0;
-      break;
-    default:
-      break;
-  }
 
   return {
     ...state,
     [sectionId]: {
       ...section,
-      currentRow: nextRow,
+      currentRow: getNextRow(updateType, section),
     },
   };
 };
 
+const getNextRow = (updateType, { currentRow, numRows }) => {
+  switch(updateType) {
+    case 'INCREMENT':
+      return Math.min(currentRow + 1, numRows - 1);
+    case 'DECREMENT':
+      return Math.max(currentRow - 1, 0);
+    case 'RESET':
+      return 0;
+    default:
+      return currentRow;
+  }
+}
+
 const sectionsReducer = handleActions({
+
+  REQUEST_PATTERN_EXPANDED: setFetching,
+  REQUEST_SECTION_EXPANDED: setFetching,
+
+  RECEIVE_PATTERN_EXPANDED: (state, action) => (
+    mergeNormalized(
+      state,
+      action.payload.sections,
+      { isFetching: false, lastUpdated: action.payload.receivedAt }
+    )
+  ),
+
+  RECEIVE_SECTION_EXPANDED: (state, action) => (
+    addItemToState(
+      state,
+      action.payload.section.sectionId,
+      action.payload.section,
+      { isFetching: false, lastUpdated: action.payload.receivedAt }
+    )
+  ),
+
   ADD_SECTION: (state, action) => (
-    addToState(state, action.payload.sectionId, initialSection(action.payload))
+    addItemToState(state, action.payload.sectionId, initialSection(action.payload))
   ),
 
   ADD_ROW: (state, action) => ({
@@ -69,33 +87,6 @@ const sectionsReducer = handleActions({
   UPDATE_ROW_COUNT: (state, action) => ({
     ...state,
     byId: updateRowCount(state.byId, action)
-  }),
-
-  REQUEST_PATTERN_EXPANDED: setFetching,
-  REQUEST_SECTION_EXPANDED: setFetching,
-
-  RECEIVE_PATTERN_EXPANDED: (state, action) => ({
-    ...state,
-    isFetching: false,
-    byId: {
-      ...state.byId,
-      ...action.payload.sections.byId,
-    },
-    allIds: state.allIds.concat(action.payload.sections.allIds),
-    lastUpdated: action.payload.receivedAt
-  }),
-
-  RECEIVE_SECTION_EXPANDED: (state, action) => ({
-    ...state,
-    isFetching: false,
-    byId: {
-      ...state.byId,
-      [action.payload.section.sectionId]: {
-        ...action.payload.section
-      },
-    },
-    allIds: state.allIds.concat(action.payload.section.sectionId),
-    lastUpdated: action.payload.receivedAt
   }),
 
 }, initialStateNormal);
