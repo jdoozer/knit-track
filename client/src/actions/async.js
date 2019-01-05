@@ -4,11 +4,11 @@ import fetch from 'cross-fetch';
 const MOCK_SERVER_URL = 'api/';
 
 // SETUP ACTIONS
-export const requestPatterns = createAction('REQUEST_PATTERNS');
-export const requestPatternExpanded = createAction('REQUEST_PATTERN_EXPANDED');
-export const requestSectionExpanded = createAction('REQUEST_SECTION_EXPANDED');
+const requestPatterns = createAction('REQUEST_PATTERNS');
+const requestPatternExpanded = createAction('REQUEST_PATTERN_EXPANDED');
+const requestSectionExpanded = createAction('REQUEST_SECTION_EXPANDED');
 
-export const receivePatterns = createAction(
+const receivePatterns = createAction(
   'RECEIVE_PATTERNS',
   json => ({
     patterns: json.patterns,
@@ -16,7 +16,7 @@ export const receivePatterns = createAction(
   })
 );
 
-export const receivePatternExpanded = createAction(
+const receivePatternExpanded = createAction(
   'RECEIVE_PATTERN_EXPANDED',
   json => ({
     pattern: json.pattern,
@@ -26,7 +26,7 @@ export const receivePatternExpanded = createAction(
   })
 );
 
-export const receiveSectionExpanded = createAction(
+const receiveSectionExpanded = createAction(
   'RECEIVE_SECTION_EXPANDED',
   json => ({
     section: json.section,
@@ -35,54 +35,45 @@ export const receiveSectionExpanded = createAction(
   })
 );
 
+// BASIC ACTION CREATORS
+const fetchGet = (request, receive, path, host=MOCK_SERVER_URL) => (
+  dispatch => {
+    dispatch(request());
+    return fetch(`${host}/${path}`, { method: 'GET' })
+      .then(
+        response => response.json(),
+        error => console.log('An error occurred.', error)
+      )
+      .then(
+        json => dispatch(receive(json))
+      );
+  }
+);
+
 // ACTION CREATORS FOR FETCHING
-const fetchPatterns = () => dispatch => {
+const fetchPatterns = () => fetchGet(
+  requestPatterns,
+  receivePatterns,
+  'patterns'
+);
 
-  dispatch(requestPatterns());
+const fetchPatternExpanded = patternId => fetchGet(
+  requestPatternExpanded,
+  receivePatternExpanded,
+  `patterns/${patternId}`
+);
 
-  return fetch(`${MOCK_SERVER_URL}/patterns`, { method: 'GET' })
-    .then(
-      response => response.json(),
-      error => console.log('An error occurred.', error)
-    )
-    .then(json => dispatch(receivePatterns(json))
-  );
-};
+const fetchSectionExpanded = sectionId => fetchGet(
+  requestSectionExpanded,
+  receiveSectionExpanded,
+  `sections/${sectionId}`
+);
 
-const fetchPatternExpanded = patternId => dispatch => {
-
-  dispatch(requestPatternExpanded());
-
-  return fetch(`${MOCK_SERVER_URL}/patterns/${patternId}`, { method: 'GET' })
-    .then(
-      response => response.json(),
-      error => console.log('An error occurred.', error)
-    )
-    .then(json => dispatch(receivePatternExpanded(json))
-  );
-};
-
-const fetchSectionExpanded = sectionId => dispatch => {
-
-  dispatch(requestSectionExpanded());
-
-  return fetch(`${MOCK_SERVER_URL}/sections/${sectionId}`, { method: 'GET' })
-    .then(
-      response => response.json(),
-      error => console.log('An error occurred.', error)
-    )
-    .then(json => dispatch(receiveSectionExpanded(json))
-  );
-};
-
-
-// CONDITIONAL ASYNC (TODO: this might need some work later on)
-//     -> check reducers to make sure we SKIP updating the pattern
+// CONDITIONAL FETCHING
 export const fetchPatternsIfNeeded = () => (dispatch, getState) => {
   const { patterns } = getState();
-  const shouldFetchPatterns = !patterns.isFetching && !patterns.allIds.length;
-  if (shouldFetchPatterns) return dispatch(fetchPatterns());
-  return Promise.resolve();
+  const patternsLoaded = !patterns.isFetching && patterns.allIds.length;
+  return patternsLoaded ? Promise.resolve() : dispatch(fetchPatterns());
 };
 
 export const fetchPatternExpandedIfNeeded = patternId => (dispatch, getState) => {
@@ -100,8 +91,8 @@ export const fetchPatternExpandedIfNeeded = patternId => (dispatch, getState) =>
   if (patternLoaded) {
     const sectionsInPattern = patterns.byId[patternId].sectionIds;
     sectionsLoaded = (
-      sectionsInPattern.length
-      && !sections.isFetching
+      !sections.isFetching
+      && sectionsInPattern.length
       && sectionsInPattern.reduce(
           (idsIncluded, id) => idsIncluded && sections.allIds.includes(id), true
         )
