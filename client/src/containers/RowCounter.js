@@ -10,7 +10,7 @@ const mapStateToProps = (state, props) => {
   return {
     rows: getRowsFromSection(state, sectionId),
     currentRow: getCurrentRow(state, sectionId),
-    isFetching: state.rows.isFetching,
+    loading: state.rows.loading,
   };
 };
 
@@ -38,7 +38,7 @@ RowCounter.propTypes = {
   currentRow: PropTypes.number.isRequired,
   rows: PropTypes.array.isRequired,
   onUpdateCountClick: PropTypes.func.isRequired,
-  isFetching: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RowCounter);

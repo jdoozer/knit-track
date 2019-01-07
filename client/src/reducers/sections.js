@@ -12,7 +12,7 @@ const initialSection = ({ title, sectionId, patternId, numRows }) => ({
   rowIds: [],
 });
 
-const setFetching = (state, action) => ({ ...state, isFetching: true });
+const setLoading = (state, action) => ({ ...state, loading: true });
 
 const addRow = (state, action) => {
   const { sectionId, rowId } = action.payload;
@@ -55,14 +55,14 @@ const getNextRow = (updateType, { currentRow, numRows }) => {
 
 const sectionsReducer = handleActions({
 
-  REQUEST_PATTERN_EXPANDED: setFetching,
-  REQUEST_SECTION_EXPANDED: setFetching,
+  REQUEST_PATTERN_EXPANDED: setLoading,
+  REQUEST_SECTION_EXPANDED: setLoading,
 
   RECEIVE_PATTERN_EXPANDED: (state, action) => (
     mergeNormalized(
       state,
       action.payload.sections,
-      { isFetching: false, lastUpdated: action.payload.receivedAt }
+      { loading: false, lastUpdated: action.payload.receivedAt }
     )
   ),
 
@@ -71,7 +71,7 @@ const sectionsReducer = handleActions({
       state,
       action.payload.section.sectionId,
       action.payload.section,
-      { isFetching: false, lastUpdated: action.payload.receivedAt }
+      { loading: false, lastUpdated: action.payload.receivedAt }
     )
   ),
 

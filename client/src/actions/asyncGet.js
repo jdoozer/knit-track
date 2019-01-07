@@ -1,41 +1,12 @@
-import { createAction } from 'redux-actions';
 import fetch from 'cross-fetch';
+import {
+  requestPatterns, requestPatternExpanded, requestSectionExpanded,
+  receivePatterns, receivePatternExpanded, receiveSectionExpanded
+} from './asyncSetup';
 
 const MOCK_SERVER_URL = 'api/';
 
-// SETUP ACTIONS
-const requestPatterns = createAction('REQUEST_PATTERNS');
-const requestPatternExpanded = createAction('REQUEST_PATTERN_EXPANDED');
-const requestSectionExpanded = createAction('REQUEST_SECTION_EXPANDED');
-
-const receivePatterns = createAction(
-  'RECEIVE_PATTERNS',
-  json => ({
-    patterns: json.patterns,
-    receivedAt: Date.now()
-  })
-);
-
-const receivePatternExpanded = createAction(
-  'RECEIVE_PATTERN_EXPANDED',
-  json => ({
-    pattern: json.pattern,
-    sections: json.sections,
-    rows: json.rows,
-    receivedAt: Date.now()
-  })
-);
-
-const receiveSectionExpanded = createAction(
-  'RECEIVE_SECTION_EXPANDED',
-  json => ({
-    section: json.section,
-    rows: json.rows,
-    receivedAt: Date.now()
-  })
-);
-
-// BASIC ACTION CREATORS
+// BASIC ACTION CREATOR
 const fetchGet = (request, receive, path, host=MOCK_SERVER_URL) => (
   dispatch => {
     dispatch(request());
@@ -50,7 +21,7 @@ const fetchGet = (request, receive, path, host=MOCK_SERVER_URL) => (
   }
 );
 
-// ACTION CREATORS FOR FETCHING
+// DEFAULT ACTION CREATORS FOR FETCHING
 const fetchPatterns = () => fetchGet(
   requestPatterns,
   receivePatterns,
@@ -72,7 +43,7 @@ const fetchSectionExpanded = sectionId => fetchGet(
 // CONDITIONAL FETCHING
 export const fetchPatternsIfNeeded = () => (dispatch, getState) => {
   const { patterns } = getState();
-  const patternsLoaded = !patterns.isFetching && patterns.allIds.length;
+  const patternsLoaded = !patterns.loading && patterns.allIds.length;
   return patternsLoaded ? Promise.resolve() : dispatch(fetchPatterns());
 };
 
@@ -83,7 +54,7 @@ export const fetchPatternExpandedIfNeeded = patternId => (dispatch, getState) =>
   const { patterns, sections } = getState();
 
   const patternLoaded = (
-    !patterns.isFetching && patterns.allIds.includes(patternId)
+    !patterns.loading && patterns.allIds.includes(patternId)
   );
 
   let sectionsLoaded = false;
@@ -91,7 +62,7 @@ export const fetchPatternExpandedIfNeeded = patternId => (dispatch, getState) =>
   if (patternLoaded) {
     const sectionsInPattern = patterns.byId[patternId].sectionIds;
     sectionsLoaded = (
-      !sections.isFetching
+      !sections.loading
       && sectionsInPattern.length
       && sectionsInPattern.reduce(
           (idsIncluded, id) => idsIncluded && sections.allIds.includes(id), true
@@ -110,7 +81,7 @@ export const fetchSectionExpandedIfNeeded = sectionId => (dispatch, getState) =>
   const { sections } = getState();
 
   const sectionLoaded = (
-    !sections.isFetching && sections.allIds.includes(sectionId)
+    !sections.loading && sections.allIds.includes(sectionId)
   );
 
   return sectionLoaded ? Promise.resolve() : dispatch(fetchSectionExpanded(sectionId));

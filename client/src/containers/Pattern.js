@@ -8,7 +8,7 @@ import { getSelectedPattern, getSelectedPatternSections } from 'selectors';
 const mapStateToProps = state => ({
   pattern: getSelectedPattern(state),
   sections: getSelectedPatternSections(state),
-  isFetching: (state.patterns.isFetching || state.sections.isFetching),
+  loading: (state.patterns.loading || state.sections.loading),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -52,7 +52,7 @@ Pattern.propTypes = {
   deletePattern: PropTypes.func.isRequired,
   deleteSection: PropTypes.func.isRequired,
   fetchPatternExpandedIfNeeded: PropTypes.func.isRequired,
-  isFetching: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Pattern);

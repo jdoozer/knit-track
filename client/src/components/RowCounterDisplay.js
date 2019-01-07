@@ -61,11 +61,11 @@ const styles = theme => ({
   },
 });
 
-const RowCounterDisplay = ({ currentRow, rows, onUpdateCountClick, classes, isFetching }) => {
+const RowCounterDisplay = ({ currentRow, rows, onUpdateCountClick, classes, loading }) => {
 
   let rowInfo;
 
-  if (isFetching) {
+  if (loading) {
     rowInfo = (<CircularProgress />);
   } else {
     rowInfo = (
@@ -119,7 +119,7 @@ RowCounterDisplay.propTypes = {
   rows: PropTypes.array.isRequired,
   onUpdateCountClick: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
-  isFetching: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(RowCounterDisplay);

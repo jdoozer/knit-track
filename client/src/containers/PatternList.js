@@ -7,7 +7,7 @@ import { getPatterns } from 'selectors';
 
 const mapStateToProps = state => ({
   patterns: getPatterns(state),
-  isFetching: state.patterns.isFetching,
+  loading: state.patterns.loading,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -26,11 +26,11 @@ class PatternList extends React.Component {
   }
 
   render() {
-    const { patterns, onPatternClick, isFetching } = this.props;
+    const { patterns, onPatternClick, loading } = this.props;
     return (<PatternListItems
       patterns={patterns}
       onPatternClick={onPatternClick}
-      isFetching={isFetching}
+      loading={loading}
     />);
   }
 
@@ -45,7 +45,7 @@ PatternList.propTypes = {
   ).isRequired,
   onPatternClick: PropTypes.func.isRequired,
   fetchPatternsIfNeeded: PropTypes.func.isRequired,
-  isFetching: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PatternList);

@@ -4,18 +4,18 @@ import mergeNormalized from 'utils/mergeNormalized';
 import { initialStateNormal } from 'stateData/initialState';
 import { handleActions } from 'redux-actions';
 
-const setFetching = (state, action) => ({ ...state, isFetching: true });
+const setLoading = (state, action) => ({ ...state, loading: true });
 
 const addRows = (state, action) => mergeNormalized(
   state,
   action.payload.rows,
-  { isFetching: false, lastUpdated: action.payload.receivedAt }
+  { loading: false, lastUpdated: action.payload.receivedAt }
 );
 
 const rowsReducer = handleActions({
 
-  REQUEST_PATTERN_EXPANDED: setFetching,
-  REQUEST_SECTION_EXPANDED: setFetching,
+  REQUEST_PATTERN_EXPANDED: setLoading,
+  REQUEST_SECTION_EXPANDED: setLoading,
 
   RECEIVE_PATTERN_EXPANDED: addRows,
   RECEIVE_SECTION_EXPANDED: addRows,

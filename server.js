@@ -1,15 +1,20 @@
 
 const express = require('express');
-
+const bodyParser = require('body-parser');
 const mockServerData = require('./mockServerData');
 const utils = require('./utils');
 
 const app = express();
 const port = process.env.PORT || 5000;
 
+app.use(bodyParser.json());
 
 app.get('/api/patterns', (req, res) => {
   res.send({ patterns: mockServerData.patterns });
+});
+
+app.post('/api/patterns', (req, res) => {
+  res.send({ pattern: req.body.pattern })
 });
 
 
@@ -43,6 +48,5 @@ app.get('/api/sections/:sectionId', (req, res) => {
   res.send({ section, rows });
 
 });
-
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

@@ -25,7 +25,7 @@ const styles = (theme) => ({
 const PatternContent = ({
   pattern, sections,
   deletePattern, deleteSection,
-  isFetching, classes, history
+  loading, classes, history
 }) => {
 
   if (pattern === null) {
@@ -35,7 +35,7 @@ const PatternContent = ({
 
     let mainContent, sectionContent;
 
-    if (isFetching || !pattern) {
+    if (loading || !pattern) {
       mainContent = (
         <div className={classes.root}>
           <CircularProgress />
@@ -95,7 +95,7 @@ PatternContent.propTypes = {
   deleteSection: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  isFetching: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(PatternContent);

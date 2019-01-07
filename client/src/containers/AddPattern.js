@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
-import { addPattern } from 'actions';
+import { createPattern } from 'actions';
 
 const styles = theme => ({
   root: {
@@ -37,7 +37,7 @@ class AddPattern extends React.Component {
     event.preventDefault();
 
     if (value.trim()) {
-      dispatch(addPattern(value));
+      dispatch(createPattern(value));
       this.setState({ value: '' });
     }
   }

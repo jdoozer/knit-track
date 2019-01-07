@@ -1,5 +1,5 @@
 import generateId from 'uuid/v4';
-import { createAction } from 'redux-actions';
+import { createAction, createActions } from 'redux-actions';
 
 export const addPattern = createAction(
   'ADD_PATTERN',
@@ -36,9 +36,10 @@ export const updateRowCount = createAction(
   })
 );
 
-export const deletePattern = createAction('DELETE_PATTERN');
-export const deleteSection = createAction('DELETE_SECTION');
-export const deleteRow = createAction('DELETE_ROW');
+export const { deletePattern, deleteSection, deleteRow } = createActions(
+  'DELETE_PATTERN', 'DELETE_SECTION', 'DELETE_ROW'
+);
 
-export const selectPattern = createAction('SELECT_PATTERN');
-export const clearSection = createAction('CLEAR_SECTION');
+export const { selectPattern, clearSection } = createActions(
+  'SELECT_PATTERN', 'CLEAR_SECTION'
+);

@@ -17,11 +17,11 @@ const styles = theme => ({
   },
 });
 
-const PatternListItems = ({ patterns, onPatternClick, isFetching, classes }) => {
+const PatternListItems = ({ patterns, onPatternClick, loading, classes }) => {
 
   let patternListContent;
 
-  if (isFetching) {
+  if (loading) {
 
     patternListContent = (<CircularProgress />);
 
@@ -69,7 +69,7 @@ PatternListItems.propTypes = {
   ).isRequired,
   onPatternClick: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
-  isFetching: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(PatternListItems);
