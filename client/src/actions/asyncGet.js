@@ -1,44 +1,38 @@
-import fetch from 'cross-fetch';
 import {
   requestPatterns, requestPatternExpanded, requestSectionExpanded,
-  receivePatterns, receivePatternExpanded, receiveSectionExpanded
+  receivePatterns, receivePatternExpanded, receiveSectionExpanded,
+  combinedFetchAction, MOCK_SERVER_URL
 } from './asyncSetup';
 
-const MOCK_SERVER_URL = 'api/';
-
 // BASIC ACTION CREATOR
-const fetchGet = (request, receive, path, host=MOCK_SERVER_URL) => (
-  dispatch => {
-    dispatch(request());
-    return fetch(`${host}/${path}`, { method: 'GET' })
-      .then(
-        response => response.json(),
-        error => console.log('An error occurred.', error)
-      )
-      .then(
-        json => dispatch(receive(json))
-      );
-  }
-);
+const combinedFetchGet = ({ requestAction, receiveAction, path }) =>
+  combinedFetchAction({
+    requestAction,
+    receiveAction,
+    path,
+    requestType: 'GET',
+    body: null,
+    host: MOCK_SERVER_URL,
+  });
 
 // DEFAULT ACTION CREATORS FOR FETCHING
-const fetchPatterns = () => fetchGet(
-  requestPatterns,
-  receivePatterns,
-  'patterns'
-);
+const fetchPatterns = () => combinedFetchGet({
+  requestAction: requestPatterns,
+  receiveAction: receivePatterns,
+  path: 'patterns'
+});
 
-const fetchPatternExpanded = patternId => fetchGet(
-  requestPatternExpanded,
-  receivePatternExpanded,
-  `patterns/${patternId}`
-);
+const fetchPatternExpanded = patternId => combinedFetchGet({
+  requestAction: requestPatternExpanded,
+  receiveAction: receivePatternExpanded,
+  path: `patterns/${patternId}`
+});
 
-const fetchSectionExpanded = sectionId => fetchGet(
-  requestSectionExpanded,
-  receiveSectionExpanded,
-  `sections/${sectionId}`
-);
+const fetchSectionExpanded = sectionId => combinedFetchGet({
+  requestAction: requestSectionExpanded,
+  receiveAction: receiveSectionExpanded,
+  path: `sections/${sectionId}`
+});
 
 // CONDITIONAL FETCHING
 export const fetchPatternsIfNeeded = () => (dispatch, getState) => {
