@@ -1,7 +1,6 @@
 import {
   requestPatterns, requestPatternExpanded, requestSectionExpanded,
-  receivePatterns, receivePatternExpanded, receiveSectionExpanded,
-  combinedFetchAction, MOCK_SERVER_URL
+  receivePatternData, combinedFetchAction, MOCK_SERVER_URL
 } from './asyncSetup';
 
 // BASIC ACTION CREATOR
@@ -18,19 +17,19 @@ const combinedFetchGet = ({ requestAction, receiveAction, path }) =>
 // DEFAULT ACTION CREATORS FOR FETCHING
 const fetchPatterns = () => combinedFetchGet({
   requestAction: requestPatterns,
-  receiveAction: receivePatterns,
+  receiveAction: receivePatternData,
   path: 'patterns'
 });
 
 const fetchPatternExpanded = patternId => combinedFetchGet({
   requestAction: requestPatternExpanded,
-  receiveAction: receivePatternExpanded,
+  receiveAction: receivePatternData,
   path: `patterns/${patternId}`
 });
 
 const fetchSectionExpanded = sectionId => combinedFetchGet({
   requestAction: requestSectionExpanded,
-  receiveAction: receiveSectionExpanded,
+  receiveAction: receivePatternData,
   path: `sections/${sectionId}`
 });
 

@@ -60,6 +60,8 @@ class SectionSetupForm extends React.Component {
 
   componentWillMount() {
 
+    console.log(this.props.numRows);
+
     const { history, sectionId } = this.props;
 
     if (sectionId === null) {

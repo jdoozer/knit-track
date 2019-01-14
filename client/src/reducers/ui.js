@@ -7,7 +7,7 @@ const selectedPattern = handleActions({
 }, null);
 
 const sectionToEdit = handleActions({
-  ADD_SECTION: (state, action) => action.payload,
+  ADD_SECTION: (state, action) => action.payload.sectionId,
   CLEAR_SECTION: (state, action) => null,
 }, null);
 

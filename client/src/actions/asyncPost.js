@@ -1,10 +1,10 @@
 import generateId from 'uuid/v4';
 import {
-  requestPatternExpanded, receivePattern,
+  requestPatternExpanded, receivePatternData,
   combinedFetchAction, MOCK_SERVER_URL
 } from './asyncSetup';
 
-// TODO: get rid of this here (currently in 2 places)
+// TODO: get rid of this here or in reducer (don't want in 2 places)
 const initialPattern = ({ patternId, title }) => ({
   title,
   patternId,
@@ -25,7 +25,7 @@ const combinedFetchPost = ({ requestAction, receiveAction, path, body }) =>
 
 export const createPattern = title => combinedFetchPost({
   requestAction: requestPatternExpanded,
-  receiveAction: receivePattern,
+  receiveAction: receivePatternData,
   body: { pattern: initialPattern({ patternId: generateId(), title }) },
   path: 'patterns'
 });

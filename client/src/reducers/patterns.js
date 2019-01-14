@@ -1,8 +1,7 @@
 import addItemToState from 'utils/addItemToState';
 import mergeNormalized from 'utils/mergeNormalized';
 import { initialStateNormal } from 'stateData/initialState';
-import { handleActions } from 'redux-actions';
-
+import { handleActions, combineActions } from 'redux-actions';
 
 const initialPattern = ({ patternId, title }) => ({
   title,
@@ -28,34 +27,25 @@ const addSection = (state, action) => {
 
 const patternsReducer = handleActions({
 
-  REQUEST_PATTERNS: setLoading,
-  REQUEST_PATTERN_EXPANDED: setLoading,
+  [combineActions('REQUEST_PATTERNS', 'REQUEST_PATTERN_EXPANDED')]: setLoading,
 
-  RECEIVE_PATTERNS: (state, action) => (
-    mergeNormalized(
-      state,
-      action.payload.patterns,
-      { loading: false, lastUpdated: action.payload.receivedAt }
-    )
-  ),
-
-  RECEIVE_PATTERN: (state, action) => (
-    addItemToState(
-      state,
-      action.payload.pattern.patternId,
-      action.payload.pattern,
-      { loading: false, lastUpdated: action.payload.receivedAt }
-    )
-  ),
-
-  RECEIVE_PATTERN_EXPANDED: (state, action) => (
-    addItemToState(
-      state,
-      action.payload.pattern.patternId,
-      action.payload.pattern,
-      { loading: false, lastUpdated: action.payload.receivedAt }
-    )
-  ),
+  RECEIVE_PATTERN_DATA: (state, action) => {
+    if (action.payload.pattern) {
+      return addItemToState(
+        state,
+        action.payload.pattern.patternId,
+        action.payload.pattern,
+        { loading: false, lastUpdated: action.payload.receivedAt }
+      );
+    } else if (action.payload.patterns) {
+      return mergeNormalized(
+        state,
+        action.payload.patterns,
+        { loading: false, lastUpdated: action.payload.receivedAt }
+      );
+    }
+    return state;
+  },
 
   ADD_PATTERN: (state, action) => (
     addItemToState(state, action.payload.patternId, initialPattern(action.payload))

@@ -1,7 +1,7 @@
 import addItemToState from 'utils/addItemToState';
 import mergeNormalized from 'utils/mergeNormalized';
 import { initialStateNormal } from 'stateData/initialState';
-import { handleActions } from 'redux-actions';
+import { handleActions, combineActions } from 'redux-actions';
 
 const initialSection = ({ title, sectionId, patternId, numRows }) => ({
   title,
@@ -55,25 +55,30 @@ const getNextRow = (updateType, { currentRow, numRows }) => {
 
 const sectionsReducer = handleActions({
 
-  REQUEST_PATTERN_EXPANDED: setLoading,
-  REQUEST_SECTION_EXPANDED: setLoading,
+  [combineActions('REQUEST_PATTERN_EXPANDED', 'REQUEST_SECTION_EXPANDED')]: setLoading,
 
-  RECEIVE_PATTERN_EXPANDED: (state, action) => (
-    mergeNormalized(
-      state,
-      action.payload.sections,
-      { loading: false, lastUpdated: action.payload.receivedAt }
-    )
-  ),
-
-  RECEIVE_SECTION_EXPANDED: (state, action) => (
-    addItemToState(
-      state,
-      action.payload.section.sectionId,
-      action.payload.section,
-      { loading: false, lastUpdated: action.payload.receivedAt }
-    )
-  ),
+  RECEIVE_PATTERN_DATA: (state, action) => {
+    if (action.payload.section) {
+      return addItemToState(
+        state,
+        action.payload.section.patternId,
+        action.payload.section,
+        { loading: false, lastUpdated: action.payload.receivedAt }
+      );
+    } else if (action.payload.sections) {
+      return mergeNormalized(
+        state,
+        action.payload.sections,
+        { loading: false, lastUpdated: action.payload.receivedAt }
+      );
+    } else if (action.payload.rows) {
+      return {
+        ...state,
+        byId: addRow(state.byId, action)
+      }
+    }
+    return state;
+  },
 
   ADD_SECTION: (state, action) => (
     addItemToState(state, action.payload.sectionId, initialSection(action.payload))

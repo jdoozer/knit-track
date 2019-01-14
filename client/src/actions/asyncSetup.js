@@ -43,10 +43,18 @@ export const combinedFetchAction = ({
   }
 };
 
+export const receivePatternData = createAction(
+  'RECEIVE_PATTERN_DATA',
+  json => ({
+    ...json,
+    receivedAt: Date.now()
+  })
+);
+
 export const receivePattern = createAction(
   'RECEIVE_PATTERN',
   json => ({
-    pattern: json.pattern,
+    ...json,
     receivedAt: Date.now()
   })
 );
@@ -54,7 +62,7 @@ export const receivePattern = createAction(
 export const receivePatterns = createAction(
   'RECEIVE_PATTERNS',
   json => ({
-    patterns: json.patterns,
+    ...json,
     receivedAt: Date.now()
   })
 );
@@ -62,9 +70,7 @@ export const receivePatterns = createAction(
 export const receivePatternExpanded = createAction(
   'RECEIVE_PATTERN_EXPANDED',
   json => ({
-    pattern: json.pattern,
-    sections: json.sections,
-    rows: json.rows,
+    ...json,
     receivedAt: Date.now()
   })
 );
@@ -72,8 +78,7 @@ export const receivePatternExpanded = createAction(
 export const receiveSectionExpanded = createAction(
   'RECEIVE_SECTION_EXPANDED',
   json => ({
-    section: json.section,
-    rows: json.rows,
+    ...json,
     receivedAt: Date.now()
   })
 );
