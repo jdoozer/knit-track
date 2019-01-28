@@ -1,31 +1,18 @@
 import deleteFromState from 'utils/deleteFromState';
 import addItemToState from 'utils/addItemToState';
-import mergeNormalized from 'utils/mergeNormalized';
+import { mergeStateData, setLoading } from 'utils/reducerUtils';
 import { initialStateNormal } from 'stateData/initialState';
 import { handleActions, combineActions } from 'redux-actions';
-
-const setLoading = (state, action) => ({ ...state, loading: true });
-
-const addRows = (state, action) => mergeNormalized(
-  state,
-  action.payload.rows,
-  { loading: false, lastUpdated: action.payload.receivedAt }
-);
 
 const rowsReducer = handleActions({
 
   [combineActions('REQUEST_PATTERN_EXPANDED', 'REQUEST_SECTION_EXPANDED')]: setLoading,
 
-  RECEIVE_PATTERN_DATA: (state, action) => {
-    if (action.payload.rows) {
-      return mergeNormalized(
-        state,
-        action.payload.rows,
-        { loading: false, lastUpdated: action.payload.receivedAt }
-      );
-    }
-    return state;
-  },
+  REQUEST_PATTERN_DATA: setLoading('rows'),
+
+  RECEIVE_PATTERN_DATA: (state, action) => (
+    mergeStateData(state, action.payload.rows, action.payload.receivedAt)
+  ),
 
   ADD_ROW: (state, action) => (
     addItemToState(state, action.payload.rowId, action.payload)

@@ -14,13 +14,28 @@ app.get('/api/patterns', (req, res) => {
 });
 
 app.post('/api/patterns', (req, res) => {
-  res.send({ pattern: req.body.pattern })
+  const pattern = req.body.pattern;
+  res.send({
+    patterns: {
+      byId: { [pattern.patternId]: pattern },
+      allIds: [pattern.patternId],
+    }
+  })
 });
 
+// app.post('/api/patterns', (req, res) => {
+//   res.send({ pattern: req.body.pattern })
+// });
 
 app.get('/api/patterns/:patternId', (req, res) => {
 
-  const pattern = mockServerData.patterns.byId[req.params.patternId];
+  const patternId = req.params.patternId;
+  const pattern = mockServerData.patterns.byId[patternId];
+
+  const patterns = {
+    byId: { [patternId]: pattern },
+    allIds: [patternId]
+  };
   const sections = {
     byId: utils.filterObject(mockServerData.sections.byId, pattern.sectionIds),
     allIds: pattern.sectionIds
@@ -32,20 +47,27 @@ app.get('/api/patterns/:patternId', (req, res) => {
     allIds: rowIds
   };
 
-  res.send({ pattern, sections, rows });
+  res.send({ patterns, sections, rows });
 
 });
 
 
 app.get('/api/sections/:sectionId', (req, res) => {
 
-  const section = mockServerData.sections.byId[req.params.sectionId];
+  const sectionId = req.params.sectionId;
+  const section = mockServerData.sections.byId[sectionId];
+
+  const sections = {
+    byId: { [section.sectionId]: section },
+    allIds: [section.sectionId],
+  };
+
   const rows = {
     byId: utils.filterObject(mockServerData.rows.byId, section.rowIds),
     allIds: section.rowIds
   };
 
-  res.send({ section, rows });
+  res.send({ sections, rows });
 
 });
 
