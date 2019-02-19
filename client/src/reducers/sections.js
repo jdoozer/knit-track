@@ -53,8 +53,6 @@ const getNextRow = (updateType, { currentRow, numRows }) => {
 
 const sectionsReducer = handleActions({
 
-  [combineActions('REQUEST_PATTERN_EXPANDED', 'REQUEST_SECTION_EXPANDED')]: setLoading,
-
   REQUEST_PATTERN_DATA: setLoading('sections'),
 
   RECEIVE_PATTERN_DATA: (state, action) => (

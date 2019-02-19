@@ -10,6 +10,7 @@ const initialPattern = ({ patternId, title }) => ({
   info: '<pattern info placeholder>',
 });
 
+// SETUP ACTIONS
 const requestPatternData = createAction(
   'REQUEST_PATTERN_DATA',
   dataTypes => ({ dataTypes })
@@ -23,6 +24,7 @@ const receivePatternData = createAction(
   })
 );
 
+// MAIN FUNCTION
 const fetchPatternData = ({ path, dataTypes=[], requestType='GET', body=null }) =>
   fetchAction({
     requestAction: requestPatternData(dataTypes),

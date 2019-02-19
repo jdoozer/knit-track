@@ -25,8 +25,6 @@ const addSection = (state, action) => {
 
 const patternsReducer = handleActions({
 
-  [combineActions('REQUEST_PATTERNS', 'REQUEST_PATTERN_EXPANDED')]: setLoading,
-
   REQUEST_PATTERN_DATA: setLoading('patterns'),
 
   RECEIVE_PATTERN_DATA: (state, action) => (

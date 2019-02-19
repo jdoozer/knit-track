@@ -23,10 +23,6 @@ app.post('/api/patterns', (req, res) => {
   })
 });
 
-// app.post('/api/patterns', (req, res) => {
-//   res.send({ pattern: req.body.pattern })
-// });
-
 app.get('/api/patterns/:patternId', (req, res) => {
 
   const patternId = req.params.patternId;
@@ -51,6 +47,17 @@ app.get('/api/patterns/:patternId', (req, res) => {
 
 });
 
+app.post('/api/sections', (req, res) => {
+  const section = req.body.section;
+  const rows = req.body.rows;
+  res.send({
+    sections: {
+      byId: { [section.sectionId]: section },
+      allIds: [section.sectionId],
+    },
+    rows
+  })
+});
 
 app.get('/api/sections/:sectionId', (req, res) => {
 

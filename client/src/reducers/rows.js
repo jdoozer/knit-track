@@ -6,8 +6,6 @@ import { handleActions, combineActions } from 'redux-actions';
 
 const rowsReducer = handleActions({
 
-  [combineActions('REQUEST_PATTERN_EXPANDED', 'REQUEST_SECTION_EXPANDED')]: setLoading,
-
   REQUEST_PATTERN_DATA: setLoading('rows'),
 
   RECEIVE_PATTERN_DATA: (state, action) => (
