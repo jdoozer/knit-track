@@ -4,24 +4,32 @@ import { withStyles } from 'material-ui/styles';
 import Hidden from 'material-ui/Hidden';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
-import Typography from 'material-ui/Typography';
 import ContentHeader from 'components/ContentHeader';
+import SectionRowInputs from 'components/SectionRowInputs';
 
 /* keys here should match the props pulled out in RowInfo component */
 const rowProps = {
   fullText: {
     display: 'Full Row Instructions',
     width: 300,
+    type: 'string',
   },
   quickText: {
     display: 'Shorthand/Alert',
     width: 150,
+    type: 'string',
   },
   stitches: {
     display: 'Sts',
     width: 40,
+    type: 'number',
   },
 };
+
+const numRowsStart = 5;
+
+let initialRow = {};
+Object.keys(rowProps).forEach(key => { initialRow[key] = '' });
 
 const styles = theme => {
   const mainStyles = {
@@ -30,12 +38,12 @@ const styles = theme => {
     },
     textField: {
       marginLeft: theme.spacing.unit * 2,
+      marginBottom: theme.spacing.unit,
     },
     row: {
       display: 'flex',
       flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: theme.spacing.unit,
+      alignItems: 'center'
     },
     button: {
       marginTop: theme.spacing.unit * 2,
@@ -54,102 +62,79 @@ class SectionSetupForm extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.handleRowDataChange = this.handleRowDataChange.bind(this);
+    this.handleRowNumChange = this.handleRowNumChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReset = this.handleReset.bind(this);
   }
 
   componentWillMount() {
 
-    console.log(this.props.numRows);
+    // redirect to home if pattern ID is invalid (check by looking at pattern)
+    const { pattern, history } = this.props;
+    if (pattern === null) history.push('/');
 
-    const { history, sectionId } = this.props;
-
-    if (sectionId === null) {
-      history.push('/');
+    let rowData = [];
+    for (let rowNum = 0; rowNum < numRowsStart; rowNum++) {
+      rowData.push({...initialRow})
     }
 
-    let initialState = {};
-    for (let rowInd = 0; rowInd < this.props.numRows; rowInd++) {
-      for (let property in rowProps) {
-        initialState[property + rowInd] = '';
-      }
-    }
-    this.setState(initialState);
+    this.setState({
+      title: '' ,
+      numRows: numRowsStart,
+      rowData
+    });
   }
 
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-  handleSubmit(event) {
-    const { history, sectionId, addRow, numRows, clearSection } = this.props;
-
-    let rowInfo;
-    for (let rowInd = 0; rowInd < numRows; rowInd++) {
-      rowInfo = {};
-      for (let property in rowProps) {
-        rowInfo[property] = (this.state[property + rowInd]);
+  handleRowNumChange(event) {
+    const numRows = parseInt(event.target.value, 10);
+    this.setState(state => {
+      const rowData = state.rowData;
+      while (numRows > rowData.length) {
+        rowData.push({...initialRow})
       }
-      addRow(sectionId, rowInfo);
-    }
+      return { numRows, rowData }
+    });
+  }
+
+  handleRowDataChange(rowInd, event) {
+
+    let { name, value } = event.target;
+    value = (rowProps[name].type === 'number') ? parseInt(value, 10) : value;
+
+    this.setState(state => {
+      let rowData = state.rowData;
+      rowData[rowInd][name] = value;
+      return { rowData };
+    });
+  }
+
+  handleSubmit(event) {
+    const { history, patternId, addSectionWithRows } = this.props;
+    const { title, numRows, rowData } = this.state;
+
+    const sectionDataToAdd = { patternId, title, numRows, currentRow: 0 };
+    const rowDataToAdd = [...rowData].slice(0, numRows);
+
+    addSectionWithRows(sectionDataToAdd, rowDataToAdd);
 
     event.preventDefault();
-    history.push('/pattern');
-    clearSection();
+    history.push(`/patterns/${patternId}`);
   }
 
   handleReset(event) {
-    const { history } = this.props;
-
+    const { history, patternId } = this.props;
     event.preventDefault();
-    history.push('/pattern');
-  }
-
-  createInput(property = '', rowNum = 0) {
-    const inputName = property + rowNum;
-    const { classes } = this.props;
-
-    return (
-      <TextField label=''
-        className={[classes.textField, classes[property]].join(' ')}
-        name={inputName}
-        key={inputName}
-        value={this.state[inputName]}
-        onChange={this.handleChange}
-        placeholder={rowProps[property].display}
-      />
-    );
-  }
-
-  createRowInput(rowNum = 0) {
-    const { classes } = this.props;
-
-    return (
-      <div className={classes.row} key={rowNum}>
-        <Typography variant="subheading" className={classes.rowLabel}>
-          Row {rowNum+1}
-        </Typography>
-        {Object.keys(rowProps).map(property =>
-          this.createInput(property, rowNum))}
-      </div>
-    );
-  }
-
-  allRowInputs() {
-    let rowInputs = [];
-    for (let rowInd = 0; rowInd < this.props.numRows; rowInd++) {
-      rowInputs.push(this.createRowInput(rowInd));
-    }
-    return rowInputs;
+    history.push(`/patterns/${patternId}`);
   }
 
   render() {
-    const { sectionId, classes } = this.props;
-    if (sectionId === null) {
-      return (
-        <div>No active section!</div>
-      );
-    } else {
+
+    const { classes } = this.props;
       return (
         <Hidden xsDown>
           <ContentHeader>Section Setup</ContentHeader>
@@ -158,7 +143,26 @@ class SectionSetupForm extends React.Component {
             onReset={this.handleReset}
             className={classes.root}
           >
-            {this.allRowInputs()}
+            <TextField label='Section Title'
+              className={classes.textField}
+              name='title'
+              value={this.state.title}
+              onChange={this.handleChange}
+            />
+            <TextField label='Number of Rows'
+              className={classes.textField}
+              name='numRows'
+              value={this.state.numRows}
+              onChange={this.handleRowNumChange}
+              type='number'
+            />
+            <SectionRowInputs
+              classes={classes}
+              currState={this.state.rowData}
+              onChange={this.handleRowDataChange}
+              rowProps={rowProps}
+              numRows={this.state.numRows}
+            />
             <Button variant="raised" color="primary" className={classes.button} type="submit">
               Create Section
             </Button>
@@ -166,15 +170,14 @@ class SectionSetupForm extends React.Component {
         </Hidden>
       );
     }
-  }
+  // }
 };
 
 SectionSetupForm.propTypes = {
   history: PropTypes.object.isRequired,
-  sectionId: PropTypes.string,
-  addRow: PropTypes.func.isRequired,
-  numRows: PropTypes.number.isRequired,
   classes: PropTypes.object.isRequired,
+  addSectionWithRows: PropTypes.func.isRequired,
+  patternId: PropTypes.string,
 };
 
 export default withStyles(styles)(SectionSetupForm);

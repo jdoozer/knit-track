@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { updateRowCount } from 'actions';
 import RowCounterDisplay from 'components/RowCounterDisplay';
-import { getRowsFromSection, getCurrentRow } from 'selectors';
+import { getRowsFromSection, getCurrentRow, getRowLoading } from 'selectors';
 
 const mapStateToProps = (state, props) => {
   const { sectionId } = props;
   return {
     rows: getRowsFromSection(state, sectionId),
     currentRow: getCurrentRow(state, sectionId),
-    loading: state.rows.loading,
+    loading: getRowLoading(state),
   };
 };
 

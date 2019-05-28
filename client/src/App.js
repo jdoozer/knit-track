@@ -1,6 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Hidden from 'material-ui/Hidden';
+import { Route, Switch } from 'react-router-dom';
 import Reboot from 'material-ui/Reboot';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
@@ -8,35 +7,29 @@ import MainContentWrapper from 'mui/MainContentWrapper';
 import theme from 'mui/knitTrackTheme';
 
 import Header from 'components/Header';
-import PatternList from 'containers/PatternList';
-import Pattern from 'containers/Pattern';
-import AddPattern from 'containers/AddPattern';
-import SectionSetup from 'containers/SectionSetup';
+import HomeScreen from 'components/HomeScreen';
 
-// import TestAPIComponent from 'TestAPIComponent';
+import Pattern from 'containers/Pattern';
+import SectionSetup from 'containers/SectionSetup';
+import PatternSetup from 'containers/PatternSetup';
 
 const App = () => (
-  <Router>
-    <MuiThemeProvider theme={theme}>
-      <Reboot />
+  <MuiThemeProvider theme={theme}>
+    <Reboot />
 
-      <Header />
+    <Header />
 
-      <MainContentWrapper>
+    <MainContentWrapper>
+      <Switch>
+        <Route exact path="/" component={HomeScreen} />
+        <Route path="/patterns/new" component={PatternSetup} />
+        <Route path="/patterns/:patternId/newsection" component={SectionSetup} />
+        <Route path="/patterns/:patternId" component={Pattern} />
+        <Route component={HomeScreen}/>
+      </Switch>
+    </MainContentWrapper>
 
-        <Route exact path="/" component={PatternList} />
-        <Hidden xsDown>
-          <Route exact path="/" component={AddPattern} />
-        </Hidden>
-
-        <Route path="/pattern" component={Pattern} />
-
-        <Route path="/section" component={SectionSetup} />
-
-      </MainContentWrapper>
-
-    </MuiThemeProvider>
-  </Router>
+  </MuiThemeProvider>
 );
 
 export default App;

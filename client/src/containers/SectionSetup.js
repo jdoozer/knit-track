@@ -1,28 +1,35 @@
+import React from 'react';
 import { connect } from 'react-redux';
-import { addRow, clearSection } from 'actions';
+import { addSectionWithRows, fetchPatternExpandedIfNeeded } from 'actions';
 import SectionSetupForm from 'components/SectionSetupForm';
-import { getNumRowsSection, getSectionIdToEdit } from 'selectors';
+import { getSelectedPatternId, getSelectedPattern } from 'selectors';
 
-const mapStateToProps = (state, props) => ({
-    numRows: getNumRowsSection(state),
-    sectionId: getSectionIdToEdit(state),
-    ...props
+const mapStateToProps = state => ({
+  patternId: getSelectedPatternId(state),
+  pattern: getSelectedPattern(state),
 });
 
-const mapDispatchToProps = dispatch => {
-  return {
-    addRow: (sectionId, rowInfo) => {
-      dispatch(addRow(sectionId, rowInfo));
-    },
-    clearSection: () => {
-      dispatch(clearSection());
-    }
-  };
+const mapDispatchToProps = {
+  addSectionWithRows: (sectionData, rowData) => addSectionWithRows(sectionData, rowData),
+  fetchPatternExpandedIfNeeded: patternId => fetchPatternExpandedIfNeeded(patternId),
 };
 
-const SectionSetup = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SectionSetupForm);
+class SectionSetup extends React.Component {
 
-export default SectionSetup;
+  componentDidMount() {
+    const { patternId, fetchPatternExpandedIfNeeded } = this.props;
+    if (patternId) {
+      fetchPatternExpandedIfNeeded(patternId);
+    }
+  }
+
+  render() {
+    const { fetchPatternExpandedIfNeeded, ...otherProps } = this.props;
+    return (
+      <SectionSetupForm {...otherProps} />
+    );
+  }
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SectionSetup);

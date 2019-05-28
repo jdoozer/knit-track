@@ -3,11 +3,15 @@ import { createAction } from 'redux-actions';
 import fetchAction from 'utils/fetchAction';
 
 // TODO: get rid of this here or in reducer (don't want in 2 places)
-const initialPattern = ({ patternId, title }) => ({
-  title,
+const initialPattern = ({
   patternId,
+  title = '<title placeholder>',
+  info = '<pattern info placeholder>'
+}) => ({
+  patternId,
+  title,
+  info,
   sectionIds: [],
-  info: '<pattern info placeholder>',
 });
 
 // SETUP ACTIONS
@@ -35,9 +39,9 @@ const fetchPatternData = ({ path, dataTypes=[], requestType='GET', body=null }) 
   });
 
 // POST REQUESTS
-export const createPattern = title => fetchPatternData({
+export const createPattern = ({ ...patternData }) => fetchPatternData({
   requestType: 'POST',
-  body: { pattern: initialPattern({ patternId: generateId(), title }) },
+  body: { pattern: initialPattern({ patternId: generateId(), ...patternData }) },
   path: 'patterns',
   dataTypes: ['patterns']
 });
@@ -60,9 +64,10 @@ const fetchSectionExpanded = sectionId => fetchPatternData({
 
 // CONDITIONAL GET REQUESTS
 export const fetchPatternsIfNeeded = () => (dispatch, getState) => {
-  const { patterns } = getState();
-  const patternsLoaded = !patterns.loading && patterns.allIds.length;
-  return patternsLoaded ? Promise.resolve() : dispatch(fetchPatterns());
+  // const { patterns } = getState();
+  // const patternsLoaded = !patterns.loading && patterns.allIds.length;
+  // return patternsLoaded ? Promise.resolve() : dispatch(fetchPatterns());
+  return dispatch(fetchPatterns()); // aggressive pattern loading!
 };
 
 export const fetchPatternExpandedIfNeeded = patternId => (dispatch, getState) => {

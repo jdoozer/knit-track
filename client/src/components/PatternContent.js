@@ -7,7 +7,7 @@ import DeleteIcon from 'material-ui-icons/Delete';
 import { CircularProgress } from 'material-ui/Progress';
 import ContentHeader from 'components/ContentHeader';
 import SectionPanel from 'components/SectionPanel';
-import AddSection from 'containers/AddSection';
+import AddSection from 'components/AddSection';
 
 const styles = (theme) => ({
   root: {
@@ -20,64 +20,68 @@ const styles = (theme) => ({
   sectionCards: {
     margin: theme.spacing.unit * 3,
   },
+  error: {
+    padding: theme.spacing.unit * 3,
+    color: 'red',
+  }
 });
 
 const PatternContent = ({
   pattern, sections,
   deletePattern, deleteSection,
-  loading, classes, history
+  loading, classes
 }) => {
 
+  let mainContent;
+
   if (pattern === null) {
-    history.push('/');
-    return;
+    mainContent = (
+      <Typography variant="title" className={classes.error}>
+        Invalid Pattern URL
+      </Typography>
+    );
+  } else if (loading || !pattern) {
+    mainContent = (
+      <div className={classes.root}>
+        <CircularProgress />
+      </div>
+    );
   } else {
+    const sectionContent = sections.map(section => (
+      <SectionPanel
+        key={section.sectionId}
+        section={section}
+        deleteSection={deleteSection}
+        patternId={pattern.patternId}
+      />
+    ));
 
-    let mainContent, sectionContent;
-
-    if (loading || !pattern) {
-      mainContent = (
-        <div className={classes.root}>
-          <CircularProgress />
+    mainContent =  (
+      <div className={classes.root}>
+        <ContentHeader
+          onClick={() => deletePattern(pattern.patternId)}
+          icon={<DeleteIcon />}
+          newLocation="/"
+          dialogTitle="Delete Pattern"
+          dialogText="Are you sure you want to delete this pattern and all its contents?"
+        >
+          {pattern.title}
+        </ContentHeader>
+        <Typography variant="subheading" className={classes.info}>
+          {pattern.info}
+        </Typography>
+        <div className={classes.sectionCards}>
+          {sectionContent}
         </div>
-      );
-
-    } else {
-      sectionContent = sections.map(section => (
-        <SectionPanel
-          key={section.sectionId}
-          section={section}
-          deleteSection={deleteSection}
-          patternId={pattern.patternId}
-        />
-      ));
-
-      mainContent =  (
-        <div className={classes.root}>
-          <ContentHeader
-            onClick={() => deletePattern(pattern.patternId)}
-            icon={<DeleteIcon />}
-            newLocation="/"
-            dialogTitle="Delete Pattern"
-            dialogText="Are you sure you want to delete this pattern and all its contents?"
-          >
-            {pattern.title}
-          </ContentHeader>
-          <Typography variant="subheading" className={classes.info}>
-            {pattern.info}
-          </Typography>
-          <div className={classes.sectionCards}>
-            {sectionContent}
-          </div>
-          <Hidden xsDown>
-            <AddSection patternId={pattern.patternId} />
-          </Hidden>
-        </div>
-      )
-    }
-
-    return mainContent;
+        <Hidden xsDown>
+          <AddSection patternId={pattern.patternId} />
+        </Hidden>
+      </div>
+    )
   }
+
+  return mainContent;
+
 };
 
 PatternContent.propTypes = {

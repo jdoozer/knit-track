@@ -1,7 +1,7 @@
 import addItemToState from 'utils/addItemToState';
 import { mergeStateData, setLoading } from 'utils/reducerUtils';
 import { initialStateNormal } from 'stateData/initialState';
-import { handleActions, combineActions } from 'redux-actions';
+import { handleActions } from 'redux-actions';
 
 const initialPattern = ({ patternId, title }) => ({
   title,
@@ -11,7 +11,8 @@ const initialPattern = ({ patternId, title }) => ({
 });
 
 const addSection = (state, action) => {
-  const { patternId, sectionId } = action.payload;
+  const { section, sectionId } = action.payload;
+  const patternId = section.patternId;
   const pattern = state[patternId];
 
   return {
@@ -35,7 +36,7 @@ const patternsReducer = handleActions({
     addItemToState(state, action.payload.patternId, initialPattern(action.payload))
   ),
 
-  ADD_SECTION: (state, action) => ({
+  ADD_SECTION_WITH_ROWS: (state, action) => ({
     ...state,
     byId: addSection(state.byId, action)
   }),

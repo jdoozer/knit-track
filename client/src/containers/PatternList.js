@@ -3,21 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { selectPattern, fetchPatternsIfNeeded } from 'actions';
 import PatternListItems from 'components/PatternListItems';
-import { getPatterns } from 'selectors';
+import { getPatterns, getPatternLoading } from 'selectors';
 
 const mapStateToProps = state => ({
   patterns: getPatterns(state),
-  loading: state.patterns.loading,
+  loading: getPatternLoading(state),
 });
 
-const mapDispatchToProps = dispatch => ({
-  onPatternClick: index => {
-    dispatch(selectPattern(index));
-  },
-  fetchPatternsIfNeeded: () => {
-    dispatch(fetchPatternsIfNeeded());
-  },
-});
+const mapDispatchToProps = {
+  onPatternClick: index => selectPattern(index),
+  fetchPatternsIfNeeded,
+};
 
 class PatternList extends React.Component {
 

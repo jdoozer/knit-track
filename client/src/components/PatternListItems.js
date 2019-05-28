@@ -32,7 +32,7 @@ const PatternListItems = ({ patterns, onPatternClick, loading, classes }) => {
         {patterns.map(pattern => (
           <React.Fragment key={pattern.patternId}>
             <ListLinkBlock
-              link="/pattern"
+              link={`/patterns/${pattern.patternId}`}
               title={pattern.title}
               onClick={() => onPatternClick(pattern.patternId)}
             />

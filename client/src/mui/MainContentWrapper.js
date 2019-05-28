@@ -10,7 +10,7 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 4,
   },
   paper: {
-    minWidth: 300,
+    minWidth: 330,
     textAlign: 'center',
   },
 });

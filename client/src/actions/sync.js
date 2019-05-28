@@ -1,30 +1,13 @@
 import generateId from 'uuid/v4';
 import { createAction, createActions } from 'redux-actions';
 
-export const addPattern = createAction(
-  'ADD_PATTERN',
-  title => ({
-    title,
-    patternId: generateId(),
-  })
-);
-
-export const addSection = createAction(
-  'ADD_SECTION',
-  (patternId, title, numRows) => ({
-    title,
-    numRows,
-    patternId,
+export const addSectionWithRows = createAction(
+  'ADD_SECTION_WITH_ROWS',
+  (sectionData, rowData) => ({
+    section: sectionData,
+    rows: rowData,
     sectionId: generateId(),
-  })
-);
-
-export const addRow = createAction(
-  'ADD_ROW',
-  (sectionId, rowInfo) => ({
-    sectionId,
-    ...rowInfo,
-    rowId: generateId(),
+    rowIds: Array(rowData.length).fill(0).map(x => generateId())
   })
 );
 
@@ -40,6 +23,4 @@ export const { deletePattern, deleteSection, deleteRow } = createActions(
   'DELETE_PATTERN', 'DELETE_SECTION', 'DELETE_ROW'
 );
 
-export const { selectPattern, clearSection } = createActions(
-  'SELECT_PATTERN', 'CLEAR_SECTION'
-);
+export const selectPattern = createAction('SELECT_PATTERN');

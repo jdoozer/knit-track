@@ -27,21 +27,28 @@ app.get('/api/patterns/:patternId', (req, res) => {
 
   const patternId = req.params.patternId;
   const pattern = mockServerData.patterns.byId[patternId];
+  let patterns, sections, rows;
 
-  const patterns = {
-    byId: { [patternId]: pattern },
-    allIds: [patternId]
-  };
-  const sections = {
-    byId: utils.filterObject(mockServerData.sections.byId, pattern.sectionIds),
-    allIds: pattern.sectionIds
-  };
+  if (pattern) {
+    patterns = {
+      byId: { [patternId]: pattern },
+      allIds: [patternId]
+    };
+    sections = {
+      byId: utils.filterObject(mockServerData.sections.byId, pattern.sectionIds),
+      allIds: pattern.sectionIds
+    };
 
-  const rowIds = utils.combineObjectArrays(sections.byId, 'rowIds');
-  const rows = {
-    byId: utils.filterObject(mockServerData.rows.byId, rowIds),
-    allIds: rowIds
-  };
+    const rowIds = utils.combineObjectArrays(sections.byId, 'rowIds');
+    rows = {
+      byId: utils.filterObject(mockServerData.rows.byId, rowIds),
+      allIds: rowIds
+    };
+  } else {
+    patterns = { byId: {}, allIds: [] };
+    sections = patterns;
+    rows = patterns;
+  }
 
   res.send({ patterns, sections, rows });
 

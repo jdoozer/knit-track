@@ -1,5 +1,5 @@
 
-const MOCK_SERVER_URL = 'api/';
+const MOCK_SERVER_URL = '/api/';
 
 const fetchAction = ({
   requestAction, receiveAction, body,
@@ -17,6 +17,7 @@ const fetchAction = ({
   return dispatch => {
     dispatch(requestAction);
     return fetch(`${host}/${path}`, fetchObj).then(
+        // response => { debugger; return response.json() },
         response => response.json(),
         error => console.log('An error occurred.', error)
       )

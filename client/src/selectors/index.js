@@ -3,8 +3,11 @@ import { createSelector } from 'reselect';
 const getPatternsById = state => state.patterns.byId;
 const getSectionsById = state => state.sections.byId;
 const getRowsById = state => state.rows.byId;
-const getSelectedPatternId = state => state.ui.selectedPattern;
-export const getSectionIdToEdit = state => state.ui.sectionToEdit;
+const getPath = state => state.router.location.pathname;
+
+export const getPatternLoading = state => state.patterns.loading;
+export const getSectionLoading = state => state.sections.loading;
+export const getRowLoading = state => state.rows.loading;
 
 const getRowIdsFromSection = (state, sectionId) => (
   getSectionsById(state)[sectionId].rowIds
@@ -14,31 +17,30 @@ export const getCurrentRow = (state, sectionId) => (
   getSectionsById(state)[sectionId].currentRow
 );
 
-export const getNumRowsSection = createSelector(
-  [getSectionIdToEdit, getSectionsById],
-  (sectionId, sections) => sectionId ? sections[sectionId].numRows : 0
-);
-
 export const getPatterns = createSelector(
   [getPatternsById],
   patternsById => Object.keys(patternsById).map(key => patternsById[key])
 );
 
-// TODO: get rid of this once routing is changed to put selected pattern into URL
+export const getSelectedPatternId = createSelector(
+  [getPath],
+  path => {
+    const pathTokens = path.split('/').filter(x => x !== '');
+    const idFromPath = (pathTokens[0] === 'patterns') ? pathTokens[1] : null;
+    return idFromPath;
+  }
+);
+
 export const getSelectedPattern = createSelector(
   [getPatternsById, getSelectedPatternId],
   (patterns, selectedPatternId) => {
-    if (!selectedPatternId) {
+    if (!selectedPatternId || !patterns[selectedPatternId]) {
       return null;
-    }
-    if (!patterns[selectedPatternId]) {
-      return { patternId: selectedPatternId }
     }
     return patterns[selectedPatternId];
   }
 );
 
-// TODO: get rid of this once routing is changed to put selected pattern into URL
 export const getSelectedPatternSections = createSelector(
   [getSelectedPattern, getSectionsById],
   (selectedPattern, sections) => {

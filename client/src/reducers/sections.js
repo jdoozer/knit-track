@@ -1,29 +1,8 @@
 import addItemToState from 'utils/addItemToState';
+import updateNormalized from 'utils/updateNormalized';
 import { mergeStateData, setLoading } from 'utils/reducerUtils';
 import { initialStateNormal } from 'stateData/initialState';
-import { handleActions, combineActions } from 'redux-actions';
-
-const initialSection = ({ title, sectionId, patternId, numRows }) => ({
-  title,
-  sectionId,
-  patternId,
-  numRows: Number(numRows),
-  currentRow: 0,
-  rowIds: [],
-});
-
-const addRow = (state, action) => {
-  const { sectionId, rowId } = action.payload;
-  const section = state[sectionId];
-
-  return {
-    ...state,
-    [sectionId] : {
-      ...section,
-      rowIds: section.rowIds.concat(rowId),
-    },
-  };
-};
+import { handleActions } from 'redux-actions';
 
 const updateRowCount = (state, action) => {
   const { sectionId, updateType } = action.payload;
@@ -60,18 +39,32 @@ const sectionsReducer = handleActions({
   ),
 
   ADD_SECTION: (state, action) => (
-    addItemToState(state, action.payload.sectionId, initialSection(action.payload))
+    addItemToState(
+      state,
+      action.payload.sectionId,
+      { sectionId: action.payload.sectionId,
+        ...action.payload.section }
+    )
   ),
 
-  ADD_ROW: (state, action) => ({
-    ...state,
-    byId: addRow(state.byId, action)
-  }),
+  ADD_SECTION_WITH_ROWS: (state, action) => {
+    return addItemToState(
+      state,
+      action.payload.sectionId,
+      { sectionId: action.payload.sectionId,
+        rowIds: action.payload.rowIds,
+        ...action.payload.section }
+    )
+  },
 
   UPDATE_ROW_COUNT: (state, action) => ({
     ...state,
     byId: updateRowCount(state.byId, action)
   }),
+
+  UPDATE_SECTION: (state, action) => (
+    updateNormalized(state, action.payload.sectionId, action.payload.updates)
+  ),
 
 }, initialStateNormal);
 
