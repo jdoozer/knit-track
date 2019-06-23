@@ -15,6 +15,7 @@ const rowInputField = ({
     value={currState[rowInd][property]}
     onChange={event => onChange(rowInd, event)}
     placeholder={rowProps[property].display}
+    type={rowProps[property].type}
   />
 );
 

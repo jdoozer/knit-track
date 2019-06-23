@@ -6,6 +6,7 @@ import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import ContentHeader from 'components/ContentHeader';
 import SectionRowInputs from 'components/SectionRowInputs';
+import updateNestedItem from 'utils/updateNestedItem';
 
 /* keys here should match the props pulled out in RowInfo component */
 const rowProps = {
@@ -91,26 +92,30 @@ class SectionSetupForm extends React.Component {
   }
 
   handleRowNumChange(event) {
-    const numRows = parseInt(event.target.value, 10);
-    this.setState(state => {
-      const rowData = state.rowData;
-      while (numRows > rowData.length) {
-        rowData.push({...initialRow})
-      }
-      return { numRows, rowData }
-    });
+
+    const numRowsValue = event.target.value;
+    console.log(numRowsValue);
+
+    if (numRowsValue !== '') {
+      const numRows = Math.max(parseInt(numRowsValue, 10), 1);
+      this.setState(state => {
+        const rowData = state.rowData;
+        while (numRows > rowData.length) {
+          rowData.push({...initialRow})
+        }
+        return { numRows, rowData }
+      });
+    }
   }
 
   handleRowDataChange(rowInd, event) {
 
-    let { name, value } = event.target;
-    value = (rowProps[name].type === 'number') ? parseInt(value, 10) : value;
+    const { name, value } = event.target;
 
-    this.setState(state => {
-      let rowData = state.rowData;
-      rowData[rowInd][name] = value;
-      return { rowData };
-    });
+    this.setState(state => ({
+      rowData: updateNestedItem(state.rowData, rowInd, name, value)
+    }));
+
   }
 
   handleSubmit(event) {
