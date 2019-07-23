@@ -99,7 +99,7 @@ class SectionSetupForm extends React.Component {
     if (numRowsValue !== '') {
       const numRows = Math.max(parseInt(numRowsValue, 10), 1);
       this.setState(state => {
-        const rowData = state.rowData;
+        const rowData = [...state.rowData];
         while (numRows > rowData.length) {
           rowData.push({...initialRow})
         }

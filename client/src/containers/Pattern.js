@@ -34,7 +34,7 @@ class Pattern extends React.Component {
   }
 
   render() {
-    const { fetchPatternExpandedIfNeeded, ...otherProps } = this.props;
+    const { fetchPatternExpandedIfNeeded, patternId, ...otherProps } = this.props;
     return (
       <PatternContent {...otherProps} />
     );
