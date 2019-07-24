@@ -5,29 +5,39 @@ import List from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import Typography from 'material-ui/Typography';
 import { CircularProgress } from 'material-ui/Progress';
-import ContentHeader from 'components/ContentHeader';
 import ListLinkBlock from 'components/ListLinkBlock';
 
 const styles = theme => ({
   list: {
     padding: 0,
   },
-  noPattern: {
+  message: {
     padding: theme.spacing.unit * 2,
   },
 });
 
-const PatternListItems = ({ patterns, onPatternClick, loading, classes }) => {
+const MessageBlock = ({ classes, children }) => (
+  <Typography variant="subheading" className={classes.message}>
+    {children}
+  </Typography>
+);
 
-  let patternListContent;
+const PatternListItems = ({ patterns, onPatternClick, loading, classes, error }) => {
 
   if (loading) {
+    return (<div><CircularProgress /></div>)
+  }
 
-    patternListContent = (<CircularProgress />);
+  if (error) {
+    return (
+      <MessageBlock classes={classes}>
+        An error occurred while fetching data. Please reload to try again.
+      </MessageBlock>
+    )
+  }
 
-  } else if (patterns.length) {
-
-    patternListContent = (
+  if (patterns.length) {
+    return (
       <List className={classes.list}>
         {patterns.map(pattern => (
           <React.Fragment key={pattern.patternId}>
@@ -40,24 +50,15 @@ const PatternListItems = ({ patterns, onPatternClick, loading, classes }) => {
           </React.Fragment>
         ))}
       </List>
-    );
-
-  } else {
-
-    patternListContent = (
-     <Typography variant="subheading" className={classes.noPattern}>
-       No patterns created yet!
-     </Typography>
-   );
-
+    )
   }
 
-  return(
-    <div>
-      <ContentHeader>Pattern List</ContentHeader>
-      {patternListContent}
-    </div>
-  );
+  return (
+    <MessageBlock classes={classes}>
+       No patterns created yet! Click the button below to add a new pattern.
+    </MessageBlock>
+  )
+
 };
 
 PatternListItems.propTypes = {
@@ -70,6 +71,7 @@ PatternListItems.propTypes = {
   onPatternClick: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired,
+  error: PropTypes.bool,
 };
 
 export default withStyles(styles)(PatternListItems);

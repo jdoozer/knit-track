@@ -17,3 +17,10 @@ export const setLoading = dataType => (state, action) => {
   }
   return state;
 };
+
+export const setError = dataType => (state, action) => {
+  if (action.payload.dataTypes.includes(dataType)) {
+    return { ...state, error: action.payload.error, loading: false }
+  }
+  return state;
+};

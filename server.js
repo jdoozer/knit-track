@@ -9,8 +9,9 @@ const port = process.env.PORT || 5000;
 
 app.use(bodyParser.json());
 
-app.get('/api/patterns', (req, res) => {
+app.get('/api/patterns', (req, res, next) => {
   res.send({ patterns: mockServerData.patterns });
+  // next('test error')
 });
 
 app.post('/api/patterns', (req, res) => {

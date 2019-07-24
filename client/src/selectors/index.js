@@ -5,7 +5,8 @@ const getSectionsById = state => state.sections.byId;
 const getRowsById = state => state.rows.byId;
 const getPath = state => state.router.location.pathname;
 
-export const getPatternLoading = state => state.patterns.loading;
+export const getPatternsLoading = state => state.patterns.loading;
+export const getPatternsError = state => state.patterns.error;
 export const getSectionLoading = state => state.sections.loading;
 export const getRowLoading = state => state.rows.loading;
 

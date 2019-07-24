@@ -1,8 +1,8 @@
 import generateId from 'uuid/v4';
 import { createAction } from 'redux-actions';
-import fetchAction from 'utils/fetchAction';
+import fetchActionCreator from 'utils/fetchActionCreator';
 
-// TODO: get rid of this here or in reducer (don't want in 2 places)
+// TODO: get rid of this here (don't want in 2 places - should be in reducer)
 const initialPattern = ({
   patternId,
   title = '<title placeholder>',
@@ -28,11 +28,17 @@ const receivePatternData = createAction(
   })
 );
 
+const patternsError = dataTypes => createAction(
+  'PATTERNS_ERROR',
+  error => ({ error, dataTypes })
+);
+
 // MAIN FUNCTION
-const fetchPatternData = ({ path, dataTypes=[], requestType='GET', body=null }) =>
-  fetchAction({
+const fetchPatternData = ({ path, dataTypes=[], errorAction, requestType='GET', body=null }) =>
+  fetchActionCreator({
     requestAction: requestPatternData(dataTypes),
     receiveAction: receivePatternData,
+    errorAction,
     path,
     requestType,
     body,
@@ -47,9 +53,10 @@ export const createPattern = ({ ...patternData }) => fetchPatternData({
 });
 
 // GET REQUESTS
-const fetchPatterns = () => fetchPatternData({
+export const fetchPatterns = () => fetchPatternData({
   path: 'patterns',
-  dataTypes: ['patterns']
+  dataTypes: ['patterns'],
+  errorAction: patternsError(['patterns']),
 });
 
 const fetchPatternExpanded = patternId => fetchPatternData({
@@ -63,12 +70,6 @@ const fetchSectionExpanded = sectionId => fetchPatternData({
 });
 
 // CONDITIONAL GET REQUESTS
-export const fetchPatternsIfNeeded = () => (dispatch, getState) => {
-  // const { patterns } = getState();
-  // const patternsLoaded = !patterns.loading && patterns.allIds.length;
-  // return patternsLoaded ? Promise.resolve() : dispatch(fetchPatterns());
-  return dispatch(fetchPatterns()); // aggressive pattern loading!
-};
 
 export const fetchPatternExpandedIfNeeded = patternId => (dispatch, getState) => {
 

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { deletePattern, deleteSection, fetchPatternExpandedIfNeeded } from 'actions';
 import PatternContent from 'components/PatternContent';
 import {
-  getPatternLoading,
+  getPatternsLoading,
   getSectionLoading,
   getSelectedPattern,
   getSelectedPatternId,
@@ -15,7 +15,7 @@ const mapStateToProps = state => ({
   patternId: getSelectedPatternId(state),
   pattern: getSelectedPattern(state),
   sections: getSelectedPatternSections(state),
-  loading: (getPatternLoading(state) || getSectionLoading(state)),
+  loading: (getPatternsLoading(state) || getSectionLoading(state)),
 });
 
 const mapDispatchToProps = {

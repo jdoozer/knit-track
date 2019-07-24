@@ -1,32 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { selectPattern, fetchPatternsIfNeeded } from 'actions';
+import { selectPattern, fetchPatterns } from 'actions';
 import PatternListItems from 'components/PatternListItems';
-import { getPatterns, getPatternLoading } from 'selectors';
+import { getPatterns, getPatternsLoading, getPatternsError } from 'selectors';
 
 const mapStateToProps = state => ({
   patterns: getPatterns(state),
-  loading: getPatternLoading(state),
+  loading: getPatternsLoading(state),
+  error: Boolean(getPatternsError(state))
 });
 
 const mapDispatchToProps = {
   onPatternClick: index => selectPattern(index),
-  fetchPatternsIfNeeded,
+  fetchPatterns,
 };
 
 class PatternList extends React.Component {
 
   componentDidMount() {
-    this.props.fetchPatternsIfNeeded();
+    this.props.fetchPatterns();
   }
 
   render() {
-    const { patterns, onPatternClick, loading } = this.props;
+    const { patterns, onPatternClick, loading, error } = this.props;
     return (<PatternListItems
       patterns={patterns}
       onPatternClick={onPatternClick}
       loading={loading}
+      error={error}
     />);
   }
 
@@ -40,7 +42,7 @@ PatternList.propTypes = {
     }).isRequired
   ).isRequired,
   onPatternClick: PropTypes.func.isRequired,
-  fetchPatternsIfNeeded: PropTypes.func.isRequired,
+  fetchPatterns: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
 }
 
