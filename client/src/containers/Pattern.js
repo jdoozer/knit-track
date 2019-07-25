@@ -1,40 +1,49 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { deletePattern, deleteSection, fetchPatternExpandedIfNeeded } from 'actions';
+import { deletePattern, deleteSection, fetchPatternExpanded } from 'actions';
 import PatternContent from 'components/PatternContent';
 import {
   getPatternsLoading,
-  getSectionLoading,
+  // getSectionLoading,
+  // getPatternLoading,
+  // getPatternError,
   getSelectedPattern,
   getSelectedPatternId,
   getSelectedPatternSections
 } from 'selectors';
 
-const mapStateToProps = state => ({
-  patternId: getSelectedPatternId(state),
-  pattern: getSelectedPattern(state),
-  sections: getSelectedPatternSections(state),
-  loading: (getPatternsLoading(state) || getSectionLoading(state)),
-});
+const mapStateToProps = state => {
+  const patternId = getSelectedPatternId(state);
+  return {
+    patternId,
+    pattern: getSelectedPattern(state),
+    sections: getSelectedPatternSections(state),
+    loading: getPatternsLoading(state),
+    error: Boolean(null),
+    // loading: getPatternLoading(state, patternId),
+    // loading: true,
+    // error: Boolean(getPatternError(state, patternId))
+  }
+};
 
 const mapDispatchToProps = {
   deletePattern: patternId => deletePattern(patternId),
   deleteSection: sectionId => deleteSection(sectionId),
-  fetchPatternExpandedIfNeeded: patternId => fetchPatternExpandedIfNeeded(patternId),
+  fetchPatternExpanded: patternId => fetchPatternExpanded(patternId),
 };
 
 class Pattern extends React.Component {
 
   componentDidMount() {
-    const { patternId, fetchPatternExpandedIfNeeded } = this.props;
+    const { patternId, fetchPatternExpanded } = this.props;
     if (patternId) {
-      fetchPatternExpandedIfNeeded(patternId);
+      fetchPatternExpanded(patternId);
     }
   }
 
   render() {
-    const { fetchPatternExpandedIfNeeded, patternId, ...otherProps } = this.props;
+    const { patternId, fetchPatternExpanded, ...otherProps } = this.props;
     return (
       <PatternContent {...otherProps} />
     );
@@ -55,7 +64,7 @@ Pattern.propTypes = {
   ).isRequired,
   deletePattern: PropTypes.func.isRequired,
   deleteSection: PropTypes.func.isRequired,
-  fetchPatternExpandedIfNeeded: PropTypes.func.isRequired,
+  fetchPatternExpanded: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
 }
 

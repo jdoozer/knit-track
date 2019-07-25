@@ -1,24 +1,21 @@
-import mergeNormalized from 'utils/mergeNormalized';
 
-export const mergeStateData = (state, newItems, receivedAt) => {
-  if (newItems) {
-    return mergeNormalized(
-      state,
-      newItems,
-      { loading: false, lastUpdated: receivedAt }
-    );
-  }
-  return state;
-}
-
-export const setLoading = dataType => (state, action) => {
+export const setLoading = (dataType) => (state, action) => {
   if (action.payload.dataTypes.includes(dataType)) {
+  //   if (action.payload.id) {
+  //     return {
+  //       ...state,
+  //       [action.payload.id]: {
+  //         ...state[action.payload.id],
+  //         loading: true,
+  //       },
+  //     }
+  //   }
     return { ...state, loading: true }
   }
-  return state;
-};
+  return state
+}
 
-export const setError = dataType => (state, action) => {
+export const setError = (dataType, id) => (state, action) => {
   if (action.payload.dataTypes.includes(dataType)) {
     return { ...state, error: action.payload.error, loading: false }
   }

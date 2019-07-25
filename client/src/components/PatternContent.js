@@ -20,33 +20,45 @@ const styles = (theme) => ({
   sectionCards: {
     margin: theme.spacing.unit * 3,
   },
-  error: {
-    padding: theme.spacing.unit * 3,
-    color: 'red',
+  message: {
+    padding: theme.spacing.unit * 2,
   }
 });
+
+const MessageBlock = ({ classes, children }) => (
+  <Typography variant="subheading" className={classes.message}>
+    {children}
+  </Typography>
+);
 
 const PatternContent = ({
   pattern, sections,
   deletePattern, deleteSection,
-  loading, classes
+  loading, error, classes
 }) => {
 
   let mainContent;
 
-  if (pattern === null) {
+  if (loading) {
     mainContent = (
-      <Typography variant="title" className={classes.error}>
-        Invalid Pattern URL
-      </Typography>
+      <div className={classes.root}><CircularProgress /></div>
     );
-  } else if (loading || !pattern) {
+  }
+  else if (error) {
     mainContent = (
-      <div className={classes.root}>
-        <CircularProgress />
-      </div>
+      <MessageBlock classes={classes}>
+        An error occurred while fetching data. Please reload to try again.
+      </MessageBlock>
     );
-  } else {
+  }
+  else if (pattern === null) {
+    mainContent = (
+      <MessageBlock classes={classes}>
+        Pattern ID is invalid
+      </MessageBlock>
+    );
+  }
+  else {
     const sectionContent = sections.map(section => (
       <SectionPanel
         key={section.sectionId}
@@ -100,6 +112,7 @@ PatternContent.propTypes = {
   classes: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired,
+  error: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(PatternContent);

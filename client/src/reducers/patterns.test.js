@@ -7,24 +7,6 @@ describe('patterns reducer', () => {
     expect(reducer(undefined, {})).toEqual(data.initialState)
   });
 
-  it('should handle ADD_PATTERN', () => {
-
-    expect(reducer(data.initialState,
-      {
-        type: 'ADD_PATTERN',
-        payload: { title: data.patternTitle1, patternId: data.patternId1 }
-      }
-    )).toEqual(data.onePattern);
-
-    expect(reducer(data.onePattern,
-      {
-        type: 'ADD_PATTERN',
-        payload: { title: data.patternTitle2, patternId: data.patternId2 }
-      }
-    )).toEqual(data.twoPatterns);
-
-  });
-
   it('should handle ADD_SECTION', () => {
     expect(reducer(data.twoPatterns,
       {

@@ -1,6 +1,7 @@
 import deleteFromState from 'utils/deleteFromState';
 import addItemToState from 'utils/addItemToState';
-import { mergeStateData, setLoading } from 'utils/reducerUtils';
+import mergeStateData from 'utils/mergeStateData';
+import { setLoading } from 'utils/reducerUtils';
 import { initialStateNormal } from 'stateData/initialState';
 import { handleActions } from 'redux-actions';
 
@@ -9,7 +10,7 @@ const rowsReducer = handleActions({
   REQUEST_PATTERN_DATA: setLoading('rows'),
 
   RECEIVE_PATTERN_DATA: (state, action) => (
-    mergeStateData(state, action.payload.rows, action.payload.receivedAt)
+    mergeStateData(state, action.payload.rows)
   ),
 
   ADD_ROW: (state, action) => (

@@ -71,7 +71,7 @@ PatternListItems.propTypes = {
   onPatternClick: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired,
-  error: PropTypes.bool,
+  error: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(PatternListItems);

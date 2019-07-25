@@ -18,14 +18,12 @@ const initialPattern = ({
 const requestPatternData = createAction(
   'REQUEST_PATTERN_DATA',
   dataTypes => ({ dataTypes })
+  // (dataTypes, id) => ({ dataTypes, id })
 );
 
 const receivePatternData = createAction(
   'RECEIVE_PATTERN_DATA',
-  json => ({
-    ...json,
-    receivedAt: Date.now()
-  })
+  json => ({ ...json })
 );
 
 const patternsError = dataTypes => createAction(
@@ -34,9 +32,9 @@ const patternsError = dataTypes => createAction(
 );
 
 // MAIN FUNCTION
-const fetchPatternData = ({ path, dataTypes=[], errorAction, requestType='GET', body=null }) =>
+const fetchPatternData = ({ path, dataTypes=[], errorAction, requestType='GET', body=null, id=null }) =>
   fetchActionCreator({
-    requestAction: requestPatternData(dataTypes),
+    requestAction: requestPatternData(dataTypes, id),
     receiveAction: receivePatternData,
     errorAction,
     path,
@@ -59,15 +57,19 @@ export const fetchPatterns = () => fetchPatternData({
   errorAction: patternsError(['patterns']),
 });
 
-const fetchPatternExpanded = patternId => fetchPatternData({
+export const fetchPatternExpanded = patternId => fetchPatternData({
   path: `patterns/${patternId}`,
-  dataTypes: ['patterns', 'sections', 'rows']
+  dataTypes: ['patterns', 'sections', 'rows'],
+  // id: patternId,
 });
 
 const fetchSectionExpanded = sectionId => fetchPatternData({
   path: `sections/${sectionId}`,
   dataTypes: ['sections', 'rows']
 });
+
+
+
 
 // CONDITIONAL GET REQUESTS
 

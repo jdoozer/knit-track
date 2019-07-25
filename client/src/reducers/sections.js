@@ -1,6 +1,7 @@
 import addItemToState from 'utils/addItemToState';
 import updateNormalized from 'utils/updateNormalized';
-import { mergeStateData, setLoading } from 'utils/reducerUtils';
+import mergeStateData from 'utils/mergeStateData';
+import { setLoading } from 'utils/reducerUtils';
 import { initialStateNormal } from 'stateData/initialState';
 import { handleActions } from 'redux-actions';
 
@@ -35,7 +36,7 @@ const sectionsReducer = handleActions({
   REQUEST_PATTERN_DATA: setLoading('sections'),
 
   RECEIVE_PATTERN_DATA: (state, action) => (
-    mergeStateData(state, action.payload.sections, action.payload.receivedAt)
+    mergeStateData(state, action.payload.sections, action.payload)
   ),
 
   ADD_SECTION: (state, action) => (

@@ -10,8 +10,12 @@ const port = process.env.PORT || 5000;
 app.use(bodyParser.json());
 
 app.get('/api/patterns', (req, res, next) => {
-  res.send({ patterns: mockServerData.patterns });
+
+  // res.send({ patterns: mockServerData.patterns });
+  setTimeout(() => res.send({ patterns: mockServerData.patterns }), 1000);
+
   // next('test error')
+
 });
 
 app.post('/api/patterns', (req, res) => {
@@ -52,6 +56,7 @@ app.get('/api/patterns/:patternId', (req, res) => {
   }
 
   res.send({ patterns, sections, rows });
+  // setTimeout(() => res.send({ patterns, sections, rows }), 1000);
 
 });
 

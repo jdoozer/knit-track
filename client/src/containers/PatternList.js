@@ -23,13 +23,8 @@ class PatternList extends React.Component {
   }
 
   render() {
-    const { patterns, onPatternClick, loading, error } = this.props;
-    return (<PatternListItems
-      patterns={patterns}
-      onPatternClick={onPatternClick}
-      loading={loading}
-      error={error}
-    />);
+    const { fetchPatterns, ...otherProps } = this.props;
+    return (<PatternListItems {...otherProps} />);
   }
 
 }
