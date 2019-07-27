@@ -5,27 +5,19 @@ import { deletePattern, deleteSection, fetchPatternExpanded } from 'actions';
 import PatternContent from 'components/PatternContent';
 import {
   getPatternsLoading,
-  // getSectionLoading,
-  // getPatternLoading,
-  // getPatternError,
+  getPatternsError,
   getSelectedPattern,
   getSelectedPatternId,
   getSelectedPatternSections
 } from 'selectors';
 
-const mapStateToProps = state => {
-  const patternId = getSelectedPatternId(state);
-  return {
-    patternId,
-    pattern: getSelectedPattern(state),
-    sections: getSelectedPatternSections(state),
-    loading: getPatternsLoading(state),
-    error: Boolean(null),
-    // loading: getPatternLoading(state, patternId),
-    // loading: true,
-    // error: Boolean(getPatternError(state, patternId))
-  }
-};
+const mapStateToProps = state => ({
+  patternId: getSelectedPatternId(state),
+  pattern: getSelectedPattern(state),
+  sections: getSelectedPatternSections(state),
+  loading: getPatternsLoading(state),
+  error: Boolean(getPatternsError(state))
+});
 
 const mapDispatchToProps = {
   deletePattern: patternId => deletePattern(patternId),
@@ -52,9 +44,10 @@ class Pattern extends React.Component {
 }
 
 Pattern.propTypes = {
+  patternId: PropTypes.string.isRequired,
   pattern: PropTypes.shape({
-    title: PropTypes.string,
-    info: PropTypes.string,
+    title: PropTypes.string.isRequired,
+    info: PropTypes.string.isRequired,
     patternId: PropTypes.string.isRequired,
   }),
   sections: PropTypes.arrayOf(
@@ -62,10 +55,12 @@ Pattern.propTypes = {
       sectionId: PropTypes.string.isRequired
     }).isRequired
   ).isRequired,
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.bool.isRequired,
   deletePattern: PropTypes.func.isRequired,
   deleteSection: PropTypes.func.isRequired,
   fetchPatternExpanded: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Pattern);

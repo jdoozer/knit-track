@@ -8,7 +8,6 @@ import PlusIcon from 'material-ui-icons/Add';
 import MinusIcon from 'material-ui-icons/Remove';
 import ResetIcon from 'material-ui-icons/Undo';
 import gray from 'material-ui/colors/blueGrey';
-import { CircularProgress } from 'material-ui/Progress';
 import RowInfo from 'components/RowInfo';
 
 const textInd = 900;
@@ -61,19 +60,7 @@ const styles = theme => ({
   },
 });
 
-const RowCounterDisplay = ({ currentRow, rows, onUpdateCountClick, classes, loading }) => {
-
-  let rowInfo;
-
-  if (loading) {
-    rowInfo = (<CircularProgress />);
-  } else {
-    rowInfo = (
-      rows
-      && rows[currentRow]
-      && <RowInfo currentRow={currentRow} {...rows[currentRow]} />
-    );
-  }
+const RowCounterDisplay = ({ currentRow, rows, onUpdateCountClick, classes }) => {
 
   return (
     <div className={classes.root}>
@@ -109,7 +96,9 @@ const RowCounterDisplay = ({ currentRow, rows, onUpdateCountClick, classes, load
           </div>
         </div>
       </div>
-      {rowInfo}
+        {rows
+        && rows[currentRow]
+        && <RowInfo currentRow={currentRow} {...rows[currentRow]} />}
     </div>
   );
 }
@@ -119,7 +108,6 @@ RowCounterDisplay.propTypes = {
   rows: PropTypes.array.isRequired,
   onUpdateCountClick: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
-  loading: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(RowCounterDisplay);

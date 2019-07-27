@@ -13,7 +13,6 @@ app.get('/api/patterns', (req, res, next) => {
 
   // res.send({ patterns: mockServerData.patterns });
   setTimeout(() => res.send({ patterns: mockServerData.patterns }), 1000);
-
   // next('test error')
 
 });
@@ -55,8 +54,9 @@ app.get('/api/patterns/:patternId', (req, res) => {
     rows = patterns;
   }
 
-  res.send({ patterns, sections, rows });
-  // setTimeout(() => res.send({ patterns, sections, rows }), 1000);
+  // res.send({ patterns, sections, rows });
+  setTimeout(() => res.send({ patterns, sections, rows }), 1000);
+  // next('test error');
 
 });
 
