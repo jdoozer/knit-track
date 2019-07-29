@@ -1,6 +1,5 @@
-// import addItemToState from 'utils/addItemToState';
-import mergeStateData from 'utils/mergeStateData';
-import { setLoading, setError } from 'utils/reducerUtils';
+
+import { setLoading, setError, mergeStateData } from 'utils/reducerUtils';
 import { handleActions } from 'redux-actions';
 
 // const initialPattern = ({ patternId, title }) => ({
@@ -36,9 +35,7 @@ const patternsReducer = handleActions({
 
   REQUEST_PATTERN_DATA: setLoading('patterns'),
 
-  RECEIVE_PATTERN_DATA: (state, action) => (
-    mergeStateData(state, action.payload.patterns)
-  ),
+  RECEIVE_PATTERN_DATA: mergeStateData('patterns'),
 
   PATTERNS_ERROR: setError('patterns'),
 

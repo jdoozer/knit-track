@@ -1,27 +1,28 @@
 import { createSelector } from 'reselect';
 
+// patterns
 const getPatternsById = state => state.patterns.byId;
-const getSectionsById = state => state.sections.byId;
-const getRowsById = state => state.rows.byId;
-const getPath = state => state.router.location.pathname;
-
 export const getPatternsLoading = state => state.patterns.loading;
 export const getPatternsError = state => state.patterns.error;
-export const getRowLoading = state => state.rows.loading;
-
-const getRowIdsFromSection = (state, sectionId) => (
-  getSectionsById(state)[sectionId].rowIds
-);
-
-export const getCurrentRow = (state, sectionId) => (
-  getSectionsById(state)[sectionId].currentRow
-);
-
 export const getPatterns = createSelector(
   [getPatternsById],
   patternsById => Object.keys(patternsById).map(key => patternsById[key])
 );
 
+// sections
+const getSectionsById = state => state.sections.byId;
+const getRowIdsFromSection = (state, sectionId) => (
+  getSectionsById(state)[sectionId].rowIds
+);
+export const getCurrentRow = (state, sectionId) => (
+  getSectionsById(state)[sectionId].currentRow
+);
+
+// rows
+const getRowsById = state => state.rows.byId;
+
+// router
+const getPath = state => state.router.location.pathname;
 export const getSelectedPatternId = createSelector(
   [getPath],
   path => {
@@ -31,6 +32,7 @@ export const getSelectedPatternId = createSelector(
   }
 );
 
+// cross-slice
 export const getSelectedPattern = createSelector(
   [getPatternsById, getSelectedPatternId],
   (patterns, selectedPatternId) => {
