@@ -8,6 +8,7 @@ import { CircularProgress } from 'material-ui/Progress';
 import ContentHeader from 'components/ContentHeader';
 import SectionPanel from 'components/SectionPanel';
 import AddSection from 'components/AddSection';
+import MessageBlock from 'components/MessageBlock';
 
 const styles = (theme) => ({
   root: {
@@ -20,16 +21,7 @@ const styles = (theme) => ({
   sectionCards: {
     margin: theme.spacing.unit * 3,
   },
-  message: {
-    padding: theme.spacing.unit * 2,
-  }
 });
-
-const MessageBlock = ({ classes, children }) => (
-  <Typography variant="subheading" className={classes.message}>
-    {children}
-  </Typography>
-);
 
 const PatternContent = ({
   pattern, sections,
@@ -46,16 +38,14 @@ const PatternContent = ({
   }
   else if (error) {
     mainContent = (
-      <MessageBlock classes={classes}>
+      <MessageBlock>
         An error occurred while fetching data. Please reload to try again.
       </MessageBlock>
     );
   }
   else if (pattern === null) {
     mainContent = (
-      <MessageBlock classes={classes}>
-        Pattern ID is invalid
-      </MessageBlock>
+      <MessageBlock>Pattern ID is invalid</MessageBlock>
     );
   }
   else {
@@ -100,7 +90,7 @@ PatternContent.propTypes = {
   pattern: PropTypes.shape({
     title: PropTypes.string,
     info: PropTypes.string,
-    patternId: PropTypes.string.isRequired,
+    patternId: PropTypes.string,
   }),
   sections: PropTypes.arrayOf(
     PropTypes.shape({
@@ -110,7 +100,6 @@ PatternContent.propTypes = {
   deletePattern: PropTypes.func.isRequired,
   deleteSection: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
 };

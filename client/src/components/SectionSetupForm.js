@@ -4,8 +4,10 @@ import { withStyles } from 'material-ui/styles';
 import Hidden from 'material-ui/Hidden';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
+import { CircularProgress } from 'material-ui/Progress';
 import ContentHeader from 'components/ContentHeader';
 import SectionRowInputs from 'components/SectionRowInputs';
+import MessageBlock from 'components/MessageBlock';
 import updateNestedItem from 'utils/updateNestedItem';
 
 /* keys here should match the props pulled out in RowInfo component */
@@ -71,10 +73,6 @@ class SectionSetupForm extends React.Component {
 
   componentWillMount() {
 
-    // redirect to home if pattern ID is invalid (check by looking at pattern)
-    const { pattern, history } = this.props;
-    if (pattern === null) history.push('/');
-
     let rowData = [];
     for (let rowNum = 0; rowNum < numRowsStart; rowNum++) {
       rowData.push({...initialRow})
@@ -85,6 +83,12 @@ class SectionSetupForm extends React.Component {
       numRows: numRowsStart,
       rowData
     });
+  }
+
+  patternPageRedirect(event) {
+    const { history, patternId } = this.props;
+    event.preventDefault();
+    history.push(`/patterns/${patternId}`);
   }
 
   handleChange(event) {
@@ -119,7 +123,7 @@ class SectionSetupForm extends React.Component {
   }
 
   handleSubmit(event) {
-    const { history, patternId, addSectionWithRows } = this.props;
+    const { addSectionWithRows, patternId } = this.props;
     const { title, numRows, rowData } = this.state;
 
     const sectionDataToAdd = { patternId, title, numRows, currentRow: 0 };
@@ -127,62 +131,83 @@ class SectionSetupForm extends React.Component {
 
     addSectionWithRows(sectionDataToAdd, rowDataToAdd);
 
-    event.preventDefault();
-    history.push(`/patterns/${patternId}`);
+    this.patternPageRedirect(event);
   }
 
   handleReset(event) {
-    const { history, patternId } = this.props;
-    event.preventDefault();
-    history.push(`/patterns/${patternId}`);
+    this.patternPageRedirect(event);
   }
 
   render() {
 
-    const { classes } = this.props;
+    const { pattern, loading, error, classes } = this.props;
+
+    if (loading) {
+      return (<CircularProgress />);
+    }
+
+    if (error) {
       return (
-        <Hidden xsDown>
-          <ContentHeader>Section Setup</ContentHeader>
-          <form
-            onSubmit={this.handleSubmit}
-            onReset={this.handleReset}
-            className={classes.root}
-          >
-            <TextField label='Section Title'
-              className={classes.textField}
-              name='title'
-              value={this.state.title}
-              onChange={this.handleChange}
-            />
-            <TextField label='Number of Rows'
-              className={classes.textField}
-              name='numRows'
-              value={this.state.numRows}
-              onChange={this.handleRowNumChange}
-              type='number'
-            />
-            <SectionRowInputs
-              classes={classes}
-              currState={this.state.rowData}
-              onChange={this.handleRowDataChange}
-              rowProps={rowProps}
-              numRows={this.state.numRows}
-            />
-            <Button variant="raised" color="primary" className={classes.button} type="submit">
-              Create Section
-            </Button>
-          </form>
-        </Hidden>
+        <MessageBlock>
+          An error occurred while fetching data. Please reload to try again.
+        </MessageBlock>
       );
     }
-  // }
+
+    if (pattern === null) {
+      return (
+        <MessageBlock>Invalid Pattern ID</MessageBlock>
+      );
+    }
+
+    return (
+      <Hidden xsDown>
+        <ContentHeader>{pattern.title} - New Section Setup</ContentHeader>
+        <form
+          onSubmit={this.handleSubmit}
+          onReset={this.handleReset}
+          className={classes.root}
+        >
+          <TextField label="Section Title"
+            className={classes.textField}
+            name="title"
+            value={this.state.title}
+            onChange={this.handleChange}
+          />
+          <TextField label="Number of Rows"
+            className={classes.textField}
+            name="numRows"
+            value={this.state.numRows}
+            onChange={this.handleRowNumChange}
+            type="number"
+          />
+          <SectionRowInputs
+            classes={classes}
+            currState={this.state.rowData}
+            onChange={this.handleRowDataChange}
+            rowProps={rowProps}
+            numRows={this.state.numRows}
+          />
+          <Button variant="raised" color="primary" className={classes.button} type="submit">
+            Create Section
+          </Button>
+        </form>
+      </Hidden>
+    );
+  }
 };
 
 SectionSetupForm.propTypes = {
   history: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   addSectionWithRows: PropTypes.func.isRequired,
-  patternId: PropTypes.string,
+  pattern: PropTypes.shape({
+    title: PropTypes.string,
+    info: PropTypes.string,
+    patternId: PropTypes.string,
+  }),
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(SectionSetupForm);

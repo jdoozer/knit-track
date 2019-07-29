@@ -18,7 +18,7 @@ const Header = ({ classes }) => (
     <Toolbar>
       <Typography variant="headline" color="inherit">
         <Link to="/">
-          Knit Track Smart Row Counter
+          KnitTrack Smart Row Counter
         </Link>
       </Typography>
     </Toolbar>

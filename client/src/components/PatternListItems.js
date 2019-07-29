@@ -3,24 +3,16 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import List from 'material-ui/List';
 import Divider from 'material-ui/Divider';
-import Typography from 'material-ui/Typography';
 import { CircularProgress } from 'material-ui/Progress';
 import ListLinkBlock from 'components/ListLinkBlock';
+import MessageBlock from 'components/MessageBlock';
+
 
 const styles = theme => ({
   list: {
     padding: 0,
   },
-  message: {
-    padding: theme.spacing.unit * 2,
-  },
 });
-
-const MessageBlock = ({ classes, children }) => (
-  <Typography variant="subheading" className={classes.message}>
-    {children}
-  </Typography>
-);
 
 const PatternListItems = ({ patterns, onPatternClick, loading, classes, error }) => {
 
@@ -30,7 +22,7 @@ const PatternListItems = ({ patterns, onPatternClick, loading, classes, error })
 
   if (error) {
     return (
-      <MessageBlock classes={classes}>
+      <MessageBlock>
         An error occurred while fetching data. Please reload to try again.
       </MessageBlock>
     )
@@ -54,7 +46,7 @@ const PatternListItems = ({ patterns, onPatternClick, loading, classes, error })
   }
 
   return (
-    <MessageBlock classes={classes}>
+    <MessageBlock className={classes.message}>
        No patterns created yet! Click the button below to add a new pattern.
     </MessageBlock>
   )

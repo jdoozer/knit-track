@@ -9,16 +9,6 @@ export const getPatternsLoading = state => state.patterns.loading;
 export const getPatternsError = state => state.patterns.error;
 export const getRowLoading = state => state.rows.loading;
 
-// export const getSectionLoading = state => state.sections.loading;
-
-// export const getPatternLoading = (state, patternId) => (
-//   getPatternsById(state)[patternId].loading
-// );
-//
-// export const getPatternError = (state, patternId) => (
-//   getPatternsById(state)[patternId].error
-// );
-
 const getRowIdsFromSection = (state, sectionId) => (
   getSectionsById(state)[sectionId].rowIds
 );
