@@ -18,7 +18,6 @@ const initialPattern = ({
 const requestPatternData = createAction(
   'REQUEST_PATTERN_DATA',
   dataTypes => ({ dataTypes })
-  // (dataTypes, id) => ({ dataTypes, id })
 );
 
 const receivePatternData = createAction(
@@ -59,13 +58,13 @@ export const fetchPatterns = () => fetchPatternData({
 
 export const fetchPatternExpanded = patternId => fetchPatternData({
   path: `patterns/${patternId}`,
-  dataTypes: ['patterns', 'sections', 'rows'],
+  dataTypes: ['patterns', 'sections'],
   // id: patternId,
 });
 
 const fetchSectionExpanded = sectionId => fetchPatternData({
   path: `sections/${sectionId}`,
-  dataTypes: ['sections', 'rows']
+  dataTypes: ['sections']
 });
 
 

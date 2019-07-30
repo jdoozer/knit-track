@@ -31,7 +31,7 @@ app.get('/api/patterns/:patternId', (req, res) => {
 
   const patternId = req.params.patternId;
   const pattern = mockServerData.patterns.byId[patternId];
-  let patterns, sections, rows;
+  let patterns, sections;
 
   if (pattern) {
     patterns = {
@@ -42,33 +42,24 @@ app.get('/api/patterns/:patternId', (req, res) => {
       byId: utils.filterObject(mockServerData.sections.byId, pattern.sectionIds),
       allIds: pattern.sectionIds
     };
-
-    const rowIds = utils.combineObjectArrays(sections.byId, 'rowIds');
-    rows = {
-      byId: utils.filterObject(mockServerData.rows.byId, rowIds),
-      allIds: rowIds
-    };
   } else {
     patterns = { byId: {}, allIds: [] };
     sections = patterns;
-    rows = patterns;
   }
 
   // res.send({ patterns, sections, rows });
-  setTimeout(() => res.send({ patterns, sections, rows }), 1000);
+  setTimeout(() => res.send({ patterns, sections }), 1000);
   // next('test error');
 
 });
 
 app.post('/api/sections', (req, res) => {
   const section = req.body.section;
-  const rows = req.body.rows;
   res.send({
     sections: {
       byId: { [section.sectionId]: section },
       allIds: [section.sectionId],
     },
-    rows
   })
 });
 
@@ -81,13 +72,7 @@ app.get('/api/sections/:sectionId', (req, res) => {
     byId: { [section.sectionId]: section },
     allIds: [section.sectionId],
   };
-
-  const rows = {
-    byId: utils.filterObject(mockServerData.rows.byId, section.rowIds),
-    allIds: section.rowIds
-  };
-
-  res.send({ sections, rows });
+  res.send({ sections });
 
 });
 

@@ -9,6 +9,7 @@ import ContentHeader from 'components/ContentHeader';
 import SectionRowInputs from 'components/SectionRowInputs';
 import MessageBlock from 'components/MessageBlock';
 import updateNestedItem from 'utils/updateNestedItem';
+import objValsNotEmpty from 'utils/objValsNotEmpty';
 
 /* keys here should match the props pulled out in RowInfo component */
 const rowProps = {
@@ -86,9 +87,9 @@ class SectionSetupForm extends React.Component {
   }
 
   patternPageRedirect(event) {
-    const { history, patternId } = this.props;
+    const { history, pattern } = this.props;
     event.preventDefault();
-    history.push(`/patterns/${patternId}`);
+    history.push(`/patterns/${pattern.patternId}`);
   }
 
   handleChange(event) {
@@ -123,13 +124,26 @@ class SectionSetupForm extends React.Component {
   }
 
   handleSubmit(event) {
-    const { addSectionWithRows, patternId } = this.props;
+
+    const { addSection, pattern } = this.props;
     const { title, numRows, rowData } = this.state;
 
-    const sectionDataToAdd = { patternId, title, numRows, currentRow: 0 };
-    const rowDataToAdd = [...rowData].slice(0, numRows);
+    const rowDataObject = rowData.reduce((acc, item, index) => {
+      if (objValsNotEmpty(item)) {
+        acc[index+1] = item;
+      }
+      return acc;
+    }, {});
 
-    addSectionWithRows(sectionDataToAdd, rowDataToAdd);
+    const section = {
+      patternId: pattern.patternId,
+      title,
+      numRows,
+      currentRow: 1,
+      rows: rowDataObject
+    };
+
+    addSection(section);
 
     this.patternPageRedirect(event);
   }
@@ -200,7 +214,7 @@ class SectionSetupForm extends React.Component {
 SectionSetupForm.propTypes = {
   history: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
-  addSectionWithRows: PropTypes.func.isRequired,
+  addSection: PropTypes.func.isRequired,
   pattern: PropTypes.shape({
     title: PropTypes.string,
     info: PropTypes.string,

@@ -1,5 +1,5 @@
 import addItemToState from 'utils/addItemToState';
-import updateNormalized from 'utils/updateNormalized';
+// import updateNormalized from 'utils/updateNormalized';
 import { setLoading, mergeStateData } from 'utils/reducerUtils';
 import { initialStateNormal } from 'stateData/initialState';
 import { handleActions } from 'redux-actions';
@@ -20,11 +20,11 @@ const updateRowCount = (state, action) => {
 const getNextRow = (updateType, { currentRow, numRows }) => {
   switch(updateType) {
     case 'INCREMENT':
-      return Math.min(currentRow + 1, numRows - 1);
+      return Math.min(currentRow + 1, numRows);
     case 'DECREMENT':
-      return Math.max(currentRow - 1, 0);
+      return Math.max(currentRow - 1, 1);
     case 'RESET':
-      return 0;
+      return 1;
     default:
       return currentRow;
   }
@@ -45,24 +45,14 @@ const sectionsReducer = handleActions({
     )
   ),
 
-  ADD_SECTION_WITH_ROWS: (state, action) => {
-    return addItemToState(
-      state,
-      action.payload.sectionId,
-      { sectionId: action.payload.sectionId,
-        rowIds: action.payload.rowIds,
-        ...action.payload.section }
-    )
-  },
-
   UPDATE_ROW_COUNT: (state, action) => ({
     ...state,
     byId: updateRowCount(state.byId, action)
   }),
 
-  UPDATE_SECTION: (state, action) => (
-    updateNormalized(state, action.payload.sectionId, action.payload.updates)
-  ),
+  // UPDATE_SECTION: (state, action) => (
+  //   updateNormalized(state, action.payload.sectionId, action.payload.updates)
+  // ),
 
 }, initialStateNormal);
 

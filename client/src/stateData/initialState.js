@@ -7,5 +7,4 @@ export const initialStateNormal = {
 export const initialStateFull = {
   patterns: initialStateNormal,
   sections: initialStateNormal,
-  rows: initialStateNormal,
 }

@@ -20,7 +20,7 @@ export const oneSection = {
       title: title1,
       rowIds: [],
       numRows,
-      currentRow: 0
+      currentRow: 1
     },
   },
   allIds: [sectionId1],
@@ -51,7 +51,7 @@ export const twoSections = {
       title: title2,
       rowIds: [],
       numRows,
-      currentRow: 0
+      currentRow: 1
     },
   },
   allIds: [sectionId1, sectionId2],

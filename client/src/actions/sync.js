@@ -1,13 +1,11 @@
 import generateId from 'uuid/v4';
 import { createAction, createActions } from 'redux-actions';
 
-export const addSectionWithRows = createAction(
-  'ADD_SECTION_WITH_ROWS',
-  (sectionData, rowData) => ({
-    section: sectionData,
-    rows: rowData,
+export const addSection = createAction(
+  'ADD_SECTION',
+  section => ({
+    section,
     sectionId: generateId(),
-    rowIds: Array(rowData.length).fill(0).map(x => generateId())
   })
 );
 

@@ -11,15 +11,17 @@ export const getPatterns = createSelector(
 
 // sections
 const getSectionsById = state => state.sections.byId;
-const getRowIdsFromSection = (state, sectionId) => (
-  getSectionsById(state)[sectionId].rowIds
-);
-export const getCurrentRow = (state, sectionId) => (
-  getSectionsById(state)[sectionId].currentRow
+const getSectionById = (state, sectionId) => getSectionsById(state)[sectionId];
+
+export const getCurrentRow = createSelector(
+  [getSectionById],
+  section => section.currentRow
 );
 
-// rows
-const getRowsById = state => state.rows.byId;
+export const getRowsFromSection = createSelector(
+  [getSectionById],
+  section => section.rows
+);
 
 // router
 const getPath = state => state.router.location.pathname;
@@ -54,10 +56,10 @@ export const getSelectedPatternSections = createSelector(
   }
 );
 
-export const getRowsFromSection = createSelector(
-  [getRowIdsFromSection, getRowsById],
-  (rowIds, rows) => {
-    const rowsFromSection = rowIds.map(rowId => rows[rowId]);
-    return rowsFromSection.filter(row => row);
-  }
-);
+// export const getRowsFromSection = createSelector(
+//   [getRowIdsFromSection, getRowsById],
+//   (rowIds, rows) => {
+//     const rowsFromSection = rowIds.map(rowId => rows[rowId]);
+//     return rowsFromSection.filter(row => row);
+//   }
+// );

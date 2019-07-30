@@ -39,7 +39,7 @@ const patternsReducer = handleActions({
 
   PATTERNS_ERROR: setError('patterns'),
 
-  ADD_SECTION_WITH_ROWS: (state, action) => ({
+  ADD_SECTION: (state, action) => ({
     ...state,
     byId: addSection(state.byId, action)
   }),

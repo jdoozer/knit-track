@@ -15,7 +15,7 @@ const rowsReducer = handleActions({
   ),
 
   // TODO: this is pretty inefficient, should proably use mergeStatData instead
-  ADD_SECTION_WITH_ROWS: (state, action) => {
+  ADD_SECTION: (state, action) => {
     const { rows, rowIds } = action.payload;
     for (let i = 0; i < rowIds.length; i++) {
       state = addItemToState(

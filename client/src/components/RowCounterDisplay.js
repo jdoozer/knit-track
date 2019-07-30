@@ -67,7 +67,7 @@ const RowCounterDisplay = ({ currentRow, rows, onUpdateCountClick, classes }) =>
       <div className={classes.rowCounter}>
         <Paper className={classes.row} elevation={1}>
           <Typography variant="display2" className={classes.rowDisplay}>
-            {currentRow + 1}
+            {currentRow}
           </Typography>
         </Paper>
         <div className={classes.counterButtonRoot}>
@@ -105,7 +105,7 @@ const RowCounterDisplay = ({ currentRow, rows, onUpdateCountClick, classes }) =>
 
 RowCounterDisplay.propTypes = {
   currentRow: PropTypes.number.isRequired,
-  rows: PropTypes.array.isRequired,
+  rows: PropTypes.object.isRequired,
   onUpdateCountClick: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 };

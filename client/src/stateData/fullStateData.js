@@ -42,21 +42,7 @@ export const onePatternOneSection = {
       [sectionIds(1)]: {
         sectionId: sectionIds(1),
         patternId: patternIds(1),
-        rowIds: [rowIds(1), rowIds(2)],
-      },
-    },
-  },
-  rows: {
-    ...initialStateNormal,
-    allIds: [rowIds(1), rowIds(2)],
-    byId: {
-      [rowIds(1)]: {
-        rowId: rowIds(1),
-        sectionId: sectionIds(1),
-      },
-      [rowIds(2)]: {
-        rowId: rowIds(2),
-        sectionId: sectionIds(1),
+        rows: [rowIds(1), rowIds(2)],
       },
     },
   },
@@ -80,34 +66,12 @@ export const onePatternTwoSections = {
       [sectionIds(1)]: {
         sectionId: sectionIds(1),
         patternId: patternIds(1),
-        rowIds: [rowIds(1), rowIds(2)],
+        rows: [rowIds(1), rowIds(2)],
       },
       [sectionIds(2)]: {
         sectionId: sectionIds(2),
         patternId: patternIds(1),
-        rowIds: [rowIds(3), rowIds(4)],
-      },
-    },
-  },
-  rows: {
-    ...initialStateNormal,
-    allIds: [rowIds(1), rowIds(2), rowIds(3), rowIds(4)],
-    byId: {
-      [rowIds(1)]: {
-        rowId: rowIds(1),
-        sectionId: sectionIds(1),
-      },
-      [rowIds(2)]: {
-        rowId: rowIds(2),
-        sectionId: sectionIds(1),
-      },
-      [rowIds(3)]: {
-        rowId: rowIds(3),
-        sectionId: sectionIds(2),
-      },
-      [rowIds(4)]: {
-        rowId: rowIds(4),
-        sectionId: sectionIds(2),
+        rows: [rowIds(3), rowIds(4)],
       },
     },
   },
@@ -152,61 +116,23 @@ export const twoPatternsTwoSections = {
       [sectionIds(1)]: {
         sectionId: sectionIds(1),
         patternId: patternIds(1),
-        rowIds: [rowIds(1), rowIds(2)],
+        rows: [rowIds(1), rowIds(2)],
       },
       [sectionIds(2)]: {
         sectionId: sectionIds(2),
         patternId: patternIds(1),
-        rowIds: [rowIds(3), rowIds(4)],
+        rows: [rowIds(3), rowIds(4)],
       },
       [sectionIds(3)]: {
         sectionId: sectionIds(3),
         patternId: patternIds(2),
-        rowIds: [rowIds(5), rowIds(6)],
+        rows: [rowIds(5), rowIds(6)],
       },
       [sectionIds(4)]: {
         sectionId: sectionIds(4),
         patternId: patternIds(2),
-        rowIds: [rowIds(7), rowIds(8)],
+        rows: [rowIds(7), rowIds(8)],
       },
     },
-  },
-  rows: {
-    ...initialStateNormal,
-    allIds: [rowIds(1), rowIds(2), rowIds(3), rowIds(4), rowIds(5), rowIds(6), rowIds(7), rowIds(8)],
-    byId: {
-      [rowIds(1)]: {
-        rowId: rowIds(1),
-        sectionId: sectionIds(1),
-      },
-      [rowIds(2)]: {
-        rowId: rowIds(2),
-        sectionId: sectionIds(1),
-      },
-      [rowIds(3)]: {
-        rowId: rowIds(3),
-        sectionId: sectionIds(2),
-      },
-      [rowIds(4)]: {
-        rowId: rowIds(4),
-        sectionId: sectionIds(2),
-      },
-      [rowIds(5)]: {
-        rowId: rowIds(5),
-        sectionId: sectionIds(3),
-      },
-      [rowIds(6)]: {
-        rowId: rowIds(6),
-        sectionId: sectionIds(3),
-      },
-      [rowIds(7)]: {
-        rowId: rowIds(7),
-        sectionId: sectionIds(4),
-      },
-      [rowIds(8)]: {
-        rowId: rowIds(8),
-        sectionId: sectionIds(4),
-      },
-    }
   }
 };
