@@ -65,22 +65,17 @@ export const fetchPatterns = () => fetchPatternData({
 export const fetchPatternExpanded = patternId => fetchPatternData({
   path: `patterns/${patternId}`,
   dataTypes: ['patterns', 'sections'],
-  // id: patternId,
 });
 
-const fetchSectionExpanded = sectionId => fetchPatternData({
-  path: `sections/${sectionId}`,
-  dataTypes: ['sections']
-});
-
-
+// const fetchSectionExpanded = sectionId => fetchPatternData({
+//   path: `sections/${sectionId}`,
+//   dataTypes: ['sections']
+// });
 
 
 // CONDITIONAL GET REQUESTS
 
 export const fetchPatternExpandedIfNeeded = patternId => (dispatch, getState) => {
-
-  if (!patternId) return Promise.resolve();
 
   const { patterns, sections } = getState();
 
@@ -94,27 +89,24 @@ export const fetchPatternExpandedIfNeeded = patternId => (dispatch, getState) =>
     const sectionsInPattern = patterns.byId[patternId].sectionIds;
     sectionsLoaded = (
       !sections.loading
-      && sectionsInPattern.length
-      && sectionsInPattern.reduce(
-          (idsIncluded, id) => idsIncluded && sections.allIds.includes(id), true
-        )
+      && sectionsInPattern.every(id => sections.allIds.includes(id))
     );
   }
 
-  return sectionsLoaded ? Promise.resolve() : dispatch(fetchPatternExpanded(patternId));
+  return sectionsLoaded ? null : dispatch(fetchPatternExpanded(patternId));
 
 }
 
-export const fetchSectionExpandedIfNeeded = sectionId => (dispatch, getState) => {
-
-  if (!sectionId) return Promise.resolve();
-
-  const { sections } = getState();
-
-  const sectionLoaded = (
-    !sections.loading && sections.allIds.includes(sectionId)
-  );
-
-  return sectionLoaded ? Promise.resolve() : dispatch(fetchSectionExpanded(sectionId));
-
-}
+// export const fetchSectionExpandedIfNeeded = sectionId => (dispatch, getState) => {
+//
+//   if (!sectionId) return Promise.resolve();
+//
+//   const { sections } = getState();
+//
+//   const sectionLoaded = (
+//     !sections.loading && sections.allIds.includes(sectionId)
+//   );
+//
+//   return sectionLoaded ? Promise.resolve() : dispatch(fetchSectionExpanded(sectionId));
+//
+// }

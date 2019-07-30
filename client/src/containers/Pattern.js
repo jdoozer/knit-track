@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { deletePattern, deleteSection, fetchPatternExpanded } from 'actions';
+import { deletePattern, deleteSection, fetchPatternExpandedIfNeeded } from 'actions';
 import PatternContent from 'components/PatternContent';
 import {
   getPatternsLoading,
@@ -22,20 +22,20 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   deletePattern: patternId => deletePattern(patternId),
   deleteSection: sectionId => deleteSection(sectionId),
-  fetchPatternExpanded: patternId => fetchPatternExpanded(patternId),
+  fetchPatternExpandedIfNeeded: patternId => fetchPatternExpandedIfNeeded(patternId),
 };
 
 class Pattern extends React.Component {
 
   componentDidMount() {
-    const { patternId, fetchPatternExpanded } = this.props;
+    const { patternId, fetchPatternExpandedIfNeeded } = this.props;
     if (patternId) {
-      fetchPatternExpanded(patternId);
+      fetchPatternExpandedIfNeeded(patternId);
     }
   }
 
   render() {
-    const { patternId, fetchPatternExpanded, ...otherProps } = this.props;
+    const { patternId, fetchPatternExpandedIfNeeded, ...otherProps } = this.props;
     return (
       <PatternContent {...otherProps} />
     );
@@ -59,7 +59,7 @@ Pattern.propTypes = {
   error: PropTypes.bool.isRequired,
   deletePattern: PropTypes.func.isRequired,
   deleteSection: PropTypes.func.isRequired,
-  fetchPatternExpanded: PropTypes.func.isRequired,
+  fetchPatternExpandedIfNeeded: PropTypes.func.isRequired,
 
 }
 
