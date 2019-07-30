@@ -1,5 +1,4 @@
 import addItemToState from 'utils/addItemToState';
-// import updateNormalized from 'utils/updateNormalized';
 import { setLoading, mergeStateData } from 'utils/reducerUtils';
 import { initialStateNormal } from 'stateData/initialState';
 import { handleActions } from 'redux-actions';
@@ -49,10 +48,6 @@ const sectionsReducer = handleActions({
     ...state,
     byId: updateRowCount(state.byId, action)
   }),
-
-  // UPDATE_SECTION: (state, action) => (
-  //   updateNormalized(state, action.payload.sectionId, action.payload.updates)
-  // ),
 
 }, initialStateNormal);
 

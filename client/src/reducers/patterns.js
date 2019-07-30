@@ -37,7 +37,7 @@ const patternsReducer = handleActions({
 
   RECEIVE_PATTERN_DATA: mergeStateData('patterns'),
 
-  PATTERNS_ERROR: setError('patterns'),
+  RECEIVE_ERROR_PATTERNS: setError('patterns'),
 
   ADD_SECTION: (state, action) => ({
     ...state,

@@ -14,19 +14,25 @@ const initialPattern = ({
   sectionIds: [],
 });
 
+// ACTION CONSTANTS
+const REQUEST_PATTERN_DATA = 'REQUEST_PATTERN_DATA';
+const RECEIVE_PATTERN_DATA = 'RECEIVE_PATTERN_DATA';
+const RECEIVE_ERROR_PATTERNS = 'RECEIVE_ERROR_PATTERNS';
+
+
 // SETUP ACTIONS
 const requestPatternData = createAction(
-  'REQUEST_PATTERN_DATA',
+  REQUEST_PATTERN_DATA,
   dataTypes => ({ dataTypes })
 );
 
 const receivePatternData = createAction(
-  'RECEIVE_PATTERN_DATA',
+  RECEIVE_PATTERN_DATA,
   json => ({ ...json })
 );
 
-const patternsError = dataTypes => createAction(
-  'PATTERNS_ERROR',
+const receiveErrorPatterns = dataTypes => createAction(
+  RECEIVE_ERROR_PATTERNS,
   error => ({ error, dataTypes })
 );
 
@@ -53,7 +59,7 @@ export const createPattern = ({ ...patternData }) => fetchPatternData({
 export const fetchPatterns = () => fetchPatternData({
   path: 'patterns',
   dataTypes: ['patterns'],
-  errorAction: patternsError(['patterns']),
+  errorAction: receiveErrorPatterns(['patterns']),
 });
 
 export const fetchPatternExpanded = patternId => fetchPatternData({
