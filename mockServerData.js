@@ -18,11 +18,18 @@ exports.patterns = {
       sectionIds: [
         '9887826c-b53a-4ac3-b6e7-c9a0268aaf7d'
       ]
-    }
+    },
+    'c0dad1e7-bf72-4b72-b4f0-9a4945dbb44e': {
+      title: 'test pattern',
+      info: 'test pattern info here',
+      patternId: 'c0dad1e7-bf72-4b72-b4f0-9a4945dbb44e',
+      sectionIds: []
+    },
   },
   allIds: [
     'f797d396-9949-4626-9dd3-0f2e8304a0c7',
-    '6a9b3a2f-605c-4b46-b403-91077d59400b'
+    '6a9b3a2f-605c-4b46-b403-91077d59400b',
+    'c0dad1e7-bf72-4b72-b4f0-9a4945dbb44e'
   ]
 };
 

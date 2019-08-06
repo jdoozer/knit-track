@@ -1,46 +1,33 @@
-import generateId from 'uuid/v4';
 import { createAction } from 'redux-actions';
 import fetchActionCreator from 'utils/fetchActionCreator';
 
-// TODO: get rid of this here (don't want in 2 places - should be in reducer)
-const initialPattern = ({
-  patternId,
-  title = '<title placeholder>',
-  info = '<pattern info placeholder>'
-}) => ({
-  patternId,
-  title,
-  info,
-  sectionIds: [],
-});
-
 // ACTION CONSTANTS
-const REQUEST_PATTERN_DATA = 'REQUEST_PATTERN_DATA';
-const RECEIVE_PATTERN_DATA = 'RECEIVE_PATTERN_DATA';
-const RECEIVE_ERROR_PATTERNS = 'RECEIVE_ERROR_PATTERNS';
+const REQUEST_DATA = 'REQUEST_DATA';
+const RECEIVE_DATA = 'RECEIVE_DATA';
+const RECEIVE_ERROR = 'RECEIVE_ERROR';
 
 
 // SETUP ACTIONS
-const requestPatternData = createAction(
-  REQUEST_PATTERN_DATA,
+const requestData = createAction(
+  REQUEST_DATA,
   dataTypes => ({ dataTypes })
 );
 
-const receivePatternData = createAction(
-  RECEIVE_PATTERN_DATA,
+const receiveData = createAction(
+  RECEIVE_DATA,
   json => ({ ...json })
 );
 
-const receiveErrorPatterns = dataTypes => createAction(
-  RECEIVE_ERROR_PATTERNS,
+const receiveError = dataTypes => createAction(
+  RECEIVE_ERROR,
   error => ({ error, dataTypes })
 );
 
 // MAIN FUNCTION
 const fetchPatternData = ({ path, dataTypes=[], errorAction, requestType='GET', body=null, id=null }) =>
   fetchActionCreator({
-    requestAction: requestPatternData(dataTypes, id),
-    receiveAction: receivePatternData,
+    requestAction: requestData(dataTypes, id),
+    receiveAction: receiveData,
     errorAction,
     path,
     requestType,
@@ -50,28 +37,24 @@ const fetchPatternData = ({ path, dataTypes=[], errorAction, requestType='GET', 
 // POST REQUESTS
 export const createPattern = ({ ...patternData }) => fetchPatternData({
   requestType: 'POST',
-  body: { pattern: initialPattern({ patternId: generateId(), ...patternData }) },
+  body: { pattern: patternData },
   path: 'patterns',
-  dataTypes: ['patterns']
+  dataTypes: ['patterns'],
+  errorAction: receiveError(['patterns']),
 });
 
 // GET REQUESTS
 export const fetchPatterns = () => fetchPatternData({
   path: 'patterns',
   dataTypes: ['patterns'],
-  errorAction: receiveErrorPatterns(['patterns']),
+  errorAction: receiveError(['patterns']),
 });
 
 export const fetchPatternExpanded = patternId => fetchPatternData({
   path: `patterns/${patternId}`,
   dataTypes: ['patterns', 'sections'],
+  errorAction: receiveError(['patterns', 'sections']),
 });
-
-// const fetchSectionExpanded = sectionId => fetchPatternData({
-//   path: `sections/${sectionId}`,
-//   dataTypes: ['sections']
-// });
-
 
 // CONDITIONAL GET REQUESTS
 
@@ -79,34 +62,21 @@ export const fetchPatternExpandedIfNeeded = patternId => (dispatch, getState) =>
 
   const { patterns, sections } = getState();
 
-  const patternLoaded = (
-    !patterns.loading && patterns.allIds.includes(patternId)
-  );
+  if (patterns.loading) return null;
 
-  let sectionsLoaded = false;
+  if (patterns.allIds.includes(patternId)) {
 
-  if (patternLoaded) {
-    const sectionsInPattern = patterns.byId[patternId].sectionIds;
-    sectionsLoaded = (
-      !sections.loading
-      && sectionsInPattern.every(id => sections.allIds.includes(id))
+    const patternSections = patterns.byId[patternId].sectionIds;
+
+    const patternSectionsInState = (
+      patternSections.every(id => sections.allIds.includes(id))
     );
+
+    if (sections.loading || patternSectionsInState) {
+      return null;
+    }
   }
 
-  return sectionsLoaded ? null : dispatch(fetchPatternExpanded(patternId));
+  return dispatch(fetchPatternExpanded(patternId));
 
 }
-
-// export const fetchSectionExpandedIfNeeded = sectionId => (dispatch, getState) => {
-//
-//   if (!sectionId) return Promise.resolve();
-//
-//   const { sections } = getState();
-//
-//   const sectionLoaded = (
-//     !sections.loading && sections.allIds.includes(sectionId)
-//   );
-//
-//   return sectionLoaded ? Promise.resolve() : dispatch(fetchSectionExpanded(sectionId));
-//
-// }

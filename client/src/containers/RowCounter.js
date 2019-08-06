@@ -35,7 +35,7 @@ class RowCounter extends React.Component {
 RowCounter.propTypes = {
   sectionId: PropTypes.string.isRequired,
   currentRow: PropTypes.number.isRequired,
-  rows: PropTypes.array.isRequired,
+  rows: PropTypes.object.isRequired,
   onUpdateCountClick: PropTypes.func.isRequired,
 };
 

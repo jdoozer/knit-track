@@ -31,9 +31,9 @@ const getNextRow = (updateType, { currentRow, numRows }) => {
 
 const sectionsReducer = handleActions({
 
-  REQUEST_PATTERN_DATA: setLoading('sections'),
+  REQUEST_DATA: setLoading('sections'),
 
-  RECEIVE_PATTERN_DATA: mergeStateData('sections'),
+  RECEIVE_DATA: mergeStateData('sections'),
 
   ADD_SECTION: (state, action) => (
     addItemToState(

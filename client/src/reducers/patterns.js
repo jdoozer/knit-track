@@ -33,11 +33,11 @@ const addSection = (state, action) => {
 
 const patternsReducer = handleActions({
 
-  REQUEST_PATTERN_DATA: setLoading('patterns'),
+  REQUEST_DATA: setLoading('patterns'),
 
-  RECEIVE_PATTERN_DATA: mergeStateData('patterns'),
+  RECEIVE_DATA: mergeStateData('patterns'),
 
-  RECEIVE_ERROR_PATTERNS: setError('patterns'),
+  RECEIVE_ERROR: setError('patterns'),
 
   ADD_SECTION: (state, action) => ({
     ...state,

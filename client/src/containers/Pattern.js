@@ -28,8 +28,8 @@ const mapDispatchToProps = {
 class Pattern extends React.Component {
 
   componentDidMount() {
-    const { patternId, fetchPatternExpandedIfNeeded } = this.props;
-    if (patternId) {
+    const { patternId, fetchPatternExpandedIfNeeded, error } = this.props;
+    if (patternId && !error) {
       fetchPatternExpandedIfNeeded(patternId);
     }
   }

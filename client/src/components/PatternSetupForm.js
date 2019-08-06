@@ -47,7 +47,7 @@ class PatternSetupForm extends React.Component {
     createPattern({ title, info });
     event.preventDefault();
 
-    history.push('/');
+    // history.push('/');
   }
 
   handleReset(event) {
