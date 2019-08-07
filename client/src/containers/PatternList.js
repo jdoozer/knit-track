@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { selectPattern, fetchPatterns } from 'actions';
+import { fetchPatterns } from 'actions';
 import PatternListItems from 'components/PatternListItems';
 import { getPatterns, getPatternsLoading, getPatternsError } from 'selectors';
 
@@ -12,7 +12,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  onPatternClick: index => selectPattern(index),
   fetchPatterns,
 };
 
@@ -36,7 +35,6 @@ PatternList.propTypes = {
       title: PropTypes.string.isRequired,
     }).isRequired
   ).isRequired,
-  onPatternClick: PropTypes.func.isRequired,
   fetchPatterns: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
 }

@@ -125,7 +125,7 @@ class SectionSetupForm extends React.Component {
 
   handleSubmit(event) {
 
-    const { addSection, pattern } = this.props;
+    const { createSection, pattern } = this.props;
     const { title, numRows, rowData } = this.state;
 
     const rowDataObject = rowData.reduce((acc, item, index) => {
@@ -143,7 +143,7 @@ class SectionSetupForm extends React.Component {
       rows: rowDataObject
     };
 
-    addSection(section);
+    createSection(section);
 
     this.patternPageRedirect(event);
   }
@@ -214,7 +214,7 @@ class SectionSetupForm extends React.Component {
 SectionSetupForm.propTypes = {
   history: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
-  addSection: PropTypes.func.isRequired,
+  createSection: PropTypes.func.isRequired,
   pattern: PropTypes.shape({
     title: PropTypes.string,
     info: PropTypes.string,

@@ -1,21 +1,18 @@
 import { createAction } from 'redux-actions';
 import fetchActionCreator from 'utils/fetchActionCreator';
 
+
 // ACTION CONSTANTS
 const REQUEST_DATA = 'REQUEST_DATA';
-const RECEIVE_DATA = 'RECEIVE_DATA';
 const RECEIVE_ERROR = 'RECEIVE_ERROR';
+const RECEIVE_DATA = 'RECEIVE_DATA';
+const RECEIVE_NEW_SECTION = 'RECEIVE_NEW_SECTION';
 
 
-// SETUP ACTIONS
+// SUPPORTING ACTIONS
 const requestData = createAction(
   REQUEST_DATA,
   dataTypes => ({ dataTypes })
-);
-
-const receiveData = createAction(
-  RECEIVE_DATA,
-  json => ({ ...json })
 );
 
 const receiveError = dataTypes => createAction(
@@ -23,38 +20,52 @@ const receiveError = dataTypes => createAction(
   error => ({ error, dataTypes })
 );
 
-// MAIN FUNCTION
-const fetchPatternData = ({ path, dataTypes=[], errorAction, requestType='GET', body=null, id=null }) =>
-  fetchActionCreator({
-    requestAction: requestData(dataTypes, id),
-    receiveAction: receiveData,
-    errorAction,
-    path,
-    requestType,
-    body,
-  });
+const receiveData = createAction(
+  RECEIVE_DATA,
+  json => ({ ...json })
+);
+
+const receiveNewSection = createAction(
+  RECEIVE_NEW_SECTION,
+  json => ({ section: json })
+);
+
 
 // POST REQUESTS
-export const createPattern = ({ ...patternData }) => fetchPatternData({
+export const createPattern = ({ ...patternData }) => fetchActionCreator({
+  requestAction: requestData(['patterns']),
+  receiveAction: receiveData,
+  errorAction: receiveError(['patterns']),
+  path: 'patterns',
   requestType: 'POST',
   body: { pattern: patternData },
-  path: 'patterns',
-  dataTypes: ['patterns'],
-  errorAction: receiveError(['patterns']),
 });
+
+export const createSection = ({ ...sectionData }) => fetchActionCreator({
+  requestAction: requestData(['sections']),
+  receiveAction: receiveNewSection,
+  errorAction: receiveError(['sections']),
+  path: 'sections',
+  requestType: 'POST',
+  body: { section: sectionData },
+});
+
 
 // GET REQUESTS
-export const fetchPatterns = () => fetchPatternData({
-  path: 'patterns',
-  dataTypes: ['patterns'],
+export const fetchPatterns = () => fetchActionCreator({
+  requestAction: requestData(['patterns']),
+  receiveAction: receiveData,
   errorAction: receiveError(['patterns']),
+  path: 'patterns',
 });
 
-export const fetchPatternExpanded = patternId => fetchPatternData({
-  path: `patterns/${patternId}`,
-  dataTypes: ['patterns', 'sections'],
+export const fetchPatternExpanded = patternId => fetchActionCreator({
+  requestAction: requestData(['patterns', 'sections']),
+  receiveAction: receiveData,
   errorAction: receiveError(['patterns', 'sections']),
+  path: `patterns/${patternId}`,
 });
+
 
 // CONDITIONAL GET REQUESTS
 

@@ -14,7 +14,7 @@ const styles = theme => ({
   },
 });
 
-const PatternListItems = ({ patterns, onPatternClick, loading, classes, error }) => {
+const PatternListItems = ({ patterns, loading, classes, error }) => {
 
   if (loading) {
     return (<div><CircularProgress /></div>)
@@ -36,7 +36,6 @@ const PatternListItems = ({ patterns, onPatternClick, loading, classes, error })
             <ListLinkBlock
               link={`/patterns/${pattern.patternId}`}
               title={pattern.title}
-              onClick={() => onPatternClick(pattern.patternId)}
             />
             <Divider />
           </React.Fragment>
@@ -60,7 +59,6 @@ PatternListItems.propTypes = {
       title: PropTypes.string.isRequired,
     }).isRequired
   ).isRequired,
-  onPatternClick: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,

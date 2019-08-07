@@ -1,7 +1,12 @@
-import addItemToState from 'utils/addItemToState';
-import { setLoading, mergeStateData } from 'utils/reducerUtils';
-import { initialStateNormal } from 'stateData/initialState';
+import { updateState, mergeItems, addItem } from 'utils/reducerUtils';
 import { handleActions } from 'redux-actions';
+
+const initialState = {
+  byId: {},
+  allIds: [],
+  loading: false,
+  error: null,
+};
 
 const updateRowCount = (state, action) => {
   const { sectionId, updateType } = action.payload;
@@ -31,17 +36,31 @@ const getNextRow = (updateType, { currentRow, numRows }) => {
 
 const sectionsReducer = handleActions({
 
-  REQUEST_DATA: setLoading('sections'),
+  REQUEST_DATA: (state, action) => updateState(
+    state,
+    action.payload.dataTypes,
+    'sections',
+    { loading: true }
+  ),
 
-  RECEIVE_DATA: mergeStateData('sections'),
+  RECEIVE_ERROR: (state, action) => updateState(
+    state,
+    action.payload.dataTypes,
+    'sections',
+    { loading: false, error: action.payload.error }
+  ),
 
-  ADD_SECTION: (state, action) => (
-    addItemToState(
-      state,
-      action.payload.sectionId,
-      { sectionId: action.payload.sectionId,
-        ...action.payload.section }
-    )
+  RECEIVE_DATA: (state, action) => mergeItems(
+    state,
+    action.payload.sections,
+    { loading: false, error: null }
+  ),
+
+  RECEIVE_NEW_SECTION: (state, action) => addItem(
+    state,
+    action.payload.section,
+    'sectionId',
+    { loading: false, error: null }
   ),
 
   UPDATE_ROW_COUNT: (state, action) => ({
@@ -49,7 +68,7 @@ const sectionsReducer = handleActions({
     byId: updateRowCount(state.byId, action)
   }),
 
-}, initialStateNormal);
+}, initialState);
 
 
 export default sectionsReducer;

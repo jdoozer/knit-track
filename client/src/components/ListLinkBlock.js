@@ -13,7 +13,7 @@ const styles = () => ({
 
 const ListLinkBlock = ({ link, onClick, title, classes }) => (
   <Link to={link}>
-    <ListItem button onClick={onClick}>
+    <ListItem button>
       <ListItemText primary={title} className={classes.listItemText} />
     </ListItem>
   </Link>
@@ -21,7 +21,6 @@ const ListLinkBlock = ({ link, onClick, title, classes }) => (
 
 ListLinkBlock.propTypes = {
   link: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired,
 };

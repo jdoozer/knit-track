@@ -10,27 +10,12 @@ const port = process.env.PORT || 5000;
 
 app.use(bodyParser.json());
 
+// GET requests
 app.get('/api/patterns', (req, res, next) => {
 
-  // res.send({ patterns: mockServerData.patterns });
   setTimeout(() => res.send({ patterns: mockServerData.patterns }), 200);
   // next('test error')
 
-});
-
-app.post('/api/patterns', (req, res) => {
-
-  const patternId = generateId();
-  let pattern = req.body.pattern;
-  pattern.patternId = patternId;
-  pattern.sectionIds = [];
-
-  res.send({
-    patterns: {
-      byId: { [patternId]: pattern },
-      allIds: [patternId],
-    }
-  })
 });
 
 app.get('/api/patterns/:patternId', (req, res) => {
@@ -53,20 +38,9 @@ app.get('/api/patterns/:patternId', (req, res) => {
     }
   }
 
-  // res.send({ patterns, sections, rows });
   setTimeout(() => res.send({ patterns, sections }), 200);
   // next('test error');
 
-});
-
-app.post('/api/sections', (req, res) => {
-  const section = req.body.section;
-  res.send({
-    sections: {
-      byId: { [section.sectionId]: section },
-      allIds: [section.sectionId],
-    },
-  })
 });
 
 app.get('/api/sections/:sectionId', (req, res) => {
@@ -80,6 +54,32 @@ app.get('/api/sections/:sectionId', (req, res) => {
   };
   res.send({ sections });
 
+});
+
+
+// POST requests
+app.post('/api/patterns', (req, res) => {
+
+  const patternId = generateId();
+  let pattern = req.body.pattern;
+  pattern.patternId = patternId;
+  pattern.sectionIds = [];
+
+  res.send({
+    patterns: {
+      byId: { [patternId]: pattern },
+      allIds: [patternId],
+    }
+  })
+});
+
+app.post('/api/sections', (req, res) => {
+
+  const sectionId = generateId();
+  let section = req.body.section;
+  section.sectionId = sectionId;
+
+  res.send(section);
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

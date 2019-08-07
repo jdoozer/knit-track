@@ -1,51 +1,48 @@
 
-import { setLoading, setError, mergeStateData } from 'utils/reducerUtils';
+import { updateState, updateItem, mergeItems } from 'utils/reducerUtils';
 import { handleActions } from 'redux-actions';
 
-// const initialPattern = ({ patternId, title }) => ({
-//   title,
-//   patternId,
-//   sectionIds: [],
-//   info: '<pattern info placeholder>',
-// });
-
-const initialStatePatterns = {
+const initialState = {
   byId: {},
   allIds: [],
   loading: false,
   error: null,
 };
 
-
-const addSection = (state, action) => {
-  const { section, sectionId } = action.payload;
-  const patternId = section.patternId;
-  const pattern = state[patternId];
-
-  return {
-    ...state,
-    [patternId]: {
-      ...pattern,
-      sectionIds: pattern.sectionIds.concat(sectionId),
-    },
-  };
-};
-
 const patternsReducer = handleActions({
 
-  REQUEST_DATA: setLoading('patterns'),
+  REQUEST_DATA: (state, action) => updateState(
+    state,
+    action.payload.dataTypes,
+    'patterns',
+    { loading: true }
+  ),
 
-  RECEIVE_DATA: mergeStateData('patterns'),
+  RECEIVE_ERROR: (state, action) => updateState(
+    state,
+    action.payload.dataTypes,
+    'patterns',
+    { loading: false, error: action.payload.error }
+  ),
 
-  RECEIVE_ERROR: setError('patterns'),
+  RECEIVE_DATA: (state, action) => mergeItems(
+    state,
+    action.payload.patterns,
+    { loading: false, error: null }
+  ),
 
-  ADD_SECTION: (state, action) => ({
-    ...state,
-    byId: addSection(state.byId, action)
-  }),
+  RECEIVE_NEW_SECTION: (state, action) => {
+    const { patternId, sectionId } = action.payload.section;
+    const sectionIds = state.byId[patternId].sectionIds;
 
+    return updateItem(
+      state,
+      patternId,
+      { sectionIds: sectionIds.concat(sectionId) },
+    );
+  },
 
-}, initialStatePatterns);
+}, initialState);
 
 
 export default patternsReducer;

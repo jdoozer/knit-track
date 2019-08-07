@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addSection, fetchPatternExpandedIfNeeded } from 'actions';
+import { createSection, fetchPatternExpandedIfNeeded } from 'actions';
 import SectionSetupForm from 'components/SectionSetupForm';
 import {
   getPatternsLoading,
@@ -17,7 +17,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  addSection: section => addSection(section),
+  createSection: section => createSection(section),
   fetchPatternExpandedIfNeeded: patternId => fetchPatternExpandedIfNeeded(patternId),
 };
 
