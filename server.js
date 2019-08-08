@@ -78,6 +78,7 @@ app.post('/api/sections', (req, res) => {
   const sectionId = generateId();
   let section = req.body.section;
   section.sectionId = sectionId;
+  section.currentRow = 1;
 
   res.send(section);
 });

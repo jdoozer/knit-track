@@ -128,6 +128,7 @@ class SectionSetupForm extends React.Component {
     const { createSection, pattern } = this.props;
     const { title, numRows, rowData } = this.state;
 
+    // convert array to 1-indexed object
     const rowDataObject = rowData.reduce((acc, item, index) => {
       if (objValsNotEmpty(item)) {
         acc[index+1] = item;
@@ -139,7 +140,6 @@ class SectionSetupForm extends React.Component {
       patternId: pattern.patternId,
       title,
       numRows,
-      currentRow: 1,
       rows: rowDataObject
     };
 
