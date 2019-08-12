@@ -52,6 +52,13 @@ export const fetchPatterns = () => fetchThunk({
   path: 'patterns',
 });
 
+const fetchPatternExpanded = patternId => fetchThunk({
+  requestAction: requestData(['patterns', 'sections']),
+  receiveAction: receiveData,
+  errorAction: receiveError(['patterns', 'sections']),
+  path: `patterns/${patternId}`,
+});
+
 export const createPattern = ({ ...patternData }) => fetchThunk({
   requestAction: requestData(['patterns']),
   receiveAction: receiveData,
@@ -68,13 +75,6 @@ export const createSection = ({ ...sectionData }) => fetchThunk({
   path: 'sections',
   requestType: 'POST',
   body: { section: sectionData },
-});
-
-const fetchPatternExpanded = patternId => fetchThunk({
-  requestAction: requestData(['patterns', 'sections']),
-  receiveAction: receiveData,
-  errorAction: receiveError(['patterns', 'sections']),
-  path: `patterns/${patternId}`,
 });
 
 const updateSection = (sectionId, sectionUpdates) => fetchThunk({

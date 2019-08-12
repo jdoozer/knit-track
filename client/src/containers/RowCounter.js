@@ -15,7 +15,7 @@ const mapStateToProps = (state, props) => {
   return {
     rows: getRowsFromSection(state, sectionId),
     currentRow: getCurrentRow(state, sectionId),
-    loading: getSectionLoading(state, sectionId),
+    loading: Boolean(getSectionLoading(state, sectionId)),
     error: Boolean(getSectionError(state, sectionId)),
   };
 };
@@ -42,8 +42,8 @@ class RowCounter extends React.Component {
 RowCounter.propTypes = {
   sectionId: PropTypes.string.isRequired,
   currentRow: PropTypes.number.isRequired,
-  loading: PropTypes.bool,
-  error: PropTypes.bool,
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.bool.isRequired,
   rows: PropTypes.object.isRequired,
   onUpdateCountClick: PropTypes.func.isRequired,
 };

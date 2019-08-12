@@ -79,6 +79,9 @@ const sectionsReducer = handleActions({
     }
     const { updateType, sectionId } = action.payload;
     const section = state.byId[sectionId];
+    if (section.error) {
+      return state;
+    }
     return updateItem(
       state,
       sectionId,

@@ -90,9 +90,12 @@ app.patch('/api/sections/:sectionId', (req, res, next) => {
   let sectionUpdates = req.body;
   sectionUpdates.sectionId = req.params.sectionId;
 
+  if (sectionUpdates.currentRow === 3) {
+    next('test error');
+  }
+
   // res.send(sectionUpdates);
   setTimeout(() => res.send(sectionUpdates), 500);
-  // next('test error');
 
 });
 
