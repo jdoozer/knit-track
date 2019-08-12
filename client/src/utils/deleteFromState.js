@@ -1,9 +1,18 @@
 import deleteItems from 'utils/deleteItems';
-import deleteKeys from 'utils/deleteKeys';
+
+const deleteItemsByKeys = (obj, keys) => (
+  Object.keys(obj).reduce(
+    (newObj, currKey) => {
+      if (keys && !keys.includes(currKey))  newObj[currKey] = obj[currKey];
+      return newObj;
+    },
+    {}
+  )
+);
 
 const deleteFromState = (state, itemIds) => ({
   ...state,
-  byId: deleteKeys(state.byId, itemIds),
+  byId: deleteItemsByKeys(state.byId, itemIds),
   allIds: deleteItems(state.allIds, itemIds),
 });
 
