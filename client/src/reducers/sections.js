@@ -23,12 +23,22 @@ const getNextRow = (updateType, { currentRow, numRows }) => {
 
 const sectionsReducer = handleActions({
 
-  REQUEST_DATA: (state, action) => updateState(
-    state,
-    { loading: true },
-    action.payload.dataTypes,
-    'sections',
-  ),
+  REQUEST_DATA: (state, action) => {
+    const { dataTypes, id } = action.payload;
+    if (id) {
+      return updateItem(
+        state,
+        id,
+        { loading: true }
+      );
+    }
+    return updateState(
+      state,
+      { loading: true },
+      dataTypes,
+      'sections',
+    );
+  },
 
   RECEIVE_ERROR: (state, action) => {
     const { error, dataTypes, id } = action.payload;
@@ -85,7 +95,7 @@ const sectionsReducer = handleActions({
     return updateItem(
       state,
       sectionId,
-      { currentRow: getNextRow(updateType, section), loading: true }
+      { currentRow: getNextRow(updateType, section) }
     );
   },
 

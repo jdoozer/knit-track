@@ -1,46 +1,30 @@
-import { createAction } from 'redux-actions';
+import { createActions } from 'redux-actions';
 import fetchThunk from 'utils/fetchThunk';
 
+const {
+  requestData,
+  receiveData,
+  receiveNewSection,
+  receiveUpdatedSection,
+  updateRowCountOptimistic,
+  receiveError,
+} = createActions({
 
-// ACTION CONSTANTS
-const REQUEST_DATA = 'REQUEST_DATA';
-const RECEIVE_ERROR = 'RECEIVE_ERROR';
-const RECEIVE_DATA = 'RECEIVE_DATA';
-const RECEIVE_NEW_SECTION = 'RECEIVE_NEW_SECTION';
-const RECEIVE_UPDATED_SECTION = 'RECEIVE_UPDATED_SECTION';
-const UPDATE_ROW_COUNT_OPTIMISTIC = 'UPDATE_ROW_COUNT_OPTIMISTIC';
+  REQUEST_DATA: (dataTypes, id) => ({ dataTypes, id }),
 
+  RECEIVE_DATA: json => ({ ...json }),
 
-// ACTIONS (SYNCHRONOUS)
-const requestData = createAction(
-  REQUEST_DATA,
-  dataTypes => ({ dataTypes })
-);
+  RECEIVE_NEW_SECTION: json => ({ section: json }),
 
-const receiveError = (dataTypes, id) => createAction(
-  RECEIVE_ERROR,
-  error => ({ error, dataTypes, id })
-);
+  RECEIVE_UPDATED_SECTION: json => ({ section: json }),
 
-const receiveData = createAction(
-  RECEIVE_DATA,
-  json => ({ ...json })
-);
+  UPDATE_ROW_COUNT_OPTIMISTIC: (sectionId, updateType) => (
+    { sectionId, updateType }
+  ),
 
-const receiveNewSection = createAction(
-  RECEIVE_NEW_SECTION,
-  json => ({ section: json })
-);
+  RECEIVE_ERROR: (error, dataTypes, id) => ({ error, dataTypes, id }),
 
-const receiveUpdatedSection = createAction(
-  RECEIVE_UPDATED_SECTION,
-  json => ({ section: json })
-);
-
-const updateRowCountOptimistic = createAction(
-  UPDATE_ROW_COUNT_OPTIMISTIC,
-  (sectionId, updateType) => ({ sectionId, updateType })
-);
+});
 
 
 // ASYNC THUNK FUNCTIONS
@@ -48,21 +32,21 @@ const updateRowCountOptimistic = createAction(
 export const fetchPatterns = () => fetchThunk({
   requestAction: requestData(['patterns']),
   receiveAction: receiveData,
-  errorAction: receiveError(['patterns']),
+  errorAction: error => receiveError(error, ['patterns']),
   path: 'patterns',
 });
 
 const fetchPatternExpanded = patternId => fetchThunk({
   requestAction: requestData(['patterns', 'sections']),
   receiveAction: receiveData,
-  errorAction: receiveError(['patterns', 'sections']),
+  errorAction: error => receiveError(error, ['patterns', 'sections']),
   path: `patterns/${patternId}`,
 });
 
 export const createPattern = ({ ...patternData }) => fetchThunk({
   requestAction: requestData(['patterns']),
   receiveAction: receiveData,
-  errorAction: receiveError(['patterns']),
+  errorAction: error => receiveError(error, ['patterns']),
   path: 'patterns',
   requestType: 'POST',
   body: { pattern: patternData },
@@ -71,16 +55,16 @@ export const createPattern = ({ ...patternData }) => fetchThunk({
 export const createSection = ({ ...sectionData }) => fetchThunk({
   requestAction: requestData(['sections']),
   receiveAction: receiveNewSection,
-  errorAction: receiveError(['sections']),
+  errorAction: error => receiveError(error, ['sections']),
   path: 'sections',
   requestType: 'POST',
   body: { section: sectionData },
 });
 
 const updateSection = (sectionId, sectionUpdates) => fetchThunk({
-  requestAction: requestData(['sections']),
+  requestAction: requestData(['sections'], sectionId),
   receiveAction: receiveUpdatedSection,
-  errorAction: receiveError(['sections'], sectionId),
+  errorAction: error => receiveError(error, ['sections'], sectionId),
   path: `sections/${sectionId}`,
   requestType: 'PATCH',
   body: sectionUpdates,
