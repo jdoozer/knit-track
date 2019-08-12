@@ -3,13 +3,20 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { updateRowCount } from 'actions';
 import RowCounterDisplay from 'components/RowCounterDisplay';
-import { getRowsFromSection, getCurrentRow } from 'selectors';
+import {
+  getRowsFromSection,
+  getCurrentRow,
+  getSectionLoading,
+  getSectionError
+} from 'selectors';
 
 const mapStateToProps = (state, props) => {
   const { sectionId } = props;
   return {
     rows: getRowsFromSection(state, sectionId),
     currentRow: getCurrentRow(state, sectionId),
+    loading: getSectionLoading(state, sectionId),
+    error: Boolean(getSectionError(state, sectionId)),
   };
 };
 
@@ -35,6 +42,8 @@ class RowCounter extends React.Component {
 RowCounter.propTypes = {
   sectionId: PropTypes.string.isRequired,
   currentRow: PropTypes.number.isRequired,
+  loading: PropTypes.bool,
+  error: PropTypes.bool,
   rows: PropTypes.object.isRequired,
   onUpdateCountClick: PropTypes.func.isRequired,
 };

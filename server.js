@@ -83,4 +83,17 @@ app.post('/api/sections', (req, res) => {
   res.send(section);
 });
 
+
+// PATCH REQUESTS
+app.patch('/api/sections/:sectionId', (req, res, next) => {
+
+  let sectionUpdates = req.body;
+  sectionUpdates.sectionId = req.params.sectionId;
+
+  // res.send(sectionUpdates);
+  setTimeout(() => res.send(sectionUpdates), 500);
+  // next('test error');
+
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}`));

@@ -11,7 +11,20 @@ export const getPatterns = createSelector(
 
 // sections
 const getSectionsById = state => state.sections.byId;
+export const getSectionsLoading = state => state.patterns.loading;
+export const getSectionsError = state => state.patterns.error;
+
 const getSectionById = (state, sectionId) => getSectionsById(state)[sectionId];
+
+export const getSectionLoading = createSelector(
+  [getSectionById],
+  section => section.loading
+);
+
+export const getSectionError = createSelector(
+  [getSectionById],
+  section => section.error
+);
 
 export const getCurrentRow = createSelector(
   [getSectionById],
@@ -55,11 +68,3 @@ export const getSelectedPatternSections = createSelector(
     return selectedPatternSections.filter(section => section);
   }
 );
-
-// export const getRowsFromSection = createSelector(
-//   [getRowIdsFromSection, getRowsById],
-//   (rowIds, rows) => {
-//     const rowsFromSection = rowIds.map(rowId => rows[rowId]);
-//     return rowsFromSection.filter(row => row);
-//   }
-// );

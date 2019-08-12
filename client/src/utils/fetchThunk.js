@@ -1,14 +1,14 @@
 
 const MOCK_SERVER_URL = '/api/';
 
-const fetchActionCreator = ({
-  requestAction,
-  receiveAction,
-  errorAction,
-  body,
-  path,
-  host=MOCK_SERVER_URL,
-  requestType
+const fetchThunk = ({
+  requestAction = (() => {}),
+  receiveAction = (() => {}),
+  errorAction = (() => {}),
+  body = null,
+  path = '',
+  host = MOCK_SERVER_URL,
+  requestType = 'GET',
 }) => {
   let fetchObj = {
     method: requestType,
@@ -17,7 +17,9 @@ const fetchActionCreator = ({
       'Content-Type': 'application/json'
     }
   };
-  if (requestType === 'POST')  fetchObj.body = JSON.stringify(body);
+  if (['POST', 'PUT', 'PATCH'].includes(requestType)) {
+    fetchObj.body = JSON.stringify(body);
+  }
 
   return dispatch => {
     dispatch(requestAction);
@@ -28,4 +30,4 @@ const fetchActionCreator = ({
   }
 };
 
-export default fetchActionCreator
+export default fetchThunk;

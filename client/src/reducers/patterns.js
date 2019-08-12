@@ -13,16 +13,16 @@ const patternsReducer = handleActions({
 
   REQUEST_DATA: (state, action) => updateState(
     state,
+    { loading: true },
     action.payload.dataTypes,
     'patterns',
-    { loading: true }
   ),
 
   RECEIVE_ERROR: (state, action) => updateState(
     state,
+    { loading: false, error: action.payload.error },
     action.payload.dataTypes,
     'patterns',
-    { loading: false, error: action.payload.error }
   ),
 
   RECEIVE_DATA: (state, action) => mergeItems(
@@ -39,6 +39,7 @@ const patternsReducer = handleActions({
       state,
       patternId,
       { sectionIds: sectionIds.concat(sectionId) },
+      { loading: false, error: null }
     );
   },
 

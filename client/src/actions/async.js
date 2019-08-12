@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import fetchActionCreator from 'utils/fetchActionCreator';
+import fetchThunk from 'utils/fetchThunk';
 
 
 // ACTION CONSTANTS
@@ -7,17 +7,19 @@ const REQUEST_DATA = 'REQUEST_DATA';
 const RECEIVE_ERROR = 'RECEIVE_ERROR';
 const RECEIVE_DATA = 'RECEIVE_DATA';
 const RECEIVE_NEW_SECTION = 'RECEIVE_NEW_SECTION';
+const RECEIVE_UPDATED_SECTION = 'RECEIVE_UPDATED_SECTION';
+const UPDATE_ROW_COUNT_OPTIMISTIC = 'UPDATE_ROW_COUNT_OPTIMISTIC';
 
 
-// SUPPORTING ACTIONS
+// ACTIONS (SYNCHRONOUS)
 const requestData = createAction(
   REQUEST_DATA,
   dataTypes => ({ dataTypes })
 );
 
-const receiveError = dataTypes => createAction(
+const receiveError = (dataTypes, id) => createAction(
   RECEIVE_ERROR,
-  error => ({ error, dataTypes })
+  error => ({ error, dataTypes, id })
 );
 
 const receiveData = createAction(
@@ -30,9 +32,27 @@ const receiveNewSection = createAction(
   json => ({ section: json })
 );
 
+const receiveUpdatedSection = createAction(
+  RECEIVE_UPDATED_SECTION,
+  json => ({ section: json })
+);
 
-// POST REQUESTS
-export const createPattern = ({ ...patternData }) => fetchActionCreator({
+const updateRowCountOptimistic = createAction(
+  UPDATE_ROW_COUNT_OPTIMISTIC,
+  (sectionId, updateType) => ({ sectionId, updateType })
+);
+
+
+// ASYNC THUNK FUNCTIONS
+
+export const fetchPatterns = () => fetchThunk({
+  requestAction: requestData(['patterns']),
+  receiveAction: receiveData,
+  errorAction: receiveError(['patterns']),
+  path: 'patterns',
+});
+
+export const createPattern = ({ ...patternData }) => fetchThunk({
   requestAction: requestData(['patterns']),
   receiveAction: receiveData,
   errorAction: receiveError(['patterns']),
@@ -41,7 +61,7 @@ export const createPattern = ({ ...patternData }) => fetchActionCreator({
   body: { pattern: patternData },
 });
 
-export const createSection = ({ ...sectionData }) => fetchActionCreator({
+export const createSection = ({ ...sectionData }) => fetchThunk({
   requestAction: requestData(['sections']),
   receiveAction: receiveNewSection,
   errorAction: receiveError(['sections']),
@@ -50,44 +70,59 @@ export const createSection = ({ ...sectionData }) => fetchActionCreator({
   body: { section: sectionData },
 });
 
-
-// GET REQUESTS
-export const fetchPatterns = () => fetchActionCreator({
-  requestAction: requestData(['patterns']),
-  receiveAction: receiveData,
-  errorAction: receiveError(['patterns']),
-  path: 'patterns',
-});
-
-export const fetchPatternExpanded = patternId => fetchActionCreator({
+const fetchPatternExpanded = patternId => fetchThunk({
   requestAction: requestData(['patterns', 'sections']),
   receiveAction: receiveData,
   errorAction: receiveError(['patterns', 'sections']),
   path: `patterns/${patternId}`,
 });
 
+const updateSection = (sectionId, sectionUpdates) => fetchThunk({
+  requestAction: requestData(['sections']),
+  receiveAction: receiveUpdatedSection,
+  errorAction: receiveError(['sections'], sectionId),
+  path: `sections/${sectionId}`,
+  requestType: 'PATCH',
+  body: sectionUpdates,
+});
 
-// CONDITIONAL GET REQUESTS
+
+// CONDITIONAL THUNK FUNCTIONS
 
 export const fetchPatternExpandedIfNeeded = patternId => (dispatch, getState) => {
 
   const { patterns, sections } = getState();
 
-  if (patterns.loading) return null;
+  if (patterns.loading || sections.loading) return null;
 
   if (patterns.allIds.includes(patternId)) {
 
     const patternSections = patterns.byId[patternId].sectionIds;
 
-    const patternSectionsInState = (
-      patternSections.every(id => sections.allIds.includes(id))
-    );
-
-    if (sections.loading || patternSectionsInState) {
+    if (patternSections.every(id => sections.allIds.includes(id))) {
       return null;
     }
   }
 
   return dispatch(fetchPatternExpanded(patternId));
 
-}
+};
+
+
+export const updateRowCount = (sectionId, updateType) => (dispatch, getState) => {
+
+  const sectionsBeforeUpdate = getState().sections;
+  const rowBeforeUpdate = sectionsBeforeUpdate.byId[sectionId].currentRow;
+
+  dispatch(updateRowCountOptimistic(sectionId, updateType));
+
+  const sectionsAfterUpdate = getState().sections;
+  const rowAfterUpdate = sectionsAfterUpdate.byId[sectionId].currentRow;
+
+  if (rowBeforeUpdate === rowAfterUpdate) {
+    return null;
+  }
+
+  return dispatch(updateSection(sectionId, { currentRow: rowAfterUpdate }));
+
+};

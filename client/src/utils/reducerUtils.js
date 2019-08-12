@@ -29,26 +29,31 @@ export const mergeItems = (state, newItems, updates) => {
       allIds: [...new Set([...state.allIds ,...newItems.allIds])],
       ...updates,
     };
-
   }
   return state;
 };
 
-export const updateItem = (state, itemId, updates) => (
-  {
-    ...state,
-    byId: {
-      ...state.byId,
-      [itemId]: {
-        ...state.byId[itemId],
-        ...updates,
-      }
-    }
+export const updateItem = (state, itemId, itemUpdates, stateUpdates) => {
+  if (itemUpdates || stateUpdates) {
+    return {
+      ...state,
+      byId: {
+        ...state.byId,
+        [itemId]: {
+          ...state.byId[itemId],
+          ...itemUpdates,
+        }
+      },
+      ...stateUpdates
+    };
   }
-);
+  return state;
+};
 
-export const updateState = (state, payloadDataTypes, dataType, updates) => {
-  if (payloadDataTypes.includes(dataType)) {
+export const updateState = (state, updates, payloadDataTypes, dataType) => {
+  const updateDataBasedOnType = payloadDataTypes && payloadDataTypes.includes(dataType);
+  const updateNoTypes = !payloadDataTypes;
+  if (updateDataBasedOnType || updateNoTypes) {
     return { ...state, ...updates };
   }
   return state;

@@ -11,6 +11,7 @@ import gray from 'material-ui/colors/blueGrey';
 import RowInfo from 'components/RowInfo';
 
 const textInd = 900;
+const textUpdatingInd = 500;
 const borderInd = 500;
 const bgInd = 50;
 
@@ -38,6 +39,12 @@ const styles = theme => ({
   rowDisplay: {
     color: gray[textInd],
   },
+  rowDisplayUpdating: {
+    color: gray[textUpdatingInd],
+  },
+  rowDisplayError: {
+    color: 'red',
+  },
   counterButtonRoot: {
     display: 'flex',
     flexDirection: 'column',
@@ -60,13 +67,22 @@ const styles = theme => ({
   },
 });
 
-const RowCounterDisplay = ({ currentRow, rows, onUpdateCountClick, classes }) => {
+const RowCounterDisplay = ({
+  currentRow, rows, onUpdateCountClick, classes, loading, error
+}) => {
+
+  let rowDisplayClass = classes.rowDisplay;
+  if (error) {
+    rowDisplayClass = classes.rowDisplayError;
+  } else if (loading) {
+    rowDisplayClass = classes.rowDisplayUpdating;
+  }
 
   return (
     <div className={classes.root}>
       <div className={classes.rowCounter}>
         <Paper className={classes.row} elevation={1}>
-          <Typography variant="display2" className={classes.rowDisplay}>
+          <Typography variant="display2" className={rowDisplayClass}>
             {currentRow}
           </Typography>
         </Paper>

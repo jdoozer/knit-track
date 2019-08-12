@@ -1,4 +1,4 @@
-import { updateState, mergeItems, addItem } from 'utils/reducerUtils';
+import { updateState, mergeItems, addItem, updateItem } from 'utils/reducerUtils';
 import { handleActions } from 'redux-actions';
 
 const initialState = {
@@ -8,47 +8,44 @@ const initialState = {
   error: null,
 };
 
-const updateRowCount = (state, action) => {
-  const { sectionId, updateType } = action.payload;
-  const section = state[sectionId];
-
-  return {
-    ...state,
-    [sectionId]: {
-      ...section,
-      currentRow: getNextRow(updateType, section),
-    },
-  };
-};
-
 const getNextRow = (updateType, { currentRow, numRows }) => {
   switch(updateType) {
     case 'INCREMENT':
-      return Math.min(currentRow + 1, numRows);
+      return (currentRow < numRows) ? currentRow + 1 : currentRow;
     case 'DECREMENT':
-      return Math.max(currentRow - 1, 1);
+      return (currentRow > 1) ? currentRow - 1 : currentRow;
     case 'RESET':
       return 1;
     default:
       return currentRow;
   }
-}
+};
 
 const sectionsReducer = handleActions({
 
   REQUEST_DATA: (state, action) => updateState(
     state,
+    { loading: true },
     action.payload.dataTypes,
     'sections',
-    { loading: true }
   ),
 
-  RECEIVE_ERROR: (state, action) => updateState(
-    state,
-    action.payload.dataTypes,
-    'sections',
-    { loading: false, error: action.payload.error }
-  ),
+  RECEIVE_ERROR: (state, action) => {
+    const { error, dataTypes, id } = action.payload;
+    if (id) {
+      return updateItem(
+        state,
+        id,
+        { loading: false, error },
+      );
+    }
+    return updateState(
+      state,
+      { loading: false, error },
+      dataTypes,
+      'sections'
+    );
+  },
 
   RECEIVE_DATA: (state, action) => mergeItems(
     state,
@@ -58,15 +55,36 @@ const sectionsReducer = handleActions({
 
   RECEIVE_NEW_SECTION: (state, action) => addItem(
     state,
-    action.payload.section,
+    {
+      ...action.payload.section,
+      loading: false,
+      error: null
+    },
     'sectionId',
-    { loading: false, error: null }
   ),
 
-  UPDATE_ROW_COUNT: (state, action) => ({
-    ...state,
-    byId: updateRowCount(state.byId, action)
-  }),
+  RECEIVE_UPDATED_SECTION: (state, action) => {
+    const { sectionId, ...sectionUpdates } = action.payload.section;
+    return updateItem(
+      state,
+      sectionId,
+      { ...sectionUpdates, loading: false, error: null },
+    );
+  },
+
+  UPDATE_ROW_COUNT_OPTIMISTIC: (state, action) => {
+    const { error } = state;
+    if (error) {
+      return state;
+    }
+    const { updateType, sectionId } = action.payload;
+    const section = state.byId[sectionId];
+    return updateItem(
+      state,
+      sectionId,
+      { currentRow: getNextRow(updateType, section), loading: true }
+    );
+  },
 
 }, initialState);
 
