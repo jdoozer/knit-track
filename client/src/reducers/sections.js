@@ -1,4 +1,10 @@
-import { updateState, mergeItems, addItem, updateItem } from 'utils/reducerUtils';
+import {
+  updateState,
+  mergeItems,
+  addItem,
+  updateItem,
+  deleteFromState,
+} from 'utils/reducerUtils';
 import { handleActions } from 'redux-actions';
 
 const initialState = {
@@ -98,6 +104,16 @@ const sectionsReducer = handleActions({
       { currentRow: getNextRow(updateType, section) }
     );
   },
+
+  RECEIVE_DELETE_PATTERN_KEYS: (state, action) => deleteFromState(
+    state,
+    action.payload.sectionIds
+  ),
+
+  RECEIVE_DELETE_SECTION_KEYS: (state, action) => deleteFromState(
+    state,
+    action.payload.sectionId
+  ),
 
 }, initialState);
 

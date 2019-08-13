@@ -24,6 +24,7 @@ const fetchThunk = ({
   return dispatch => {
     dispatch(requestAction);
     return fetch(`${host}/${path}`, fetchObj)
+      // .then(response => {debugger; return response.json()})
       .then(response => response.json())
       .then(json => dispatch(receiveAction(json)))
       .catch(error => dispatch(errorAction(`${error.name}: ${error.message}`)))

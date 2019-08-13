@@ -58,3 +58,39 @@ export const updateState = (state, updates, payloadDataTypes, dataType) => {
   }
   return state;
 };
+
+export const deleteItemsFromArray = (array, itemsToDelete) => {
+  if (itemsToDelete.length > 1) {
+    return array.filter(currItem => !itemsToDelete.includes(currItem));
+  }
+  return array.filter(currItem => !(currItem === itemsToDelete));
+};
+
+const deleteItemsByKeys = (obj, keysToDelete) => {
+  if (!keysToDelete) {
+    return {};
+  }
+  const keys = Object.keys(obj);
+  if (keysToDelete.length > 1) {
+    return keys.reduce(
+      (newObj, currKey) => {
+        if (!keysToDelete.includes(currKey))  newObj[currKey] = obj[currKey];
+        return newObj;
+      },
+      {}
+    );
+  }
+  return keys.reduce(
+    (newObj, currKey) => {
+      if (!currKey === keysToDelete)  newObj[currKey] = obj[currKey];
+      return newObj;
+    },
+    {}
+  );
+};
+
+export const deleteFromState = (state, itemIds) => ({
+  ...state,
+  byId: deleteItemsByKeys(state.byId, itemIds),
+  allIds: deleteItemsFromArray(state.allIds, itemIds),
+});

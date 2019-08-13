@@ -18,7 +18,7 @@ app.get('/api/patterns', (req, res, next) => {
 
 });
 
-app.get('/api/patterns/:patternId', (req, res) => {
+app.get('/api/patterns/:patternId', (req, res, next) => {
 
   const patternId = req.params.patternId;
   const pattern = mockServerData.patterns.byId[patternId];
@@ -98,5 +98,28 @@ app.patch('/api/sections/:sectionId', (req, res, next) => {
   setTimeout(() => res.send(sectionUpdates), 500);
 
 });
+
+// DELETE REQUESTS
+app.delete('/api/patterns/:patternId', (req, res, next) => {
+
+  const patternId = req.params.patternId;
+  const sectionIds = mockServerData.patterns.byId[patternId].sectionIds;
+
+  setTimeout(() => res.send({ patternId, sectionIds }), 200);
+  // next('test error');
+
+});
+
+app.delete('/api/sections/:sectionId', (req, res, next) => {
+
+  const sectionId = req.params.sectionId;
+  const patternId = mockServerData.sections.byId[sectionId].patternId;
+
+  setTimeout(() => res.send({ patternId, sectionId }), 200);
+  // next('test error');
+
+});
+
+
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

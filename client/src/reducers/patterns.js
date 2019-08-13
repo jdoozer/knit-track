@@ -1,5 +1,11 @@
 
-import { updateState, updateItem, mergeItems } from 'utils/reducerUtils';
+import {
+  updateState,
+  updateItem,
+  mergeItems,
+  deleteFromState,
+  deleteItemsFromArray,
+} from 'utils/reducerUtils';
 import { handleActions } from 'redux-actions';
 
 const initialState = {
@@ -40,6 +46,22 @@ const patternsReducer = handleActions({
       patternId,
       { sectionIds: sectionIds.concat(sectionId) },
       { loading: false, error: null }
+    );
+  },
+
+  RECEIVE_DELETE_PATTERN_KEYS: (state, action) => deleteFromState(
+    state,
+    action.payload.patternId
+  ),
+
+  RECEIVE_DELETE_SECTION_KEYS: (state, action) => {
+    const { patternId, sectionId } = action.payload;
+    const sectionIds = state.byId[patternId].sectionIds;
+
+    return updateItem(
+      state,
+      patternId,
+      { sectionIds: deleteItemsFromArray(sectionIds, sectionId) },
     );
   },
 
