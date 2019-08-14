@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Reboot from 'material-ui/Reboot';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider } from '@material-ui/styles';
 
 import MainContentWrapper from 'mui/MainContentWrapper';
 import theme from 'mui/knitTrackTheme';
@@ -14,8 +14,8 @@ import SectionSetup from 'containers/SectionSetup';
 import PatternSetup from 'containers/PatternSetup';
 
 const App = () => (
-  <MuiThemeProvider theme={theme}>
-    <Reboot />
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
 
     <Header />
 
@@ -29,7 +29,7 @@ const App = () => (
       </Switch>
     </MainContentWrapper>
 
-  </MuiThemeProvider>
+  </ThemeProvider>
 );
 
 export default App;

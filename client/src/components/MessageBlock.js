@@ -1,15 +1,15 @@
 import React from 'react';
-import Typography from 'material-ui/Typography';
-import { withStyles } from 'material-ui/styles';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
 
 const styles = (theme) => ({
   root: {
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
   },
 });
 
 const MessageBlock = ({ classes, children }) => (
-  <Typography variant="subheading" className={classes.root}>
+  <Typography variant="subtitle1" className={classes.root}>
     {children}
   </Typography>
 );

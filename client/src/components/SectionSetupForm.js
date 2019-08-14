@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Hidden from 'material-ui/Hidden';
-import Button from 'material-ui/Button';
-import TextField from 'material-ui/TextField';
-import { CircularProgress } from 'material-ui/Progress';
+import { withStyles } from '@material-ui/core/styles';
+import Hidden from '@material-ui/core/Hidden';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import ContentHeader from 'components/ContentHeader';
 import SectionRowInputs from 'components/SectionRowInputs';
 import MessageBlock from 'components/MessageBlock';
 import updateNestedItem from 'utils/updateNestedItem';
 import objValsNotEmpty from 'utils/objValsNotEmpty';
 
-/* keys here should match the props pulled out in RowInfo component */
+// keys here should match the props pulled out in RowInfo component
 const rowProps = {
   fullText: {
     display: 'Full Row Instructions',
@@ -30,19 +30,14 @@ const rowProps = {
   },
 };
 
-const numRowsStart = 5;
-
-let initialRow = {};
-Object.keys(rowProps).forEach(key => { initialRow[key] = '' });
-
 const styles = theme => {
   const mainStyles = {
     root: {
-      padding: theme.spacing.unit * 3,
+      padding: theme.spacing(3),
     },
     textField: {
-      marginLeft: theme.spacing.unit * 2,
-      marginBottom: theme.spacing.unit,
+      marginLeft: theme.spacing(2),
+      marginBottom: theme.spacing(1),
     },
     row: {
       display: 'flex',
@@ -50,7 +45,7 @@ const styles = theme => {
       alignItems: 'center'
     },
     button: {
-      marginTop: theme.spacing.unit * 2,
+      marginTop: theme.spacing(2),
     },
   };
 
@@ -62,7 +57,26 @@ const styles = theme => {
   return Object.assign(mainStyles, rowPropStyles);
 }
 
+// initialization support for form component state
+const numRowsStart = 5;
+
+let initialRow = {};
+Object.keys(rowProps).forEach(key => { initialRow[key] = '' });
+
+let rowData = [];
+for (let rowNum = 0; rowNum < numRowsStart; rowNum++) {
+  rowData.push({...initialRow})
+}
+
+
 class SectionSetupForm extends React.Component {
+
+  state = {
+    title: '' ,
+    numRows: numRowsStart,
+    rowData
+  };
+
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -70,20 +84,6 @@ class SectionSetupForm extends React.Component {
     this.handleRowNumChange = this.handleRowNumChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReset = this.handleReset.bind(this);
-  }
-
-  componentWillMount() {
-
-    let rowData = [];
-    for (let rowNum = 0; rowNum < numRowsStart; rowNum++) {
-      rowData.push({...initialRow})
-    }
-
-    this.setState({
-      title: '' ,
-      numRows: numRowsStart,
-      rowData
-    });
   }
 
   patternPageRedirect(event) {
@@ -202,7 +202,7 @@ class SectionSetupForm extends React.Component {
             rowProps={rowProps}
             numRows={this.state.numRows}
           />
-          <Button variant="raised" color="primary" className={classes.button} type="submit">
+          <Button variant="contained" color="primary" className={classes.button} type="submit">
             Create Section
           </Button>
         </form>

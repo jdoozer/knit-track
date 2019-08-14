@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Typography from 'material-ui/Typography';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   root: {
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
   },
   quickText: {
     color: theme.palette.alert,
@@ -26,7 +26,7 @@ const RowInfo = ({ currentRow, fullText, quickText, stitches, classes }) => {
       <Typography variant="body1">
         {infoString}
       </Typography>
-      <Typography variant="subheading" className={classes.quickText}>
+      <Typography variant="subtitle1" className={classes.quickText}>
         {quickText && quickText.trim() && <span>{quickText}</span>}
       </Typography>
     </div>

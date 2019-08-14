@@ -1,5 +1,5 @@
 {
-  "name": "example-create-react-app-express",
+  "name": "knit-track-express",
   "version": "1.0.0",
   "scripts": {
     "client": "cd client && npm run start",
@@ -8,10 +8,10 @@
     "test": "cd client && npm run test"
   },
   "dependencies": {
-    "express": "^4.16.3",
+    "express": "^4.17.1",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "concurrently": "^3.5.1"
+    "concurrently": "^4.1.1"
   }
 }

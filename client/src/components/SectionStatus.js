@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Typography from 'material-ui/Typography';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 
 const styles = () => ({
   background: {
@@ -14,14 +14,14 @@ const SectionStatus = ({ currentRow, numRows, classes, displayStyle }) => {
 
   if (displayStyle === 'fraction') {
     return (
-      <Typography variant="subheading">
+      <Typography variant="subtitle1">
         {currentRow} / {numRows}
       </Typography>
     );
   }
 
   return (
-    <Typography variant="subheading" className={classes.background}>
+    <Typography variant="subtitle1" className={classes.background}>
       ROWS: {numRows}
     </Typography>
   );

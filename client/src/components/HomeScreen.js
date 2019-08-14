@@ -1,5 +1,5 @@
 import React from 'react';
-import Hidden from 'material-ui/Hidden';
+import Hidden from '@material-ui/core/Hidden';
 import PatternList from 'containers/PatternList';
 import AddPattern from 'components/AddPattern';
 import ContentHeader from 'components/ContentHeader';

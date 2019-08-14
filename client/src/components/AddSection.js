@@ -1,22 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { withStyles } from 'material-ui/styles';
-import Button from 'material-ui/Button';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   root: {
-    margin: theme.spacing.unit * 3,
+    margin: theme.spacing(3),
     marginTop: 0,
   },
 });
 
+const AddSectionLink = patternId => React.forwardRef(
+  (props, ref) => (
+    <Link
+      innerRef={ref}
+      to={`/patterns/${patternId}/newsection`}
+      {...props}
+    />
+  )
+);
+
 const AddSection = ({ classes, patternId }) => (
   <Button
-    variant="raised"
+    variant="contained"
     color="primary"
     className={classes.root}
-    component={props => <Link to={`/patterns/${patternId}/newsection`} {...props} />}
+    component={AddSectionLink(patternId)}
   >
     New Section
   </Button>

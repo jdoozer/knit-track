@@ -1,16 +1,19 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { withStyles } from 'material-ui/styles';
-import IconButton from 'material-ui/Button';
-import Button from 'material-ui/Button';
-import Dialog, { DialogActions, DialogTitle, DialogContent, DialogContentText } from 'material-ui/Dialog';
-import classNames from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
 
 const styles = theme => ({
   root: {
     minWidth: 0,
-    padding: theme.spacing.unit,
+    padding: theme.spacing(1),
   },
 });
 
@@ -46,7 +49,7 @@ class ActionIconButton extends React.Component {
       <Fragment>
         <IconButton
           color="inherit"
-          className={classNames(classes.root, className)}
+          className={`${classes.root} ${className}`}
           onClick={this.handleClickOpen}
         >
           {icon}
@@ -64,7 +67,7 @@ class ActionIconButton extends React.Component {
               <Button onClick={this.handleCloseDefault} color="primary">
                 cancel
               </Button>
-              <Button onClick={this.handleCloseAction} variant="raised" color="primary" autoFocus>
+              <Button onClick={this.handleCloseAction} variant="contained" color="primary" autoFocus>
                 okay
               </Button>
             </DialogActions>

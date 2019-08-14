@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Typography from 'material-ui/Typography';
-import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
-import ExpansionPanel, {
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
-} from 'material-ui/ExpansionPanel';
-import DeleteIcon from 'material-ui-icons/Delete';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import DeleteIcon from '@material-ui/icons/Delete';
 import SectionStatus from 'components/SectionStatus';
 import RowCounter from 'containers/RowCounter';
 import ActionIconButton from 'components/ActionIconButton';
@@ -24,15 +23,14 @@ const styles = theme => ({
     minWidth: 125,
   },
   summary: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    '& div': {
+      alignItems: 'center',
+    }
   },
   details: {
     flexDirection: 'column',
     justifyContent: 'center',
-    padding: theme.spacing.unit,
+    padding: theme.spacing(1),
   },
   button: {
     alignSelf: 'flex-end',
@@ -64,7 +62,9 @@ class SectionPanel extends React.Component {
           className={classes.summary}
         >
           <div className={classes.titleColumn}>
-            <Typography variant="title" className={classes.heading}>{title}</Typography>
+            <Typography variant="h6" className={classes.heading}>
+              {title}
+            </Typography>
           </div>
           <div className={classes.statusColumn}>
             <SectionStatus

@@ -1,21 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { withStyles } from 'material-ui/styles';
-import Button from 'material-ui/Button';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   root: {
-    margin: theme.spacing.unit * 3,
+    margin: theme.spacing(3),
   },
 });
 
+const AddPatternLink = React.forwardRef(
+  (props, ref) => <Link innerRef={ref} to={`/patterns/new`} {...props} />
+);
+
 const AddPattern = ({ classes }) => (
   <Button
-    variant="raised"
+    variant="contained"
     color="primary"
     className={classes.root}
-    component={props => <Link to={`/patterns/new`} {...props} />}
+    component={AddPatternLink}
   >
     New Pattern
   </Button>

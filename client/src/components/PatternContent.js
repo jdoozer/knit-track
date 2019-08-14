@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Hidden from 'material-ui/Hidden';
-import Typography from 'material-ui/Typography';
-import DeleteIcon from 'material-ui-icons/Delete';
-import { CircularProgress } from 'material-ui/Progress';
+import { withStyles } from '@material-ui/core/styles';
+import Hidden from '@material-ui/core/Hidden';
+import Typography from '@material-ui/core/Typography';
+import DeleteIcon from '@material-ui/icons/Delete';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import ContentHeader from 'components/ContentHeader';
 import SectionPanel from 'components/SectionPanel';
 import AddSection from 'components/AddSection';
@@ -16,10 +16,10 @@ const styles = (theme) => ({
   },
   info: {
     textAlign: 'left',
-    margin: theme.spacing.unit * 3,
+    margin: theme.spacing(3),
   },
   sectionCards: {
-    margin: theme.spacing.unit * 3,
+    margin: theme.spacing(3),
   },
 });
 
@@ -69,7 +69,7 @@ const PatternContent = ({
         >
           {pattern.title}
         </ContentHeader>
-        <Typography variant="subheading" className={classes.info}>
+        <Typography variant="subtitle1" className={classes.info}>
           {pattern.info}
         </Typography>
         <div className={classes.sectionCards}>

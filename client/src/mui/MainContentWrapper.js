@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Grid from 'material-ui/Grid';
-import Paper from 'material-ui/Paper';
+import { withStyles } from '@material-ui/styles';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 
 const styles = theme => ({
   root: {
     justifyContent: 'center',
-    marginTop: theme.spacing.unit * 4,
+    marginTop: theme.spacing(4),
   },
   paper: {
     minWidth: 330,

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
-import Typography from 'material-ui/Typography';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 
 const rowInputField = ({
   property='',
@@ -23,7 +23,7 @@ const rowInputFields = props => {
   const { rowInd, classes, rowProps } = props;
   return (
     <div className={classes.row} key={rowInd}>
-      <Typography variant="subheading" className={classes.rowLabel}>
+      <Typography variant="subtitle1" className={classes.rowLabel}>
         Row {rowInd+1}
       </Typography>
       {Object.keys(rowProps).map(

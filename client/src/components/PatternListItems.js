@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import List from 'material-ui/List';
-import Divider from 'material-ui/Divider';
-import { CircularProgress } from 'material-ui/Progress';
+import { withStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import ListLinkBlock from 'components/ListLinkBlock';
 import MessageBlock from 'components/MessageBlock';
 
