@@ -8,7 +8,6 @@ const styles = theme => ({
     marginTop: theme.spacing(2),
   },
   quickText: {
-    color: theme.palette.alert,
     fontWeight: 'bold',
     textTransform: 'uppercase',
   },

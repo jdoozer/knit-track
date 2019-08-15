@@ -7,13 +7,15 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import DeleteIcon from '@material-ui/icons/Delete';
-import SectionStatus from 'components/SectionStatus';
+import TotalRows from 'components/TotalRows';
+import CurrentRowSmall from 'components/CurrentRowSmall';
 import RowCounter from 'containers/RowCounter';
 import ActionIconButton from 'components/ActionIconButton';
 
 const styles = theme => ({
   titleColumn: {
     flex: '2 1 80%',
+    marginRight: theme.spacing(2),
   },
   heading: {
     textAlign: 'left',
@@ -67,11 +69,11 @@ class SectionPanel extends React.Component {
             </Typography>
           </div>
           <div className={classes.statusColumn}>
-            <SectionStatus
-              currentRow={currentRow}
-              numRows={numRows}
-              displayStyle={expanded ? '' : 'fraction'}
-            />
+            {
+              expanded ?
+              (<TotalRows numRows={numRows} />) :
+              (<CurrentRowSmall currentRow={currentRow} />)
+            }
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>

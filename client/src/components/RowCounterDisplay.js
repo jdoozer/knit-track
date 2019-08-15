@@ -10,10 +10,10 @@ import ResetIcon from '@material-ui/icons/Undo';
 import gray from '@material-ui/core/colors/blueGrey';
 import RowInfo from 'components/RowInfo';
 
-const textInd = 900;
-const textUpdatingInd = 500;
-const borderInd = 500;
-const bgInd = 50;
+const textColor = gray[900];
+const textUpdatingColor = gray[500];
+const textErrorColor = 'red';
+const borderColor = gray[700];
 
 const styles = theme => ({
   root: {
@@ -27,20 +27,17 @@ const styles = theme => ({
     alignItems: 'center',
   },
   row: {
-    border: 'solid 2px ' + gray[borderInd],
-    background: gray[bgInd],
+    border: 'solid 2px ' + borderColor,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     width: 100,
     height: 94,
     marginRight: theme.spacing(1),
-  },
-  rowDisplay: {
     color: ({ loading, error }) => {
-      if (error) return 'red';
-      if (loading) return gray[textUpdatingInd];
-      return gray[textInd];
+      if (error) return textErrorColor;
+      if (loading) return textUpdatingColor;
+      return textColor;
     }
   },
   counterButtonRoot: {
@@ -56,8 +53,8 @@ const styles = theme => ({
     minHeight: 0,
     padding: 2,
     margin: theme.spacing(1) / 2,
-    border: 'solid 1px ' + gray[borderInd],
-    color: gray[textInd],
+    border: 'solid 1px ' + borderColor,
+    color: textColor,
   },
   plusIcon: {
     width: 50,
@@ -71,9 +68,7 @@ const RowCounterDisplay = ({
   <div className={classes.root}>
     <div className={classes.rowCounter}>
       <Paper className={classes.row} elevation={1}>
-        <Typography variant="h3" className={classes.rowDisplay}>
-          {currentRow}
-        </Typography>
+        <Typography variant="h3">{currentRow}</Typography>
       </Paper>
       <div className={classes.counterButtonRoot}>
         <Button
@@ -87,14 +82,12 @@ const RowCounterDisplay = ({
           <Button
             variant="contained"
             className={classes.counterButton}
-            color="secondary"
             onClick={() => onUpdateCountClick("RESET")}>
               <ResetIcon />
           </Button>
           <Button
             variant="contained"
             className={classes.counterButton}
-            color="secondary"
             onClick={() => onUpdateCountClick("DECREMENT")}>
               <MinusIcon />
           </Button>

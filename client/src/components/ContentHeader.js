@@ -10,7 +10,7 @@ const styles = theme => ({
   root: {
     width: '100%',
     borderBottom: '1px solid #AAA',
-    background: theme.palette.contentHeader,
+    background: theme.palette.primary.light,
   },
   text: {
     flex: 1,
