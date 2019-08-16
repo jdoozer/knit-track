@@ -7,7 +7,7 @@ import {
   getRowsFromSection,
   getCurrentRow,
   getSectionLoading,
-  getSectionError
+  getSectionErrorMsg
 } from 'selectors';
 
 const mapStateToProps = (state, props) => {
@@ -16,7 +16,7 @@ const mapStateToProps = (state, props) => {
     rows: getRowsFromSection(state, sectionId),
     currentRow: getCurrentRow(state, sectionId),
     loading: Boolean(getSectionLoading(state, sectionId)),
-    error: Boolean(getSectionError(state, sectionId)),
+    error: Boolean(getSectionErrorMsg(state, sectionId)),
   };
 };
 

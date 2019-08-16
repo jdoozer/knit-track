@@ -3,16 +3,31 @@ import { createSelector } from 'reselect';
 // patterns
 const getPatternsById = state => state.patterns.byId;
 export const getPatternsLoading = state => state.patterns.loading;
-export const getPatternsError = state => state.patterns.error;
+const getPatternsError = state => state.patterns.error;
 export const getPatterns = createSelector(
   [getPatternsById],
   patternsById => Object.keys(patternsById).map(key => patternsById[key])
 );
 
+export const getPatternsErrorMsg = createSelector(
+  [getPatternsError],
+  error => (error && error.message) ? error.message : ''
+);
+
+export const getPatternsErrorCode = createSelector(
+  [getPatternsError],
+  error => (error && error.status) ? error.status : null
+);
+
+export const getPatternById = (state, patternId) => {
+  const pattern = getPatternsById(state)[patternId];
+  return (pattern) ? pattern : null;
+};
+
 // sections
 const getSectionsById = state => state.sections.byId;
-export const getSectionsLoading = state => state.patterns.loading;
-export const getSectionsError = state => state.patterns.error;
+// export const getSectionsLoading = state => state.patterns.loading;
+// export const getSectionsError = state => state.patterns.error;
 
 const getSectionById = (state, sectionId) => getSectionsById(state)[sectionId];
 
@@ -21,9 +36,14 @@ export const getSectionLoading = createSelector(
   section => section.loading
 );
 
-export const getSectionError = createSelector(
+const getSectionError = createSelector(
   [getSectionById],
   section => section.error
+);
+
+export const getSectionErrorMsg = createSelector(
+  [getSectionError],
+  error => (error && error.message) ? error.message : ''
 );
 
 export const getCurrentRow = createSelector(
@@ -51,9 +71,10 @@ export const getSelectedPatternId = createSelector(
 export const getSelectedPattern = createSelector(
   [getPatternsById, getSelectedPatternId],
   (patterns, selectedPatternId) => {
-    if (!selectedPatternId || !patterns[selectedPatternId]) {
-      return null;
-    }
+    // if (!selectedPatternId || !patterns[selectedPatternId]) {
+      // return null;
+    // }
+    debugger;
     return patterns[selectedPatternId];
   }
 );
@@ -64,7 +85,9 @@ export const getSelectedPatternSections = createSelector(
 
     if (!selectedPattern || !selectedPattern.sectionIds) return [];
 
-    const selectedPatternSections = selectedPattern.sectionIds.map(sectionId => sections[sectionId]);
+    const selectedPatternSections = selectedPattern.sectionIds.map(
+      sectionId => sections[sectionId]
+    );
     return selectedPatternSections.filter(section => section);
   }
 );

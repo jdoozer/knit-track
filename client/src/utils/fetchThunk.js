@@ -24,10 +24,16 @@ const fetchThunk = ({
   return dispatch => {
     dispatch(requestAction);
     return fetch(`${host}/${path}`, fetchObj)
-      // .then(response => {debugger; return response.json()})
-      .then(response => response.json())
-      .then(json => dispatch(receiveAction(json)))
-      .catch(error => dispatch(errorAction(`${error.name}: ${error.message}`)))
+    .then(response =>
+      response.json()
+      .then(json => ({ status: response.status, json })
+    ))
+    .then(({ status, json }) => (
+      (status === 200) ?
+        dispatch(receiveAction(json)) :
+        dispatch(errorAction({ status, message: json.error }))
+    ))
+    .catch(error => dispatch(errorAction({ message: error.toString() })))
   }
 };
 

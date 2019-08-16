@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchPatterns } from 'actions';
 import PatternListItems from 'components/PatternListItems';
-import { getPatterns, getPatternsLoading, getPatternsError } from 'selectors';
+import { getPatterns, getPatternsLoading, getPatternsErrorMsg } from 'selectors';
 
 const mapStateToProps = state => ({
   patterns: getPatterns(state),
   loading: getPatternsLoading(state),
-  error: Boolean(getPatternsError(state))
+  error: Boolean(getPatternsErrorMsg(state))
 });
 
 const mapDispatchToProps = {

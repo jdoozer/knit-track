@@ -4,7 +4,7 @@ import { createSection, fetchPatternExpandedIfNeeded } from 'actions';
 import SectionSetupForm from 'components/SectionSetupForm';
 import {
   getPatternsLoading,
-  getPatternsError,
+  getPatternsErrorMsg,
   getSelectedPattern,
   getSelectedPatternId,
 } from 'selectors';
@@ -13,7 +13,7 @@ const mapStateToProps = state => ({
   patternId: getSelectedPatternId(state),
   pattern: getSelectedPattern(state),
   loading: getPatternsLoading(state),
-  error: Boolean(getPatternsError(state))
+  error: Boolean(getPatternsErrorMsg(state))
 });
 
 const mapDispatchToProps = {

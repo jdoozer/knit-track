@@ -5,18 +5,21 @@ import { deletePattern, deleteSection, fetchPatternExpandedIfNeeded } from 'acti
 import PatternContent from 'components/PatternContent';
 import {
   getPatternsLoading,
-  getPatternsError,
+  getPatternsErrorMsg,
+  getPatternsErrorCode,
   getSelectedPattern,
+  getPatternById,
   getSelectedPatternId,
   getSelectedPatternSections
 } from 'selectors';
 
 const mapStateToProps = state => ({
   patternId: getSelectedPatternId(state),
+  // pattern: (getPatternsErrorCode(state) === 404) ? null : getPatternById(state, getSelectedPatternId(state)),
   pattern: getSelectedPattern(state),
   sections: getSelectedPatternSections(state),
   loading: getPatternsLoading(state),
-  error: Boolean(getPatternsError(state))
+  error: Boolean(getPatternsErrorMsg(state))
 });
 
 const mapDispatchToProps = {

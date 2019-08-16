@@ -22,23 +22,25 @@ app.get('/api/patterns/:patternId', (req, res, next) => {
 
   const patternId = req.params.patternId;
   const pattern = mockServerData.patterns.byId[patternId];
-  let patterns = { byId: {}, allIds: [] };
-  let sections = { byId: {}, allIds: [] };
 
   if (pattern) {
-    patterns = {
+    const patterns = {
       byId: { [patternId]: pattern },
       allIds: [patternId]
     };
+    let sections = { byId: {}, allIds: [] };
     if (pattern.sectionIds) {
       sections = {
         byId: utils.filterObject(mockServerData.sections.byId, pattern.sectionIds),
         allIds: pattern.sectionIds
       };
     }
+    setTimeout(() => res.send({ patterns, sections }), 200);
+  }
+  else {
+    res.status(404).send({ error: "pattern not found "});
   }
 
-  setTimeout(() => res.send({ patterns, sections }), 200);
   // next('test error');
 
 });

@@ -36,16 +36,16 @@ const PatternContent = ({
       <div className={classes.root}><CircularProgress /></div>
     );
   }
+  else if (pattern === null) {
+    mainContent = (
+      <MessageBlock>Pattern ID is invalid</MessageBlock>
+    );
+  }
   else if (error) {
     mainContent = (
       <MessageBlock>
         An error occurred while fetching data. Please reload to try again.
       </MessageBlock>
-    );
-  }
-  else if (pattern === null) {
-    mainContent = (
-      <MessageBlock>Pattern ID is invalid</MessageBlock>
     );
   }
   else {
