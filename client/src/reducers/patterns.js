@@ -2,6 +2,7 @@
 import {
   updateState,
   updateItem,
+  addItem,
   mergeItems,
   deleteFromState,
   deleteItemsFromArray,
@@ -35,6 +36,16 @@ const patternsReducer = handleActions({
     state,
     action.payload.patterns,
     { loading: false, error: null }
+  ),
+
+  RECEIVE_NEW_PATTERN: (state, action) => addItem(
+    state,
+    {
+      ...action.payload.pattern,
+      loading: false,
+      error: null
+    },
+    'patternId',
   ),
 
   RECEIVE_NEW_SECTION: (state, action) => {

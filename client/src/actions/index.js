@@ -4,6 +4,7 @@ import fetchThunk from 'utils/fetchThunk';
 const {
   requestData,
   receiveData,
+  receiveNewPattern,
   receiveNewSection,
   receiveUpdatedSection,
   updateRowCountOptimistic,
@@ -15,6 +16,8 @@ const {
   REQUEST_DATA: (dataTypes, id) => ({ dataTypes, id }),
 
   RECEIVE_DATA: json => ({ ...json }),
+
+  RECEIVE_NEW_PATTERN: json => ({ pattern: json }),
 
   RECEIVE_NEW_SECTION: json => ({ section: json }),
 
@@ -55,7 +58,7 @@ const fetchPatternExpanded = patternId => fetchThunk({
 
 export const createPattern = ({ ...patternData }) => fetchThunk({
   requestAction: requestData(['patterns']),
-  receiveAction: receiveData,
+  receiveAction: receiveNewPattern,
   errorAction: error => receiveError(error, ['patterns']),
   path: 'patterns',
   requestType: 'POST',

@@ -65,12 +65,7 @@ app.post('/api/patterns', (req, res) => {
   pattern.patternId = patternId;
   pattern.sectionIds = [];
 
-  res.send({
-    patterns: {
-      byId: { [patternId]: pattern },
-      allIds: [patternId],
-    }
-  })
+  res.send(pattern);
 });
 
 app.post('/api/sections', (req, res) => {
