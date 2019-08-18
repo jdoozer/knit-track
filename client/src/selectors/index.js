@@ -71,10 +71,9 @@ export const getSelectedPatternId = createSelector(
 export const getSelectedPattern = createSelector(
   [getPatternsById, getSelectedPatternId],
   (patterns, selectedPatternId) => {
-    // if (!selectedPatternId || !patterns[selectedPatternId]) {
-      // return null;
-    // }
-    debugger;
+    if (!selectedPatternId || !patterns[selectedPatternId]) {
+      return null;
+    }
     return patterns[selectedPatternId];
   }
 );

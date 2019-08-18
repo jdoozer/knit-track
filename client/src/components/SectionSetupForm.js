@@ -154,13 +154,16 @@ class SectionSetupForm extends React.Component {
 
   render() {
 
-    const { pattern, loading, error, classes } = this.props;
+    const { pattern, loading, error, errorCode, classes } = this.props;
 
     if (loading) {
       return (<CircularProgress />);
     }
 
     if (error) {
+      if (errorCode === 404) {
+        return (<MessageBlock>Pattern ID is invalid</MessageBlock>);
+      }
       return (
         <MessageBlock>
           An error occurred while fetching data. Please reload to try again.

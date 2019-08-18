@@ -26,29 +26,33 @@ const styles = (theme) => ({
 const PatternContent = ({
   pattern, sections,
   deletePattern, deleteSection,
-  loading, error, classes
+  loading, error, errorCode, classes
 }) => {
 
   let mainContent;
 
+  // TODO: MOVE ALL THIS STUFF TO PATTERN.JS
   if (loading) {
     mainContent = (
       <div className={classes.root}><CircularProgress /></div>
     );
-  }
-  else if (pattern === null) {
+  } else if (error) {
+    if (errorCode === 404) {
+      mainContent = (
+        <MessageBlock>Pattern ID is invalid</MessageBlock>
+      );
+    } else {
+      mainContent = (
+        <MessageBlock>
+          An error occurred while fetching data. Please reload to try again.
+        </MessageBlock>
+      );
+    }
+  } else if (pattern === null) {
     mainContent = (
       <MessageBlock>Pattern ID is invalid</MessageBlock>
     );
-  }
-  else if (error) {
-    mainContent = (
-      <MessageBlock>
-        An error occurred while fetching data. Please reload to try again.
-      </MessageBlock>
-    );
-  }
-  else {
+  } else {
     const sectionContent = sections.map(section => (
       <SectionPanel
         key={section.sectionId}
@@ -79,7 +83,7 @@ const PatternContent = ({
           <AddSection patternId={pattern.patternId} />
         </Hidden>
       </div>
-    )
+    );
   }
 
   return mainContent;

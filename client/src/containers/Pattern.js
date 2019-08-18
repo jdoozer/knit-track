@@ -19,7 +19,8 @@ const mapStateToProps = state => ({
   pattern: getSelectedPattern(state),
   sections: getSelectedPatternSections(state),
   loading: getPatternsLoading(state),
-  error: Boolean(getPatternsErrorMsg(state))
+  error: Boolean(getPatternsErrorMsg(state)),
+  errorCode: getPatternsErrorCode(state),
 });
 
 const mapDispatchToProps = {
@@ -60,6 +61,7 @@ Pattern.propTypes = {
   ).isRequired,
   loading: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
+  errorCode: PropTypes.number,
   deletePattern: PropTypes.func.isRequired,
   deleteSection: PropTypes.func.isRequired,
   fetchPatternExpandedIfNeeded: PropTypes.func.isRequired,
