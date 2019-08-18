@@ -4,11 +4,9 @@ import { withStyles } from '@material-ui/core/styles';
 import Hidden from '@material-ui/core/Hidden';
 import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import ContentHeader from 'components/ContentHeader';
 import SectionPanel from 'components/SectionPanel';
 import AddSection from 'components/AddSection';
-import MessageBlock from 'components/MessageBlock';
 
 const styles = (theme) => ({
   root: {
@@ -26,69 +24,43 @@ const styles = (theme) => ({
 const PatternContent = ({
   pattern, sections,
   deletePattern, deleteSection,
-  loading, error, errorCode, classes
-}) => {
+  classes
+}) => (
 
-  let mainContent;
+  <div className={classes.root}>
 
-  // TODO: MOVE ALL THIS STUFF TO PATTERN.JS
-  if (loading) {
-    mainContent = (
-      <div className={classes.root}><CircularProgress /></div>
-    );
-  } else if (error) {
-    if (errorCode === 404) {
-      mainContent = (
-        <MessageBlock>Pattern ID is invalid</MessageBlock>
-      );
-    } else {
-      mainContent = (
-        <MessageBlock>
-          An error occurred while fetching data. Please reload to try again.
-        </MessageBlock>
-      );
-    }
-  } else if (pattern === null) {
-    mainContent = (
-      <MessageBlock>Pattern ID is invalid</MessageBlock>
-    );
-  } else {
-    const sectionContent = sections.map(section => (
-      <SectionPanel
-        key={section.sectionId}
-        section={section}
-        deleteSection={deleteSection}
-        patternId={pattern.patternId}
-      />
-    ));
+    <ContentHeader
+      onClick={() => deletePattern(pattern.patternId)}
+      icon={<DeleteIcon />}
+      newLocation="/"
+      dialogTitle="Delete Pattern"
+      dialogText="Are you sure you want to delete this pattern and all its contents?"
+    >
+      {pattern.title}
+    </ContentHeader>
 
-    mainContent =  (
-      <div className={classes.root}>
-        <ContentHeader
-          onClick={() => deletePattern(pattern.patternId)}
-          icon={<DeleteIcon />}
-          newLocation="/"
-          dialogTitle="Delete Pattern"
-          dialogText="Are you sure you want to delete this pattern and all its contents?"
-        >
-          {pattern.title}
-        </ContentHeader>
-        <Typography variant="subtitle1" className={classes.info}>
-          {pattern.info}
-        </Typography>
-        <div className={classes.sectionCards}>
-          {sectionContent}
-        </div>
-        <Hidden xsDown>
-          <AddSection patternId={pattern.patternId} />
-        </Hidden>
-      </div>
-    );
-  }
+    <Typography variant="subtitle1" className={classes.info}>
+      {pattern.info}
+    </Typography>
 
-  return mainContent;
+    <div className={classes.sectionCards}>
+      {sections.map(section => (
+        <SectionPanel
+          key={section.sectionId}
+          section={section}
+          deleteSection={deleteSection}
+          patternId={pattern.patternId}
+        />
+      ))}
+    </div>
 
-};
+    <Hidden xsDown>
+      <AddSection patternId={pattern.patternId} />
+    </Hidden>
+
+  </div>
+
+);
 
 PatternContent.propTypes = {
   pattern: PropTypes.shape({
@@ -104,8 +76,6 @@ PatternContent.propTypes = {
   deletePattern: PropTypes.func.isRequired,
   deleteSection: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
-  loading: PropTypes.bool.isRequired,
-  error: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(PatternContent);
