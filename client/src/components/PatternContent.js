@@ -8,7 +8,7 @@ import ContentHeader from 'components/ContentHeader';
 import SectionPanel from 'components/SectionPanel';
 import AddSection from 'components/AddSection';
 
-const styles = (theme) => ({
+const styles = theme => ({
   root: {
     paddingBottom: 1,
   },
@@ -22,9 +22,7 @@ const styles = (theme) => ({
 });
 
 const PatternContent = ({
-  pattern, sections,
-  deletePattern, deleteSection,
-  classes
+  pattern, sections, deletePattern, deleteSection, classes
 }) => (
 
   <div className={classes.root}>
@@ -64,10 +62,10 @@ const PatternContent = ({
 
 PatternContent.propTypes = {
   pattern: PropTypes.shape({
-    title: PropTypes.string,
-    info: PropTypes.string,
-    patternId: PropTypes.string,
-  }),
+    title: PropTypes.string.isRequired,
+    info: PropTypes.string.isRequired,
+    patternId: PropTypes.string.isRequired,
+  }).isRequired,
   sections: PropTypes.arrayOf(
     PropTypes.shape({
       sectionId: PropTypes.string.isRequired

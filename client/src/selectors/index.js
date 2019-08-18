@@ -25,11 +25,11 @@ export const getPatternById = (state, patternId) => {
 };
 
 // sections
-const getSectionsById = state => state.sections.byId;
-// export const getSectionsLoading = state => state.patterns.loading;
-// export const getSectionsError = state => state.patterns.error;
+const getAllSectionsById = state => state.sections.byId;
+export const getSectionsLoading = state => state.patterns.loading;
+export const getSectionsError = state => state.patterns.error;
 
-const getSectionById = (state, sectionId) => getSectionsById(state)[sectionId];
+const getSectionById = (state, sectionId) => getAllSectionsById(state)[sectionId];
 
 export const getSectionLoading = createSelector(
   [getSectionById],
@@ -56,6 +56,15 @@ export const getRowsFromSection = createSelector(
   section => section.rows
 );
 
+export const getSectionsById = createSelector(
+  [getAllSectionsById],
+  (allSections) => ((sectionIds) => {
+    const sections = sectionIds.map(sectionId => allSections[sectionId]);
+    return sections.filter(section => section);
+  })
+);
+
+
 // router
 const getPath = state => state.router.location.pathname;
 export const getSelectedPatternId = createSelector(
@@ -78,8 +87,10 @@ export const getSelectedPattern = createSelector(
   }
 );
 
+
+// GET RID OF THIS
 export const getSelectedPatternSections = createSelector(
-  [getSelectedPattern, getSectionsById],
+  [getSelectedPattern, getAllSectionsById],
   (selectedPattern, sections) => {
 
     if (!selectedPattern || !selectedPattern.sectionIds) return [];
