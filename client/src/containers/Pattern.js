@@ -99,18 +99,13 @@ Pattern.propTypes = {
       patternId: PropTypes.string.isRequired
     }).isRequired
   }).isRequired,
-  // pattern: PropTypes.shape({
-  //   title: PropTypes.string.isRequired,
-  //   info: PropTypes.string.isRequired,
-  //   patternId: PropTypes.string.isRequired,
-  //   sectionIds: PropTypes.array.isRequired,
-  // }),
   loading: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
   errorCode: PropTypes.number,
   deletePattern: PropTypes.func.isRequired,
   deleteSection: PropTypes.func.isRequired,
   fetchPatternExpandedIfNeeded: PropTypes.func.isRequired,
+  patternById: PropTypes.func.isRequired,
   getSectionsFromIds: PropTypes.func.isRequired,
 };
 

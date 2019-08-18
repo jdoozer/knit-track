@@ -4,10 +4,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Hidden from '@material-ui/core/Hidden';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import ContentHeader from 'components/ContentHeader';
 import SectionRowInputs from 'components/SectionRowInputs';
-import MessageBlock from 'components/MessageBlock';
 import updateNestedItem from 'utils/updateNestedItem';
 import objValsNotEmpty from 'utils/objValsNotEmpty';
 
@@ -154,28 +152,7 @@ class SectionSetupForm extends React.Component {
 
   render() {
 
-    const { pattern, loading, error, errorCode, classes } = this.props;
-
-    if (loading) {
-      return (<CircularProgress />);
-    }
-
-    if (error) {
-      if (errorCode === 404) {
-        return (<MessageBlock>Pattern ID is invalid</MessageBlock>);
-      }
-      return (
-        <MessageBlock>
-          An error occurred while fetching data. Please reload to try again.
-        </MessageBlock>
-      );
-    }
-
-    if (pattern === null) {
-      return (
-        <MessageBlock>Invalid Pattern ID</MessageBlock>
-      );
-    }
+    const { pattern, classes } = this.props;
 
     return (
       <Hidden xsDown>
@@ -219,12 +196,9 @@ SectionSetupForm.propTypes = {
   classes: PropTypes.object.isRequired,
   createSection: PropTypes.func.isRequired,
   pattern: PropTypes.shape({
-    title: PropTypes.string,
-    info: PropTypes.string,
-    patternId: PropTypes.string,
-  }),
-  loading: PropTypes.bool.isRequired,
-  error: PropTypes.bool.isRequired,
+    title: PropTypes.string.isRequired,
+    patternId: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default withStyles(styles)(SectionSetupForm);
