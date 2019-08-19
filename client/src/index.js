@@ -7,9 +7,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
 import registerServiceWorker from './registerServiceWorker';
 import throttle from 'lodash/throttle';
-import { createBrowserHistory } from 'history';
-import { routerMiddleware, ConnectedRouter } from 'connected-react-router';
-
+import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
 import createRootReducer from 'reducers';
 import { loadState, saveState } from 'utils/localStorage';
@@ -17,21 +15,18 @@ import 'typeface-roboto';
 import 'index.css';
 
 
-const history = createBrowserHistory();
-
 const HYDRATE_STATE = false;
 const SAVE_STATE = false;
 
 const persistedState = loadState();
 const loggerMiddleware = createLogger();
 const middleware = composeWithDevTools(
-  applyMiddleware(thunkMiddleware, loggerMiddleware, routerMiddleware(history))
+  applyMiddleware(thunkMiddleware, loggerMiddleware)
 );
 
-// TODO: modify save and hydrate to NOT factor in UI portion of state
 const storeInputArgs = HYDRATE_STATE
-  ? [createRootReducer(history), persistedState, middleware]
-  : [createRootReducer(history), middleware];
+  ? [createRootReducer, persistedState, middleware]
+  : [createRootReducer, middleware];
 
 const store = createStore(...storeInputArgs);
 
@@ -44,9 +39,9 @@ if (SAVE_STATE) {
 
 ReactDOM.render(
   <Provider store={store}>
-    <ConnectedRouter history={history}>
+    <Router>
       <App />
-    </ConnectedRouter>
+    </Router>
   </Provider>,
   document.getElementById('root'));
 registerServiceWorker();
