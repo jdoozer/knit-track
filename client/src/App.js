@@ -9,12 +9,13 @@ import theme from 'mui/knitTrackTheme';
 import Header from 'components/Header';
 import HomeScreen from 'components/HomeScreen';
 
-import Pattern from 'containers/Pattern';
-import SectionSetup from 'containers/SectionSetup';
+import PatternContainer from 'containers/PatternContainer';
 import PatternSetup from 'containers/PatternSetup';
 
 const App = () => (
+
   <ThemeProvider theme={theme}>
+
     <CssBaseline />
 
     <Header />
@@ -23,13 +24,13 @@ const App = () => (
       <Switch>
         <Route exact path="/" component={HomeScreen} />
         <Route path="/patterns/new" component={PatternSetup} />
-        <Route path="/patterns/:patternId/newsection" component={SectionSetup} />
-        <Route path="/patterns/:patternId" component={Pattern} />
+        <Route path="/patterns/:patternId" component={PatternContainer} />
         <Route component={HomeScreen}/>
       </Switch>
     </MainContentWrapper>
 
   </ThemeProvider>
+
 );
 
 export default App;
