@@ -7,7 +7,7 @@ import PatternContent from 'components/PatternContent';
 
 const mapStateToProps = state => ({
   patternById: patternId => getPatternById(state, patternId),
-  getSectionsFromIds: getSectionsById(state),
+  getSectionsFromIds: sectionIds => getSectionsById(state, sectionIds),
 });
 
 const mapDispatchToProps = {

@@ -25,8 +25,8 @@ export const getPatternsErrorCode = state => (
   patternSelectors.getPatternsErrorCode(state.patterns)
 );
 
-export const getPatterns = state => (
-  patternSelectors.getPatterns(state.patterns)
+export const getPatternTitlesSorted = state => (
+  patternSelectors.getPatternTitlesSorted(state.patterns)
 );
 
 export const getPatternById = (state, patternId) => (
@@ -34,22 +34,22 @@ export const getPatternById = (state, patternId) => (
 );
 
 // SELECTORS [sections]
-export const getSectionLoading = state => (
-  sectionSelectors.getSectionLoading(state.sections)
+export const getSectionLoading = (state, sectionId) => (
+  sectionSelectors.getSectionLoading(state.sections, sectionId)
 );
 
-export const getSectionErrorMsg = state => (
-  sectionSelectors.getSectionErrorMsg(state.sections)
+export const getSectionErrorMsg = (state, sectionId) => (
+  sectionSelectors.getSectionErrorMsg(state.sections, sectionId)
 );
 
-export const getCurrentRow = state => (
-  sectionSelectors.getCurrentRow(state.sections)
+export const getCurrentRow = (state, sectionId) => (
+  sectionSelectors.getCurrentRow(state.sections, sectionId)
 );
 
-export const getRowsFromSection = state => (
-  sectionSelectors.getRowsFromSection(state.sections)
+export const getRowsFromSection = (state, sectionId) => (
+  sectionSelectors.getRowsFromSection(state.sections, sectionId)
 );
 
-export const getSectionsById = state => (
-  sectionSelectors.getSectionsById(state.sections)
+export const getSectionsById = (state, sectionIds) => (
+  sectionSelectors.getSectionsById(state.sections, sectionIds)
 );

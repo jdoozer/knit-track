@@ -8,6 +8,7 @@ import {
   deleteFromState,
   deleteItemsFromArray,
 } from 'utils/reducerUtils';
+import sortByKey from 'utils/sortByKey';
 
 const initialState = {
   byId: {},
@@ -89,16 +90,22 @@ export const getPatternsErrorMsg = state => (
 );
 
 export const getPatternsErrorCode = state => (
-  (state.error && state.error.status) ? state.error.status : ''
+  (state.error && state.error.status) ? state.error.status : 200
 );
 
 const getPatternsById = state => state.byId;
-export const getPatterns = createSelector(
-  [getPatternsById],
-  patternsById => Object.keys(patternsById).map(key => patternsById[key])
+const getPatternTitles = createSelector(
+  getPatternsById,
+  patternsById => Object.keys(patternsById).map(
+    key => ({ patternId: key, title: patternsById[key].title })
+  )
 );
 
-export const getPatternById = (state, patternId) => {
-  const pattern = getPatternsById(state)[patternId];
-  return (pattern) ? pattern : null;
-};
+export const getPatternTitlesSorted = createSelector(
+  getPatternTitles,
+  patternTitles => sortByKey(patternTitles, 'title')
+);
+
+export const getPatternById = (state, patternId) => (
+  getPatternsById(state)[patternId]
+);

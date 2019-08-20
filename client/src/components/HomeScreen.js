@@ -7,7 +7,7 @@ import ContentHeader from 'components/ContentHeader';
 const HomeScreen = () => (
   <React.Fragment>
     <ContentHeader>Pattern List</ContentHeader>
-    <PatternList />
+    <div><PatternList /></div>
     <Hidden xsDown>
       <AddPattern />
     </Hidden>

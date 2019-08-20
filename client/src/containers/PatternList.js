@@ -2,11 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchPatterns } from 'actions';
+import { getPatternTitlesSorted, getPatternsLoading, getPatternsErrorMsg } from 'reducers';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import MessageBlock from 'components/MessageBlock';
 import PatternListItems from 'components/PatternListItems';
-import { getPatterns, getPatternsLoading, getPatternsErrorMsg } from 'reducers';
 
 const mapStateToProps = state => ({
-  patterns: getPatterns(state),
+  patternTitles: getPatternTitlesSorted(state),
   loading: getPatternsLoading(state),
   error: Boolean(getPatternsErrorMsg(state))
 });
@@ -22,21 +24,43 @@ class PatternList extends React.Component {
   }
 
   render() {
-    const { fetchPatterns, ...otherProps } = this.props;
-    return (<PatternListItems {...otherProps} />);
-  }
 
+    const { loading, error, patternTitles } = this.props;
+
+    if (loading) {
+      return (<CircularProgress />);
+    }
+
+    if (error) {
+      return (
+        <MessageBlock>
+          An error occurred while fetching data. Please reload to try again.
+        </MessageBlock>
+      );
+    }
+
+    if (patternTitles.length) {
+      return (<PatternListItems patternTitles={patternTitles} />);
+    }
+
+    return (
+      <MessageBlock>
+         No patterns created yet! Click the button below to add a new pattern.
+      </MessageBlock>
+    );
+  }
 }
 
 PatternList.propTypes = {
-  patterns: PropTypes.arrayOf(
+  patternTitles: PropTypes.arrayOf(
     PropTypes.shape({
       patternId: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
-    }).isRequired
+    })
   ).isRequired,
   fetchPatterns: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
+  error: PropTypes.bool.isRequired,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PatternList);

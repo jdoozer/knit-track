@@ -124,38 +124,28 @@ export default sectionsReducer;
 
 // SELECTORS (named exports)
 
-const getAllSectionsById = state => state.byId;
 const getSectionById = (state, sectionId) => state.byId[sectionId];
-
-export const getSectionLoading = createSelector(
-  [getSectionById],
-  section => section.loading
+const getSectionError = (state, sectionId) => (
+  getSectionById(state, sectionId).error
 );
 
-const getSectionError = createSelector(
-  [getSectionById],
-  section => section.error
+export const getSectionLoading = (state, sectionId) => (
+  getSectionById(state, sectionId).loading
 );
 
 export const getSectionErrorMsg = createSelector(
-  [getSectionError],
+  getSectionError,
   error => (error && error.message) ? error.message : ''
 );
 
-export const getCurrentRow = createSelector(
-  [getSectionById],
-  section => section.currentRow
+export const getCurrentRow = (state, sectionId) => (
+  getSectionById(state, sectionId).currentRow
 );
 
-export const getRowsFromSection = createSelector(
-  [getSectionById],
-  section => section.rows
+export const getRowsFromSection = (state, sectionId) => (
+  getSectionById(state, sectionId).rows
 );
 
-export const getSectionsById = createSelector(
-  [getAllSectionsById],
-  (allSections) => ((sectionIds) => {
-    const sections = sectionIds.map(sectionId => allSections[sectionId]);
-    return sections.filter(section => section);
-  })
+export const getSectionsById = (state, sectionIds) => (
+  sectionIds.map(sectionId => getSectionById(state, sectionId))
 );
