@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSection } from 'actions';
 import SectionSetupForm from 'components/SectionSetupForm';
-import { getPatternById } from 'selectors';
+import { getPatternById } from 'reducers';
 
 const mapStateToProps = state => ({
   patternById: patternId => getPatternById(state, patternId),

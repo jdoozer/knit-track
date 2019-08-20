@@ -1,4 +1,5 @@
-
+import { handleActions } from 'redux-actions';
+import { createSelector } from 'reselect';
 import {
   updateState,
   updateItem,
@@ -7,7 +8,6 @@ import {
   deleteFromState,
   deleteItemsFromArray,
 } from 'utils/reducerUtils';
-import { handleActions } from 'redux-actions';
 
 const initialState = {
   byId: {},
@@ -78,5 +78,27 @@ const patternsReducer = handleActions({
 
 }, initialState);
 
-
 export default patternsReducer;
+
+
+// SELECTORS (named exports)
+export const getPatternsLoading = state => state.loading;
+
+export const getPatternsErrorMsg = state => (
+  (state.error && state.error.message) ? state.error.message : ''
+);
+
+export const getPatternsErrorCode = state => (
+  (state.error && state.error.status) ? state.error.status : ''
+);
+
+const getPatternsById = state => state.byId;
+export const getPatterns = createSelector(
+  [getPatternsById],
+  patternsById => Object.keys(patternsById).map(key => patternsById[key])
+);
+
+export const getPatternById = (state, patternId) => {
+  const pattern = getPatternsById(state)[patternId];
+  return (pattern) ? pattern : null;
+};

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { deletePattern, deleteSection } from 'actions';
-import { getPatternById, getSectionsById } from 'selectors';
+import { getPatternById, getSectionsById } from 'reducers';
 import PatternContent from 'components/PatternContent';
 
 const mapStateToProps = state => ({

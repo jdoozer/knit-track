@@ -1,3 +1,5 @@
+import { handleActions } from 'redux-actions';
+import { createSelector } from 'reselect';
 import {
   updateState,
   mergeItems,
@@ -5,7 +7,6 @@ import {
   updateItem,
   deleteFromState,
 } from 'utils/reducerUtils';
-import { handleActions } from 'redux-actions';
 
 const initialState = {
   byId: {},
@@ -77,6 +78,7 @@ const sectionsReducer = handleActions({
       error: null
     },
     'sectionId',
+    { loading: false, error: null }
   ),
 
   RECEIVE_UPDATED_SECTION: (state, action) => {
@@ -117,5 +119,43 @@ const sectionsReducer = handleActions({
 
 }, initialState);
 
-
 export default sectionsReducer;
+
+
+// SELECTORS (named exports)
+
+const getAllSectionsById = state => state.byId;
+const getSectionById = (state, sectionId) => state.byId[sectionId];
+
+export const getSectionLoading = createSelector(
+  [getSectionById],
+  section => section.loading
+);
+
+const getSectionError = createSelector(
+  [getSectionById],
+  section => section.error
+);
+
+export const getSectionErrorMsg = createSelector(
+  [getSectionError],
+  error => (error && error.message) ? error.message : ''
+);
+
+export const getCurrentRow = createSelector(
+  [getSectionById],
+  section => section.currentRow
+);
+
+export const getRowsFromSection = createSelector(
+  [getSectionById],
+  section => section.rows
+);
+
+export const getSectionsById = createSelector(
+  [getAllSectionsById],
+  (allSections) => ((sectionIds) => {
+    const sections = sectionIds.map(sectionId => allSections[sectionId]);
+    return sections.filter(section => section);
+  })
+);

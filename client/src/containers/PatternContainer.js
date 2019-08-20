@@ -5,7 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 import { fetchPatternExpandedIfNeeded } from 'actions';
 import {
   getPatternsLoading, getPatternsErrorMsg, getPatternsErrorCode
-} from 'selectors';
+} from 'reducers';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MessageBlock from 'components/MessageBlock';
 import Pattern from 'containers/Pattern';

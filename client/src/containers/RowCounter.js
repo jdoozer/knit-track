@@ -8,7 +8,7 @@ import {
   getCurrentRow,
   getSectionLoading,
   getSectionErrorMsg
-} from 'selectors';
+} from 'reducers';
 
 const mapStateToProps = (state, props) => {
   const { sectionId } = props;

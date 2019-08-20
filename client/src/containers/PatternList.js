@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchPatterns } from 'actions';
 import PatternListItems from 'components/PatternListItems';
-import { getPatterns, getPatternsLoading, getPatternsErrorMsg } from 'selectors';
+import { getPatterns, getPatternsLoading, getPatternsErrorMsg } from 'reducers';
 
 const mapStateToProps = state => ({
   patterns: getPatterns(state),
