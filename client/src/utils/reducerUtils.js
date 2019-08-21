@@ -63,7 +63,10 @@ export const deleteItemsFromArray = (array, itemsToDelete) => {
   if (itemsToDelete.length > 1) {
     return array.filter(currItem => !itemsToDelete.includes(currItem));
   }
-  return array.filter(currItem => !(currItem === itemsToDelete));
+  if (itemsToDelete) {
+    return array.filter(currItem => !(currItem === itemsToDelete));
+  }
+  return array;
 };
 
 const deleteItemsByKeys = (obj, keysToDelete) => {
@@ -89,8 +92,13 @@ const deleteItemsByKeys = (obj, keysToDelete) => {
   );
 };
 
-export const deleteFromState = (state, itemIds) => ({
-  ...state,
-  byId: deleteItemsByKeys(state.byId, itemIds),
-  allIds: deleteItemsFromArray(state.allIds, itemIds),
-});
+export const deleteFromState = (state, itemIds) => {
+  if (itemIds) {
+    return {
+      ...state,
+      byId: deleteItemsByKeys(state.byId, itemIds),
+      allIds: deleteItemsFromArray(state.allIds, itemIds),
+    }
+  }
+  return state;
+};

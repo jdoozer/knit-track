@@ -33,6 +33,10 @@ export const getPatternById = (state, patternId) => (
   patternSelectors.getPatternById(state.patterns, patternId)
 );
 
+export const getLastCreatedPatternId = state => (
+  patternSelectors.getLastCreatedPatternId(state.patterns)
+);
+
 // SELECTORS [sections]
 export const getSectionLoading = (state, sectionId) => (
   sectionSelectors.getSectionLoading(state.sections, sectionId)

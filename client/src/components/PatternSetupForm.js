@@ -40,13 +40,11 @@ class PatternSetupForm extends React.Component {
   }
 
   handleSubmit(event) {
-    const { createPattern, history } = this.props;
+    const { createPattern } = this.props;
     const { title, info } = this.state;
 
     createPattern({ title, info });
     event.preventDefault();
-
-    // history.push('/');
   }
 
   handleReset(event) {
@@ -54,6 +52,9 @@ class PatternSetupForm extends React.Component {
   }
 
   render() {
+
+    // if (lastCreatedId) history.push(`/patterns/${lastCreatedId}`);
+
 
     const { classes } = this.props;
     return (
@@ -93,7 +94,6 @@ class PatternSetupForm extends React.Component {
 
 PatternSetupForm.propTypes = {
   classes: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
   createPattern: PropTypes.func.isRequired,
 };
 

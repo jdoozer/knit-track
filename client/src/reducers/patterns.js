@@ -15,6 +15,7 @@ const initialState = {
   allIds: [],
   loading: false,
   error: null,
+  lastCreatedId: ''
 };
 
 const patternsReducer = handleActions({
@@ -41,12 +42,18 @@ const patternsReducer = handleActions({
 
   RECEIVE_NEW_PATTERN: (state, action) => addItem(
     state,
-    {
-      ...action.payload.pattern,
-      loading: false,
-      error: null
-    },
+    action.payload.pattern,
     'patternId',
+    {
+      loading: false,
+      error: null,
+      lastCreatedId: action.payload.pattern.patternId
+    }
+  ),
+
+  CLEAR_LAST_CREATED: state => updateState(
+    state,
+    { lastCreatedId: '' },
   ),
 
   RECEIVE_NEW_SECTION: (state, action) => {
@@ -109,3 +116,5 @@ export const getPatternTitlesSorted = createSelector(
 export const getPatternById = (state, patternId) => (
   getPatternsById(state)[patternId]
 );
+
+export const getLastCreatedPatternId = state => state.lastCreatedId;

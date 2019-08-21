@@ -11,33 +11,38 @@ const {
   receiveError,
   receiveDeletePatternKeys,
   receiveDeleteSectionKeys,
-} = createActions({
+  clearLastCreated
+} = createActions(
+  {
+    REQUEST_DATA: (dataTypes, id) => ({ dataTypes, id }),
 
-  REQUEST_DATA: (dataTypes, id) => ({ dataTypes, id }),
+    RECEIVE_DATA: json => ({ ...json }),
 
-  RECEIVE_DATA: json => ({ ...json }),
+    RECEIVE_NEW_PATTERN: json => ({ pattern: json }),
 
-  RECEIVE_NEW_PATTERN: json => ({ pattern: json }),
+    RECEIVE_NEW_SECTION: json => ({ section: json }),
 
-  RECEIVE_NEW_SECTION: json => ({ section: json }),
+    RECEIVE_UPDATED_SECTION: json => ({ section: json }),
 
-  RECEIVE_UPDATED_SECTION: json => ({ section: json }),
+    UPDATE_ROW_COUNT_OPTIMISTIC: (sectionId, updateType) => (
+      { sectionId, updateType }
+    ),
 
-  UPDATE_ROW_COUNT_OPTIMISTIC: (sectionId, updateType) => (
-    { sectionId, updateType }
-  ),
+    RECEIVE_ERROR: (error, dataTypes, id) => ({ error, dataTypes, id }),
 
-  RECEIVE_ERROR: (error, dataTypes, id) => ({ error, dataTypes, id }),
+    RECEIVE_DELETE_PATTERN_KEYS: ({ patternId, sectionIds }) => (
+      { patternId, sectionIds }
+    ),
 
-  RECEIVE_DELETE_PATTERN_KEYS: ({ patternId, sectionIds }) => (
-    { patternId, sectionIds }
-  ),
+    RECEIVE_DELETE_SECTION_KEYS: ({ patternId, sectionId }) => (
+      { patternId, sectionId }
+    ),
+  },
+  'CLEAR_LAST_CREATED'
+);
 
-  RECEIVE_DELETE_SECTION_KEYS: ({ patternId, sectionId }) => (
-    { patternId, sectionId }
-  ),
-
-});
+// EXPORT SYNCHRONOUS ACTION CREATORS
+export { clearLastCreated };
 
 
 // ASYNC THUNK FUNCTIONS
@@ -100,42 +105,44 @@ export const deleteSection = sectionId => fetchThunk({
 });
 
 
-// CONDITIONAL THUNK FUNCTIONS
+// CONDITIONAL & CHAINED THUNKS
 
-export const fetchPatternExpandedIfNeeded = patternId => (dispatch, getState) => {
+export const fetchPatternExpandedIfNeeded = patternId => (
+  (dispatch, getState) => {
 
-  const { patterns, sections } = getState();
+    const { patterns, sections } = getState();
 
-  if (patterns.loading || sections.loading) return null;
+    if (patterns.loading || sections.loading) return null;
 
-  if (patterns.allIds.includes(patternId)) {
+    if (patterns.allIds.includes(patternId)) {
 
-    const patternSections = patterns.byId[patternId].sectionIds;
+      const patternSections = patterns.byId[patternId].sectionIds;
 
-    if (patternSections.every(id => sections.allIds.includes(id))) {
+      if (patternSections.every(id => sections.allIds.includes(id))) {
+        return null;
+      }
+    }
+
+    return dispatch(fetchPatternExpanded(patternId));
+  }
+);
+
+
+export const updateRowCount = (sectionId, updateType) => (
+  (dispatch, getState) => {
+
+    const sectionsBeforeUpdate = getState().sections;
+    const rowBeforeUpdate = sectionsBeforeUpdate.byId[sectionId].currentRow;
+
+    dispatch(updateRowCountOptimistic(sectionId, updateType));
+
+    const sectionsAfterUpdate = getState().sections;
+    const rowAfterUpdate = sectionsAfterUpdate.byId[sectionId].currentRow;
+
+    if (rowBeforeUpdate === rowAfterUpdate) {
       return null;
     }
+
+    return dispatch(updateSection(sectionId, { currentRow: rowAfterUpdate }));
   }
-
-  return dispatch(fetchPatternExpanded(patternId));
-
-};
-
-
-export const updateRowCount = (sectionId, updateType) => (dispatch, getState) => {
-
-  const sectionsBeforeUpdate = getState().sections;
-  const rowBeforeUpdate = sectionsBeforeUpdate.byId[sectionId].currentRow;
-
-  dispatch(updateRowCountOptimistic(sectionId, updateType));
-
-  const sectionsAfterUpdate = getState().sections;
-  const rowAfterUpdate = sectionsAfterUpdate.byId[sectionId].currentRow;
-
-  if (rowBeforeUpdate === rowAfterUpdate) {
-    return null;
-  }
-
-  return dispatch(updateSection(sectionId, { currentRow: rowAfterUpdate }));
-
-};
+);
