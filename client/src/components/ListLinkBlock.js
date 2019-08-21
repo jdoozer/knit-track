@@ -12,7 +12,7 @@ const styles = () => ({
   },
 });
 
-const ListLinkBlock = ({ link, onClick, title, classes }) => (
+const ListLinkBlock = ({ link, title, classes }) => (
   <Link to={link}>
     <ListItem button>
       <ListItemText primary={title} className={classes.listItemText} />

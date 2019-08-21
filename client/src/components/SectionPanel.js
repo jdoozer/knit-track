@@ -9,7 +9,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TotalRows from 'components/TotalRows';
 import CurrentRowSmall from 'components/CurrentRowSmall';
-import RowCounter from 'containers/RowCounter';
+import RowCounter from 'components/RowCounter';
 import ActionIconButton from 'components/ActionIconButton';
 
 const styles = theme => ({
@@ -52,10 +52,10 @@ class SectionPanel extends React.Component {
   }
 
   render() {
-    const { section, deleteSection, classes } = this.props;
+    const { section, onDeleteClick, onRowCounterClick, classes } = this.props;
     const { expanded } = this.state;
 
-    const { title, sectionId, currentRow, numRows } = section;
+    const { title, currentRow, numRows } = section;
 
     return (
       <ExpansionPanel onChange={this.handleExpandClick}>
@@ -77,10 +77,15 @@ class SectionPanel extends React.Component {
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>
-          {expanded && <RowCounter sectionId={sectionId} />}
+          {expanded && (
+            <RowCounter
+              section={section}
+              onUpdateCountClick={onRowCounterClick}
+            />
+          )}
           <ActionIconButton
             className={classes.button}
-            onClick={() => deleteSection(sectionId)}
+            onClick={onDeleteClick}
             icon={<DeleteIcon />}
             dialogTitle="Delete Section"
             dialogText="Are you sure you want to delete this section and all its contents?"
@@ -94,12 +99,11 @@ class SectionPanel extends React.Component {
 SectionPanel.propTypes = {
   section: PropTypes.shape({
     title: PropTypes.string.isRequired,
-    sectionId: PropTypes.string.isRequired,
     currentRow: PropTypes.number.isRequired,
     numRows: PropTypes.number.isRequired,
-    rowIds: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
-  deleteSection: PropTypes.func.isRequired,
+  onDeleteClick: PropTypes.func.isRequired,
+  onRowCounterClick: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 };
 

@@ -34,7 +34,7 @@ const styles = theme => ({
     width: 100,
     height: 94,
     marginRight: theme.spacing(1),
-    color: ({ loading, error }) => {
+    color: ({ section: { error, loading } }) => {
       if (error) return textErrorColor;
       if (loading) return textUpdatingColor;
       return textColor;
@@ -63,7 +63,9 @@ const styles = theme => ({
 });
 
 const RowCounterDisplay = ({
-  currentRow, rows, onUpdateCountClick, classes
+  section: { currentRow, rows },
+  onUpdateCountClick,
+  classes
 }) => (
   <div className={classes.root}>
     <div className={classes.rowCounter}>
@@ -94,19 +96,18 @@ const RowCounterDisplay = ({
         </div>
       </div>
     </div>
-      {rows
-      && rows[currentRow]
+    {rows[currentRow]
       && <RowInfo currentRow={currentRow} {...rows[currentRow]} />}
   </div>
 );
 
 RowCounterDisplay.propTypes = {
-  currentRow: PropTypes.number.isRequired,
-  rows: PropTypes.object.isRequired,
   onUpdateCountClick: PropTypes.func.isRequired,
+  section: PropTypes.shape({
+    currentRow: PropTypes.number.isRequired,
+    rows: PropTypes.object.isRequired,
+  }).isRequired,
   classes: PropTypes.object.isRequired,
-  loading: PropTypes.bool.isRequired,
-  error: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(RowCounterDisplay);

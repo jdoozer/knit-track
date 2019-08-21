@@ -22,23 +22,24 @@ const styles = theme => ({
 });
 
 const PatternContent = ({
-  pattern, sections, deletePattern, deleteSection, classes
+  pattern: { patternId, title, info },
+  sections, deletePattern, deleteSection, updateRowCount, classes
 }) => (
 
   <div className={classes.root}>
 
     <ContentHeader
-      onClick={() => deletePattern(pattern.patternId)}
+      onClick={() => deletePattern(patternId)}
       icon={<DeleteIcon />}
       newLocation="/"
       dialogTitle="Delete Pattern"
       dialogText="Are you sure you want to delete this pattern and all its contents?"
     >
-      {pattern.title}
+      {title}
     </ContentHeader>
 
     <Typography variant="subtitle1" className={classes.info}>
-      {pattern.info}
+      {info}
     </Typography>
 
     <div className={classes.sectionCards}>
@@ -46,14 +47,16 @@ const PatternContent = ({
         <SectionPanel
           key={section.sectionId}
           section={section}
-          deleteSection={deleteSection}
-          patternId={pattern.patternId}
+          onDeleteClick={() => deleteSection(section.sectionId)}
+          onRowCounterClick={updateType => (
+            updateRowCount(section.sectionId, updateType)
+          )}
         />
       ))}
     </div>
 
     <Hidden xsDown>
-      <AddSection patternId={pattern.patternId} />
+      <AddSection patternId={patternId} />
     </Hidden>
 
   </div>
@@ -73,6 +76,7 @@ PatternContent.propTypes = {
   ).isRequired,
   deletePattern: PropTypes.func.isRequired,
   deleteSection: PropTypes.func.isRequired,
+  updateRowCount: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 };
 

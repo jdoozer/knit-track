@@ -13,11 +13,11 @@ const styles = () => ({
 
 const PatternListItems = ({ patternTitles, classes }) => (
   <List className={classes.root}>
-    {patternTitles.map(pattern => (
-      <React.Fragment key={pattern.patternId}>
+    {patternTitles.map(({ patternId, title }) => (
+      <React.Fragment key={patternId}>
         <ListLinkBlock
-          link={`/patterns/${pattern.patternId}`}
-          title={pattern.title}
+          link={`/patterns/${patternId}`}
+          title={title}
         />
         <Divider />
       </React.Fragment>

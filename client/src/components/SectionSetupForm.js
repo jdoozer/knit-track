@@ -123,7 +123,7 @@ class SectionSetupForm extends React.Component {
 
   handleSubmit(event) {
 
-    const { createSection, pattern } = this.props;
+    const { createSection, pattern: { patternId } } = this.props;
     const { title, numRows, rowData } = this.state;
 
     // convert array to 1-indexed object
@@ -134,14 +134,9 @@ class SectionSetupForm extends React.Component {
       return acc;
     }, {});
 
-    const section = {
-      patternId: pattern.patternId,
-      title,
-      numRows,
-      rows: rowDataObject
-    };
+    const newSection = { patternId, title, numRows, rows: rowDataObject };
 
-    createSection(section);
+    createSection(newSection);
 
     this.patternPageRedirect(event);
   }
@@ -152,11 +147,11 @@ class SectionSetupForm extends React.Component {
 
   render() {
 
-    const { pattern, classes } = this.props;
+    const { pattern: { title }, classes } = this.props;
 
     return (
       <Hidden xsDown>
-        <ContentHeader>{pattern.title} - New Section Setup</ContentHeader>
+        <ContentHeader>{title} - New Section Setup</ContentHeader>
         <form
           onSubmit={this.handleSubmit}
           onReset={this.handleReset}

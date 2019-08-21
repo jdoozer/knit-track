@@ -56,40 +56,39 @@ class PatternSetupForm extends React.Component {
   render() {
 
     const { classes } = this.props;
-      return (
-        <React.Fragment>
-          <ContentHeader>Pattern Setup</ContentHeader>
-          <form
-            onSubmit={this.handleSubmit}
-            onReset={this.handleReset}
-            className={classes.root}
-          >
-            <TextField label="Pattern Title"
-              className={classes.textField}
-              name="title"
-              value={this.state.title}
-              onChange={this.handleChange}
-            />
-            <TextField label="Pattern Notes/Information"
-              className={classes.textField}
-              name="info"
-              value={this.state.info}
-              onChange={this.handleChange}
-              multiline
-              rowsMax="10"
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              type="submit">
-              Create Pattern
-            </Button>
-          </form>
-        </React.Fragment>
-      );
-    }
-  // }
+    return (
+      <React.Fragment>
+        <ContentHeader>Pattern Setup</ContentHeader>
+        <form
+          onSubmit={this.handleSubmit}
+          onReset={this.handleReset}
+          className={classes.root}
+        >
+          <TextField label="Pattern Title"
+            className={classes.textField}
+            name="title"
+            value={this.state.title}
+            onChange={this.handleChange}
+          />
+          <TextField label="Pattern Notes/Information"
+            className={classes.textField}
+            name="info"
+            value={this.state.info}
+            onChange={this.handleChange}
+            multiline
+            rowsMax="10"
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            type="submit">
+            Create Pattern
+          </Button>
+        </form>
+      </React.Fragment>
+    );
+  }
 };
 
 PatternSetupForm.propTypes = {
