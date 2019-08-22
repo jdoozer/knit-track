@@ -60,21 +60,26 @@ export const updateState = (state, updates, payloadDataTypes, dataType) => {
 };
 
 export const deleteItemsFromArray = (array, itemsToDelete) => {
-  if (itemsToDelete.length > 1) {
+
+  const itemsToDeleteType = typeof(itemsToDelete);
+
+  if (itemsToDeleteType === 'object' && itemsToDelete.length) {
     return array.filter(currItem => !itemsToDelete.includes(currItem));
   }
-  if (itemsToDelete) {
+
+  if (itemsToDeleteType === 'string') {
     return array.filter(currItem => !(currItem === itemsToDelete));
   }
+
   return array;
+
 };
 
-const deleteItemsByKeys = (obj, keysToDelete) => {
-  if (!keysToDelete) {
-    return {};
-  }
-  const keys = Object.keys(obj);
-  if (keysToDelete.length > 1) {
+const deleteItemsByKeys = (obj, keys, keysToDelete) => {
+
+  const keysToDeleteType = typeof(keysToDelete);
+
+  if (keysToDeleteType === 'object' && keysToDelete.length) {
     return keys.reduce(
       (newObj, currKey) => {
         if (!keysToDelete.includes(currKey))  newObj[currKey] = obj[currKey];
@@ -83,20 +88,26 @@ const deleteItemsByKeys = (obj, keysToDelete) => {
       {}
     );
   }
-  return keys.reduce(
-    (newObj, currKey) => {
-      if (!currKey === keysToDelete)  newObj[currKey] = obj[currKey];
-      return newObj;
-    },
-    {}
-  );
+
+  if (keysToDeleteType === 'string') {
+    return keys.reduce(
+      (newObj, currKey) => {
+        if (!(keysToDelete === currKey))  newObj[currKey] = obj[currKey];
+        return newObj;
+      },
+      {}
+    );
+  }
+
+  return obj;
+
 };
 
 export const deleteFromState = (state, itemIds) => {
   if (itemIds) {
     return {
       ...state,
-      byId: deleteItemsByKeys(state.byId, itemIds),
+      byId: deleteItemsByKeys(state.byId, state.allIds, itemIds),
       allIds: deleteItemsFromArray(state.allIds, itemIds),
     }
   }

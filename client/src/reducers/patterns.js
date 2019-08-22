@@ -110,10 +110,12 @@ export const getPatternsErrorCode = state => (
 );
 
 const getPatternsById = state => state.byId;
+const getPatternIds = state => state.allIds;
 const getPatternTitles = createSelector(
   getPatternsById,
-  patternsById => Object.keys(patternsById).map(
-    key => ({ patternId: key, title: patternsById[key].title })
+  getPatternIds,
+  (patternsById, patternIds) => patternIds.map(
+    patternId => ({ patternId, title: patternsById[patternId].title })
   )
 );
 

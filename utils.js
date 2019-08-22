@@ -9,11 +9,3 @@ exports.filterObject = (obj, keys) => {
   return keys.reduce(objectAccum, {});
 
 };
-
-
-exports.combineObjectArrays = (obj, field) => {
-
-  const arr = Object.keys(obj).map(key => obj[key][field]);
-  return [].concat(...arr);
-
-};

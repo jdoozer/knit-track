@@ -10,10 +10,12 @@ const port = process.env.PORT || 5000;
 
 app.use(bodyParser.json());
 
-// GET requests
-app.get('/api/patterns', (req, res, next) => {
+const delayTime = 500;
 
-  setTimeout(() => res.send({ patterns: mockServerData.patterns }), 200);
+// GET requests
+app.get('/api/patterns', (_, res, next) => {
+
+  setTimeout(() => res.send({ patterns: mockServerData.patterns }), delayTime);
   // next('test error')
 
 });
@@ -31,31 +33,44 @@ app.get('/api/patterns/:patternId', (req, res, next) => {
     let sections = { byId: {}, allIds: [] };
     if (pattern.sectionIds) {
       sections = {
-        byId: utils.filterObject(mockServerData.sections.byId, pattern.sectionIds),
+        byId: utils.filterObject(
+          mockServerData.sections.byId,
+          pattern.sectionIds
+        ),
         allIds: pattern.sectionIds
       };
     }
-    setTimeout(() => res.send({ patterns, sections }), 200);
-  }
-  else {
-    res.status(404).send({ error: "pattern not found "});
-  }
+    setTimeout(() => res.send({ patterns, sections }), delayTime);
+  } else {
+    setTimeout(
+      () => res.status(404).send({ error: "pattern not found "}),
+      delayTime
+    );
 
+  }
   // next('test error');
 
 });
 
-app.get('/api/sections/:sectionId', (req, res) => {
+app.get('/api/sections/:sectionId', (req, res, next) => {
 
   const sectionId = req.params.sectionId;
   const section = mockServerData.sections.byId[sectionId];
 
-  const sections = {
-    byId: { [section.sectionId]: section },
-    allIds: [section.sectionId],
-  };
-  res.send({ sections });
+  if (section) {
+    const sections = {
+      byId: { [section.sectionId]: section },
+      allIds: [section.sectionId],
+    };
+    setTimeout(() => res.send({ sections }), delayTime);
+  } else {
+    setTimeout(
+      () => res.status(404).send({ error: "section not found "}),
+      delayTime
+    );
+  }
 
+  // next('test error')
 });
 
 
@@ -67,19 +82,20 @@ app.post('/api/patterns', (req, res, next) => {
   pattern.patternId = patternId;
   pattern.sectionIds = [];
 
-  setTimeout(() => res.send(pattern), 500);
+  setTimeout(() => res.send(pattern), delayTime);
   // next('test error');
 
 });
 
-app.post('/api/sections', (req, res) => {
+app.post('/api/sections', (req, res, next) => {
 
   const sectionId = generateId();
   let section = req.body.section;
   section.sectionId = sectionId;
   section.currentRow = 1;
 
-  res.send(section);
+  setTimeout(() => res.send(section), delayTime);
+  // next('test error')
 });
 
 
@@ -93,8 +109,8 @@ app.patch('/api/sections/:sectionId', (req, res, next) => {
     next('test error');
   }
   else {
-    // res.send(sectionUpdates);
-    setTimeout(() => res.send(sectionUpdates), 500);
+    setTimeout(() => res.send(sectionUpdates), delayTime);
+    // next('test error')
   }
 
 });
@@ -105,7 +121,7 @@ app.delete('/api/patterns/:patternId', (req, res, next) => {
   const patternId = req.params.patternId;
   const sectionIds = mockServerData.patterns.byId[patternId].sectionIds;
 
-  setTimeout(() => res.send({ patternId, sectionIds }), 200);
+  setTimeout(() => res.send({ patternId, sectionIds }), delayTime);
   // next('test error');
 
 });
@@ -115,7 +131,7 @@ app.delete('/api/sections/:sectionId', (req, res, next) => {
   const sectionId = req.params.sectionId;
   const patternId = mockServerData.sections.byId[sectionId].patternId;
 
-  setTimeout(() => res.send({ patternId, sectionId }), 200);
+  setTimeout(() => res.send({ patternId, sectionId }), delayTime);
   // next('test error');
 
 });
