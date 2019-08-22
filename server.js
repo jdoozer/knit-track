@@ -60,14 +60,16 @@ app.get('/api/sections/:sectionId', (req, res) => {
 
 
 // POST requests
-app.post('/api/patterns', (req, res) => {
+app.post('/api/patterns', (req, res, next) => {
 
   const patternId = generateId();
   let pattern = req.body.pattern;
   pattern.patternId = patternId;
   pattern.sectionIds = [];
 
-  res.send(pattern);
+  setTimeout(() => res.send(pattern), 500);
+  // next('test error');
+
 });
 
 app.post('/api/sections', (req, res) => {

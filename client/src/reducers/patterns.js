@@ -51,11 +51,6 @@ const patternsReducer = handleActions({
     }
   ),
 
-  CLEAR_LAST_CREATED: state => updateState(
-    state,
-    { lastCreatedId: '' },
-  ),
-
   RECEIVE_NEW_SECTION: (state, action) => {
     const { patternId, sectionId } = action.payload.section;
     const sectionIds = state.byId[patternId].sectionIds;
@@ -83,6 +78,20 @@ const patternsReducer = handleActions({
       { sectionIds: deleteItemsFromArray(sectionIds, sectionId) },
     );
   },
+
+  CLEAR_LAST_CREATED: (state, action) => updateState(
+    state,
+    { lastCreatedId: '' },
+    action.payload.dataTypes,
+    'patterns'
+  ),
+
+  CLEAR_ERROR: (state, action) => updateState(
+    state,
+    { error: null, loading: false },
+    action.payload.dataTypes,
+    'patterns'
+  )
 
 }, initialState);
 

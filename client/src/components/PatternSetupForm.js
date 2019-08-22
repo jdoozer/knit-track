@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import ProgressModal from 'components/ProgressModal';
+import ErrorSnackbar from 'components/ErrorSnackbar';
 import ContentHeader from 'components/ContentHeader';
 
 const styles = theme => ({
@@ -53,12 +55,12 @@ class PatternSetupForm extends React.Component {
 
   render() {
 
-    // if (lastCreatedId) history.push(`/patterns/${lastCreatedId}`);
+    const { classes, loading, error, clearError } = this.props;
+    const { title, info } = this.state;
 
-
-    const { classes } = this.props;
     return (
       <React.Fragment>
+
         <ContentHeader>Pattern Setup</ContentHeader>
         <form
           onSubmit={this.handleSubmit}
@@ -68,13 +70,13 @@ class PatternSetupForm extends React.Component {
           <TextField label="Pattern Title"
             className={classes.textField}
             name="title"
-            value={this.state.title}
+            value={title}
             onChange={this.handleChange}
           />
           <TextField label="Pattern Notes/Information"
             className={classes.textField}
             name="info"
-            value={this.state.info}
+            value={info}
             onChange={this.handleChange}
             multiline
             rowsMax="10"
@@ -87,6 +89,12 @@ class PatternSetupForm extends React.Component {
             Create Pattern
           </Button>
         </form>
+
+        <ProgressModal open={loading} />
+        <ErrorSnackbar open={error} onClose={clearError}>
+          Error creating pattern, please retry!
+        </ErrorSnackbar>
+
       </React.Fragment>
     );
   }
@@ -95,6 +103,9 @@ class PatternSetupForm extends React.Component {
 PatternSetupForm.propTypes = {
   classes: PropTypes.object.isRequired,
   createPattern: PropTypes.func.isRequired,
+  clearError: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(PatternSetupForm);

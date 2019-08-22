@@ -11,38 +11,42 @@ const {
   receiveError,
   receiveDeletePatternKeys,
   receiveDeleteSectionKeys,
-  clearLastCreated
-} = createActions(
-  {
-    REQUEST_DATA: (dataTypes, id) => ({ dataTypes, id }),
+  clearError,
+  clearLastCreated,
+} = createActions({
 
-    RECEIVE_DATA: json => ({ ...json }),
+  REQUEST_DATA: (dataTypes, id) => ({ dataTypes, id }),
 
-    RECEIVE_NEW_PATTERN: json => ({ pattern: json }),
+  RECEIVE_DATA: json => ({ ...json }),
 
-    RECEIVE_NEW_SECTION: json => ({ section: json }),
+  RECEIVE_NEW_PATTERN: json => ({ pattern: json }),
 
-    RECEIVE_UPDATED_SECTION: json => ({ section: json }),
+  RECEIVE_NEW_SECTION: json => ({ section: json }),
 
-    UPDATE_ROW_COUNT_OPTIMISTIC: (sectionId, updateType) => (
-      { sectionId, updateType }
-    ),
+  RECEIVE_UPDATED_SECTION: json => ({ section: json }),
 
-    RECEIVE_ERROR: (error, dataTypes, id) => ({ error, dataTypes, id }),
+  UPDATE_ROW_COUNT_OPTIMISTIC: (sectionId, updateType) => (
+    { sectionId, updateType }
+  ),
 
-    RECEIVE_DELETE_PATTERN_KEYS: ({ patternId, sectionIds }) => (
-      { patternId, sectionIds }
-    ),
+  RECEIVE_ERROR: (error, dataTypes, id) => ({ error, dataTypes, id }),
 
-    RECEIVE_DELETE_SECTION_KEYS: ({ patternId, sectionId }) => (
-      { patternId, sectionId }
-    ),
-  },
-  'CLEAR_LAST_CREATED'
-);
+  RECEIVE_DELETE_PATTERN_KEYS: ({ patternId, sectionIds }) => (
+    { patternId, sectionIds }
+  ),
+
+  RECEIVE_DELETE_SECTION_KEYS: ({ patternId, sectionId }) => (
+    { patternId, sectionId }
+  ),
+
+  CLEAR_ERROR: dataTypes => ({ dataTypes }),
+
+  CLEAR_LAST_CREATED: dataTypes => ({ dataTypes }),
+
+});
 
 // EXPORT SYNCHRONOUS ACTION CREATORS
-export { clearLastCreated };
+export { clearError, clearLastCreated };
 
 
 // ASYNC THUNK FUNCTIONS
