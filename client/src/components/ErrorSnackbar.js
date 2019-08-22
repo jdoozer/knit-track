@@ -30,7 +30,7 @@ const ErrorSnackbar = ({ open, classes, onClose, children }) => (
     onClose={onClose}
   >
     <SnackbarContent
-      className={classes.snackbar}ErrorSnackbar
+      className={classes.snackbar}
       message={
         <span className={classes.message}>
           <ErrorIcon className={classes.icon} />

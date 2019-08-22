@@ -38,6 +38,14 @@ export const getLastCreatedPatternId = state => (
 );
 
 // SELECTORS [sections]
+export const getSectionsLoading = state => (
+  sectionSelectors.getSectionsLoading(state.sections)
+);
+
+export const getSectionsErrorMsg = state => (
+  sectionSelectors.getSectionsErrorMsg(state.sections)
+);
+
 export const getSectionLoading = (state, sectionId) => (
   sectionSelectors.getSectionLoading(state.sections, sectionId)
 );
@@ -56,4 +64,8 @@ export const getRowsFromSection = (state, sectionId) => (
 
 export const getSectionsById = (state, sectionIds) => (
   sectionSelectors.getSectionsById(state.sections, sectionIds)
+);
+
+export const getPatternIdLastCreatedSection = state => (
+  sectionSelectors.getPatternIdLastCreatedSection(state.sections)
 );

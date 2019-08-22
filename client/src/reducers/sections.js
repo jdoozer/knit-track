@@ -2,9 +2,9 @@ import { handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import {
   updateState,
-  mergeItems,
-  addItem,
   updateItem,
+  addItem,
+  mergeItems,
   deleteFromState,
 } from 'utils/reducerUtils';
 
@@ -13,6 +13,7 @@ const initialState = {
   allIds: [],
   loading: false,
   error: null,
+  lastCreatedId: ''
 };
 
 const getNextRow = (updateType, { currentRow, numRows }) => {
@@ -78,7 +79,12 @@ const sectionsReducer = handleActions({
       error: null
     },
     'sectionId',
-    { loading: false, error: null }
+    {
+      loading: false,
+      error: null,
+      lastCreatedId: action.payload.section.sectionId
+    }
+
   ),
 
   RECEIVE_UPDATED_SECTION: (state, action) => {
@@ -117,14 +123,37 @@ const sectionsReducer = handleActions({
     action.payload.sectionId
   ),
 
+  CLEAR_LAST_CREATED: (state, action) => updateState(
+    state,
+    { lastCreatedId: '' },
+    action.payload.dataTypes,
+    'sections'
+  ),
+
+  CLEAR_ERROR: (state, action) => updateState(
+    state,
+    { error: null, loading: false },
+    action.payload.dataTypes,
+    'sections'
+  )
+
 }, initialState);
 
 export default sectionsReducer;
 
 
 // SELECTORS (named exports)
+export const getSectionsLoading = state => state.loading;
+
+const getSectionsError = state => state.error;
+
+export const getSectionsErrorMsg = createSelector(
+  getSectionsError,
+  error => (error && error.message) ? error.message : ''
+);
 
 const getSectionById = (state, sectionId) => state.byId[sectionId];
+
 const getSectionError = (state, sectionId) => (
   getSectionById(state, sectionId).error
 );
@@ -149,3 +178,10 @@ export const getRowsFromSection = (state, sectionId) => (
 export const getSectionsById = (state, sectionIds) => (
   sectionIds.map(sectionId => getSectionById(state, sectionId))
 );
+
+const getLastCreatedSectionId = state => state.lastCreatedId;
+
+export const getPatternIdLastCreatedSection = state => {
+  const sectionId = getLastCreatedSectionId(state);
+  return sectionId ? state.byId[sectionId].patternId : '';
+};

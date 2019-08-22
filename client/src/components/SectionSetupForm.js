@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Hidden from '@material-ui/core/Hidden';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import ProgressModal from 'components/ProgressModal';
+import ErrorSnackbar from 'components/ErrorSnackbar';
 import ContentHeader from 'components/ContentHeader';
 import SectionRowInputs from 'components/SectionRowInputs';
 import updateNestedItem from 'utils/updateNestedItem';
@@ -84,12 +85,6 @@ class SectionSetupForm extends React.Component {
     this.handleReset = this.handleReset.bind(this);
   }
 
-  patternPageRedirect(event) {
-    const { history, pattern } = this.props;
-    event.preventDefault();
-    history.push(`/patterns/${pattern.patternId}`);
-  }
-
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
@@ -138,19 +133,21 @@ class SectionSetupForm extends React.Component {
 
     createSection(newSection);
 
-    this.patternPageRedirect(event);
+    event.preventDefault();
   }
 
   handleReset(event) {
-    this.patternPageRedirect(event);
+    event.preventDefault();
   }
 
   render() {
 
-    const { pattern: { title }, classes } = this.props;
+    const {
+      pattern: { title }, classes, loading, error, clearError
+    } = this.props;
 
     return (
-      <Hidden xsDown>
+      <React.Fragment>
         <ContentHeader>{title} - New Section Setup</ContentHeader>
         <form
           onSubmit={this.handleSubmit}
@@ -181,19 +178,27 @@ class SectionSetupForm extends React.Component {
             Create Section
           </Button>
         </form>
-      </Hidden>
+
+        <ProgressModal open={loading} />
+        <ErrorSnackbar open={error} onClose={clearError}>
+          Error creating section, please retry!
+        </ErrorSnackbar>
+
+      </React.Fragment>
     );
   }
 };
 
 SectionSetupForm.propTypes = {
-  history: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   createSection: PropTypes.func.isRequired,
   pattern: PropTypes.shape({
     title: PropTypes.string.isRequired,
     patternId: PropTypes.string.isRequired,
   }).isRequired,
+  clearError: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(SectionSetupForm);

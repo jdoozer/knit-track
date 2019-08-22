@@ -1,30 +1,59 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createSection } from 'actions';
+import { createSection, clearLastCreated, clearError } from 'actions';
+import {
+  getPatternById,
+  getPatternIdLastCreatedSection,
+  getSectionsLoading,
+  getSectionsErrorMsg
+} from 'reducers';
 import SectionSetupForm from 'components/SectionSetupForm';
-import { getPatternById } from 'reducers';
 
 const mapStateToProps = state => ({
   patternById: patternId => getPatternById(state, patternId),
+  patternIdLastCreatedSection: getPatternIdLastCreatedSection(state),
+  loading: getSectionsLoading(state),
+  error: Boolean(getSectionsErrorMsg(state)),
 });
 
 const mapDispatchToProps = {
   createSection: section => createSection(section),
+  clearError: () => clearError(['sections']),
+  clearLastCreated: () => clearLastCreated(['sections']),
 };
 
-const SectionSetup = ({
-  match,
-  history,
-  patternById,
-  createSection
-}) => (
-  <SectionSetupForm
-    pattern={patternById(match.params.patternId)}
-    createSection={createSection}
-    history={history}
-  />
-);
+
+class SectionSetup extends React.Component {
+
+  componentDidUpdate() {
+    const { patternIdLastCreatedSection, history } = this.props;
+    if (patternIdLastCreatedSection) {
+      history.push(`/patterns/${patternIdLastCreatedSection}`);
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.clearLastCreated();
+  }
+
+  render() {
+    const {
+      match, patternById, createSection, loading, error, clearError
+     } = this.props;
+
+    return (
+      <SectionSetupForm
+        pattern={patternById(match.params.patternId)}
+        createSection={createSection}
+        clearError={clearError}
+        loading={loading}
+        error={error}
+      />
+    );
+  }
+
+}
 
 SectionSetup.propTypes = {
   match: PropTypes.shape({
@@ -33,6 +62,11 @@ SectionSetup.propTypes = {
     }).isRequired
   }).isRequired,
   createSection: PropTypes.func.isRequired,
-}
+  clearError: PropTypes.func.isRequired,
+  clearLastCreated: PropTypes.func.isRequired,
+  patternIdLastCreatedSection: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.bool.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SectionSetup);
