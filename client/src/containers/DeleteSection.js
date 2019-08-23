@@ -25,12 +25,12 @@ class DeleteSection extends React.Component {
   render() {
 
     const { section: { loading, error, sectionId },
-     clearError, deleteSection } = this.props;
+     clearError, onClick } = this.props;
 
     return (
       <React.Fragment>
         <DeleteIconButton
-          onClick={() => deleteSection(sectionId)}
+          onClick={onClick}
           dataType="section"
         />
         <ProgressModal open={loading} />

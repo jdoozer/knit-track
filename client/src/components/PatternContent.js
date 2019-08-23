@@ -49,6 +49,7 @@ const PatternContent = ({
           onRowCounterClick={updateType => (
             updateRowCount(section.sectionId, updateType)
           )}
+          onDeleteClick={() => deleteSection(section.sectionId)}
         />
       ))}
     </div>
