@@ -130,12 +130,15 @@ const sectionsReducer = handleActions({
     'sections'
   ),
 
-  CLEAR_ERROR: (state, action) => updateState(
-    state,
-    { error: null, loading: false },
-    action.payload.dataTypes,
-    'sections'
-  )
+  CLEAR_ERROR: (state, action) => {
+    const { dataTypes, id } = action.payload;
+    if (id) {
+      return updateItem(state, id, { error: null, loading: false });
+    }
+    return updateState(
+      state, { error: null, loading: false }, dataTypes, 'sections'
+    );
+  }
 
 }, initialState);
 

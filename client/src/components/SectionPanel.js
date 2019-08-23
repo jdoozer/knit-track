@@ -6,11 +6,10 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import DeleteIcon from '@material-ui/icons/Delete';
 import TotalRows from 'components/TotalRows';
 import CurrentRowSmall from 'components/CurrentRowSmall';
 import RowCounter from 'components/RowCounter';
-import ActionIconButton from 'components/ActionIconButton';
+import DeleteSection from 'containers/DeleteSection';
 
 const styles = theme => ({
   titleColumn: {
@@ -53,6 +52,7 @@ class SectionPanel extends React.Component {
 
   render() {
     const { section, onDeleteClick, onRowCounterClick, classes } = this.props;
+    const { section, onRowCounterClick, classes } = this.props;
     const { expanded } = this.state;
 
     const { title, currentRow, numRows } = section;
@@ -83,13 +83,9 @@ class SectionPanel extends React.Component {
               onUpdateCountClick={onRowCounterClick}
             />
           )}
-          <ActionIconButton
-            className={classes.button}
-            onClick={onDeleteClick}
-            icon={<DeleteIcon />}
-            dialogTitle="Delete Section"
-            dialogText="Are you sure you want to delete this section and all its contents?"
-          />
+          <div className={classes.button}>
+            <DeleteSection id={sectionId} section={section} />
+          </div>
         </ExpansionPanelDetails>
       </ExpansionPanel>
     );

@@ -39,7 +39,7 @@ const {
     { patternId, sectionId }
   ),
 
-  CLEAR_ERROR: dataTypes => ({ dataTypes }),
+  CLEAR_ERROR: (dataTypes, id) => ({ dataTypes, id }),
 
   CLEAR_LAST_CREATED: dataTypes => ({ dataTypes }),
 
@@ -101,7 +101,7 @@ export const deletePattern = patternId => fetchThunk({
 });
 
 export const deleteSection = sectionId => fetchThunk({
-  requestAction: requestData(['sections']),
+  requestAction: requestData(['sections'], sectionId),
   receiveAction: receiveDeleteSectionKeys,
   errorAction: error => receiveError(error, ['sections'], sectionId),
   path: `sections/${sectionId}`,

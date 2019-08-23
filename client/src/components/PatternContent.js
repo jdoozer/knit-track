@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Hidden from '@material-ui/core/Hidden';
 import Typography from '@material-ui/core/Typography';
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIconButton from 'components/DeleteIconButton';
 import ContentHeader from 'components/ContentHeader';
 import SectionPanel from 'components/SectionPanel';
 import AddSection from 'components/AddSection';
@@ -29,11 +29,10 @@ const PatternContent = ({
   <div className={classes.root}>
 
     <ContentHeader
-      onClick={() => deletePattern(patternId)}
-      icon={<DeleteIcon />}
-      newLocation="/"
-      dialogTitle="Delete Pattern"
-      dialogText="Are you sure you want to delete this pattern and all its contents?"
+      button={(<DeleteIconButton
+        onClick={() => deletePattern(patternId)}
+        dataType="pattern"
+      />)}
     >
       {title}
     </ContentHeader>
@@ -47,7 +46,6 @@ const PatternContent = ({
         <SectionPanel
           key={section.sectionId}
           section={section}
-          onDeleteClick={() => deleteSection(section.sectionId)}
           onRowCounterClick={updateType => (
             updateRowCount(section.sectionId, updateType)
           )}
@@ -75,7 +73,6 @@ PatternContent.propTypes = {
     }).isRequired
   ).isRequired,
   deletePattern: PropTypes.func.isRequired,
-  deleteSection: PropTypes.func.isRequired,
   updateRowCount: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 };
