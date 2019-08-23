@@ -20,7 +20,7 @@ const styles = theme => ({
   },
 });
 
-class DeleteIconButton extends React.Component {
+class DeleteButton extends React.Component {
 
   state = { dialogOpen: false };
 
@@ -84,7 +84,7 @@ class DeleteIconButton extends React.Component {
 
 };
 
-DeleteIconButton.propTypes = {
+DeleteButton.propTypes = {
   classes: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   onClick: PropTypes.func.isRequired,
@@ -92,4 +92,4 @@ DeleteIconButton.propTypes = {
   dataType: PropTypes.string.isRequired,
 };
 
-export default withStyles(styles)(withRouter(DeleteIconButton));
+export default withStyles(styles)(withRouter(DeleteButton));

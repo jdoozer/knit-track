@@ -69,7 +69,6 @@ app.get('/api/sections/:sectionId', (req, res, next) => {
       delayTime
     );
   }
-
   // next('test error')
 });
 

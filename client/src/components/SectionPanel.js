@@ -9,7 +9,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import TotalRows from 'components/TotalRows';
 import CurrentRowSmall from 'components/CurrentRowSmall';
 import RowCounter from 'components/RowCounter';
-import DeleteSection from 'containers/DeleteSection';
+import DeleteSection from 'components/DeleteSection';
 
 const styles = theme => ({
   titleColumn: {
@@ -41,20 +41,20 @@ const styles = theme => ({
 
 
 class SectionPanel extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { expanded: false };
-  }
+
+  state = { expanded: false };
 
   handleExpandClick = () => {
     this.setState(prevState => ({ expanded: !prevState.expanded }));
   }
 
   render() {
-    const { section, onDeleteClick, onRowCounterClick, classes } = this.props;
+    const {
+      section, deleteSection, onRowCounterClick, clearError, classes
+    } = this.props;
     const { expanded } = this.state;
 
-    const { title, currentRow, numRows } = section;
+    const { title, currentRow, numRows, sectionId, loading, error } = section;
 
     return (
       <ExpansionPanel onChange={this.handleExpandClick}>
@@ -83,7 +83,12 @@ class SectionPanel extends React.Component {
             />
           )}
           <div className={classes.button}>
-            <DeleteSection section={section} onClick={onDeleteClick} />
+            <DeleteSection
+              loading={Boolean(loading)}
+              error={Boolean(error)}
+              onClick={() => deleteSection(sectionId)}
+              clearError={() => clearError(['sections'], sectionId)}
+            />
           </div>
         </ExpansionPanelDetails>
       </ExpansionPanel>
@@ -97,7 +102,8 @@ SectionPanel.propTypes = {
     currentRow: PropTypes.number.isRequired,
     numRows: PropTypes.number.isRequired,
   }).isRequired,
-  onDeleteClick: PropTypes.func.isRequired,
+  deleteSection: PropTypes.func.isRequired,
+  clearError: PropTypes.func.isRequired,
   onRowCounterClick: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 };
