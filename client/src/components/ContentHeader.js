@@ -4,7 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import ActionIconButton from 'components/ActionIconButton';
 
 const styles = theme => ({
   root: {
@@ -14,11 +13,11 @@ const styles = theme => ({
   },
   text: {
     flex: 1,
-    textAlign: props => props.icon ? 'left' : 'center',
+    textAlign: props => props.button ? 'left' : 'center',
   },
 });
 
-const ContentHeader = ({ classes, children, ...buttonProps }) => (
+const ContentHeader = ({ classes, children, button }) => (
   <AppBar
     position="static"
     elevation={0}
@@ -33,7 +32,7 @@ const ContentHeader = ({ classes, children, ...buttonProps }) => (
       >
         {children}
       </Typography>
-      {buttonProps.icon && (<ActionIconButton {...buttonProps} />)}
+      {button}
     </Toolbar>
   </AppBar>
 );
@@ -41,7 +40,7 @@ const ContentHeader = ({ classes, children, ...buttonProps }) => (
 ContentHeader.propTypes = {
   classes: PropTypes.object.isRequired,
   children: PropTypes.node,
-  buttonProps: PropTypes.object,
+  button: PropTypes.node,
 };
 
 export default withStyles(styles)(ContentHeader);
