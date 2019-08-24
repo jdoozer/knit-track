@@ -80,12 +80,12 @@ class SectionPanel extends React.Component {
               currentRow={currentRow}
               rows={rows}
               error={Boolean(error)}
-              loading={Boolean(loading)}
+              loading={loading}
               onClick={updateType => updateRowCount(sectionId, updateType)}
             />
             <div className={classes.button}>
               <DeleteSection
-                loading={Boolean(loading)}
+                loading={loading}
                 error={Boolean(error)}
                 onClick={() => deleteSection(sectionId)}
                 clearError={() => clearError(['sections'], sectionId)}

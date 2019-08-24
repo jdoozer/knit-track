@@ -15,6 +15,11 @@ const initialState = {
   lastCreatedId: ''
 };
 
+const sectionDefaultFields = {
+  loading: false,
+  error: null,
+};
+
 const getNextRow = (updateType, { currentRow, numRows }) => {
   switch(updateType) {
     case 'INCREMENT':
@@ -32,50 +37,38 @@ const sectionsReducer = handleActions({
 
   REQUEST_DATA: (state, action) => {
     const { dataTypes, id } = action.payload;
-    if (id) {
-      return updateItem(
-        state,
-        id,
-        { loading: true }
-      );
+    if (dataTypes.includes('sections')) {
+      if (id) {
+        return updateItem(state, id, { loading: true });
+      }
+      return updateState(state, { loading: true });
     }
-    return updateState(
-      state,
-      { loading: true },
-      dataTypes,
-      'sections',
-    );
+    return state;
   },
 
   RECEIVE_ERROR: (state, action) => {
     const { error, dataTypes, id } = action.payload;
-    if (id) {
-      return updateItem(
-        state,
-        id,
-        { loading: false, error },
-      );
+    if (dataTypes.includes('sections')) {
+      if (id) {
+        return updateItem(state, id, { loading: false, error });
+      }
+      return updateState(state, { loading: false, error });
     }
-    return updateState(
-      state,
-      { loading: false, error },
-      dataTypes,
-      'sections'
-    );
+    return state;
   },
 
   RECEIVE_DATA: (state, action) => mergeItems(
     state,
     action.payload.sections,
-    { loading: false, error: null }
+    { loading: false, error: null },
+    sectionDefaultFields
   ),
 
   RECEIVE_NEW_SECTION: (state, action) => addItem(
     state,
     {
       ...action.payload.section,
-      loading: false,
-      error: null
+      ...sectionDefaultFields
     },
     'sectionId',
     {
@@ -91,7 +84,7 @@ const sectionsReducer = handleActions({
     return updateItem(
       state,
       sectionId,
-      { ...sectionUpdates, loading: false, error: null },
+      { ...sectionUpdates, ...sectionDefaultFields },
     );
   },
 
@@ -118,22 +111,23 @@ const sectionsReducer = handleActions({
     action.payload.sectionId
   ),
 
-  CLEAR_LAST_CREATED: (state, action) => updateState(
-    state,
-    { lastCreatedId: '' },
-    action.payload.dataTypes,
-    'sections'
-  ),
+  CLEAR_LAST_CREATED: (state, action) => {
+    if (action.payload.dataTypes.includes('sections')) {
+      return updateState(state, { lastCreatedId: '' });
+    }
+    return state;
+  },
 
   CLEAR_ERROR: (state, action) => {
     const { dataTypes, id } = action.payload;
-    if (id) {
-      return updateItem(state, id, { error: null });
+    if (dataTypes.includes('sections')) {
+      if (id) {
+        return updateItem(state, id, { error: null });
+      }
+      return updateState(state, { error: null });
     }
-    return updateState(
-      state, { error: null }, dataTypes, 'sections'
-    );
-  }
+    return state;
+  },
 
 }, initialState);
 

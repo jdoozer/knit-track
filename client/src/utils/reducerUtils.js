@@ -1,5 +1,5 @@
 
-export const addItem = (state, newItem, idField, updates) => {
+export function addItem(state, newItem, idField, updates) {
   const newItemId = newItem[idField];
   if (newItem && newItemId) {
     return {
@@ -16,24 +16,34 @@ export const addItem = (state, newItem, idField, updates) => {
     };
   }
   return state;
-};
+}
 
-export const mergeItems = (state, newItems, updates) => {
+
+export function mergeItems(state, newItems, stateUpdates, itemUpdates) {
   if (newItems) {
-    return {
+    const newState = {
       ...state,
       byId: {
         ...state.byId,
         ...newItems.byId,
       },
       allIds: [...new Set([...state.allIds ,...newItems.allIds])],
-      ...updates,
+      ...stateUpdates,
     };
+    if (itemUpdates) {
+      newItems.allIds.forEach(
+        itemId => {
+          newState.byId[itemId] = { ...newState.byId[itemId], ...itemUpdates };
+        }
+      );
+    }
+    return newState;
   }
   return state;
-};
+}
 
-export const updateItem = (state, itemId, itemUpdates, stateUpdates) => {
+
+export function updateItem(state, itemId, itemUpdates, stateUpdates) {
   if (itemUpdates || stateUpdates) {
     return {
       ...state,
@@ -48,18 +58,22 @@ export const updateItem = (state, itemId, itemUpdates, stateUpdates) => {
     };
   }
   return state;
-};
+}
 
-export const updateState = (state, updates, payloadDataTypes, dataType) => {
-  const updateDataBasedOnType = payloadDataTypes && payloadDataTypes.includes(dataType);
-  const updateNoTypes = !payloadDataTypes;
-  if (updateDataBasedOnType || updateNoTypes) {
+
+export function updateState(state, updates, payloadDataTypes, dataType) {
+  const updateDataBasedOnType = (
+    payloadDataTypes
+    && payloadDataTypes.includes(dataType)
+  );
+  if (!payloadDataTypes || updateDataBasedOnType) {
     return { ...state, ...updates };
   }
   return state;
-};
+}
 
-export const deleteItemsFromArray = (array, itemsToDelete) => {
+
+export function deleteItemsFromArray(array, itemsToDelete) {
 
   const itemsToDeleteType = typeof(itemsToDelete);
 
@@ -73,9 +87,10 @@ export const deleteItemsFromArray = (array, itemsToDelete) => {
 
   return array;
 
-};
+}
 
-const deleteItemsByKeys = (obj, keys, keysToDelete) => {
+
+function deleteItemsByKeys(obj, keys, keysToDelete) {
 
   const keysToDeleteType = typeof(keysToDelete);
 
@@ -101,9 +116,9 @@ const deleteItemsByKeys = (obj, keys, keysToDelete) => {
 
   return obj;
 
-};
+}
 
-export const deleteFromState = (state, itemIds) => {
+export function deleteFromState(state, itemIds) {
   if (itemIds) {
     return {
       ...state,
@@ -112,4 +127,4 @@ export const deleteFromState = (state, itemIds) => {
     }
   }
   return state;
-};
+}

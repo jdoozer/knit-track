@@ -22,36 +22,24 @@ const patternsReducer = handleActions({
 
   REQUEST_DATA: (state, action) => {
     const { dataTypes, id } = action.payload;
-    if (id) {
-      return updateItem(
-        state,
-        id,
-        { loading: true }
-      );
+    if (dataTypes.includes('patterns')) {
+      if (id) {
+        return updateItem(state, id, { loading: true });
+      }
+      return updateState(state, { loading: true });
     }
-    return updateState(
-      state,
-      { loading: true },
-      dataTypes,
-      'patterns',
-    );
+    return state;
   },
 
   RECEIVE_ERROR: (state, action) => {
     const { error, dataTypes, id } = action.payload;
-    if (id) {
-      return updateItem(
-        state,
-        id,
-        { loading: false, error },
-      );
+    if (dataTypes.includes('patterns')) {
+      if (id) {
+        return updateItem(state, id, { loading: false, error });
+      }
+      return updateState(state, { loading: false, error });
     }
-    return updateState(
-      state,
-      { loading: false, error },
-      dataTypes,
-      'patterns'
-    );
+    return state;
   },
 
   RECEIVE_DATA: (state, action) => mergeItems(
@@ -99,22 +87,23 @@ const patternsReducer = handleActions({
     );
   },
 
-  CLEAR_LAST_CREATED: (state, action) => updateState(
-    state,
-    { lastCreatedId: '' },
-    action.payload.dataTypes,
-    'patterns'
-  ),
+  CLEAR_LAST_CREATED: (state, action) => {
+    if (action.payload.dataTypes.includes('patterns')) {
+      return updateState(state, { lastCreatedId: '' });
+    }
+    return state;
+  },
 
   CLEAR_ERROR: (state, action) => {
     const { dataTypes, id } = action.payload;
-    if (id) {
-      return updateItem(state, id, { error: null });
+    if (dataTypes.includes('patterns')) {
+      if (id) {
+        return updateItem(state, id, { error: null });
+      }
+      return updateState(state, { error: null });
     }
-    return updateState(
-      state, { error: null }, dataTypes, 'patterns'
-    );
-  }
+    return state;
+  },
 
 }, initialState);
 
