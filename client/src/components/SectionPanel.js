@@ -50,11 +50,10 @@ class SectionPanel extends React.Component {
 
   render() {
     const {
-      section, deleteSection, onRowCounterClick, clearError, classes
+      section: { title, currentRow, numRows, sectionId, loading, error, rows },
+      deleteSection, updateRowCount, clearError, classes
     } = this.props;
     const { expanded } = this.state;
-
-    const { title, currentRow, numRows, sectionId, loading, error } = section;
 
     return (
       <ExpansionPanel onChange={this.handleExpandClick}>
@@ -76,20 +75,23 @@ class SectionPanel extends React.Component {
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>
-          {expanded && (
+          {expanded && (<React.Fragment>
             <RowCounter
-              section={section}
-              onUpdateCountClick={onRowCounterClick}
-            />
-          )}
-          <div className={classes.button}>
-            <DeleteSection
-              loading={Boolean(loading)}
+              currentRow={currentRow}
+              rows={rows}
               error={Boolean(error)}
-              onClick={() => deleteSection(sectionId)}
-              clearError={() => clearError(['sections'], sectionId)}
+              loading={Boolean(loading)}
+              onClick={updateType => updateRowCount(sectionId, updateType)}
             />
-          </div>
+            <div className={classes.button}>
+              <DeleteSection
+                loading={Boolean(loading)}
+                error={Boolean(error)}
+                onClick={() => deleteSection(sectionId)}
+                clearError={() => clearError(['sections'], sectionId)}
+              />
+            </div>
+          </React.Fragment>)}
         </ExpansionPanelDetails>
       </ExpansionPanel>
     );
@@ -104,7 +106,7 @@ SectionPanel.propTypes = {
   }).isRequired,
   deleteSection: PropTypes.func.isRequired,
   clearError: PropTypes.func.isRequired,
-  onRowCounterClick: PropTypes.func.isRequired,
+  updateRowCount: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 };
 

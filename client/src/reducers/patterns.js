@@ -20,19 +20,39 @@ const initialState = {
 
 const patternsReducer = handleActions({
 
-  REQUEST_DATA: (state, action) => updateState(
-    state,
-    { loading: true },
-    action.payload.dataTypes,
-    'patterns',
-  ),
+  REQUEST_DATA: (state, action) => {
+    const { dataTypes, id } = action.payload;
+    if (id) {
+      return updateItem(
+        state,
+        id,
+        { loading: true }
+      );
+    }
+    return updateState(
+      state,
+      { loading: true },
+      dataTypes,
+      'patterns',
+    );
+  },
 
-  RECEIVE_ERROR: (state, action) => updateState(
-    state,
-    { loading: false, error: action.payload.error },
-    action.payload.dataTypes,
-    'patterns',
-  ),
+  RECEIVE_ERROR: (state, action) => {
+    const { error, dataTypes, id } = action.payload;
+    if (id) {
+      return updateItem(
+        state,
+        id,
+        { loading: false, error },
+      );
+    }
+    return updateState(
+      state,
+      { loading: false, error },
+      dataTypes,
+      'patterns'
+    );
+  },
 
   RECEIVE_DATA: (state, action) => mergeItems(
     state,
@@ -86,12 +106,15 @@ const patternsReducer = handleActions({
     'patterns'
   ),
 
-  CLEAR_ERROR: (state, action) => updateState(
-    state,
-    { error: null, loading: false },
-    action.payload.dataTypes,
-    'patterns'
-  )
+  CLEAR_ERROR: (state, action) => {
+    const { dataTypes, id } = action.payload;
+    if (id) {
+      return updateItem(state, id, { error: null });
+    }
+    return updateState(
+      state, { error: null }, dataTypes, 'patterns'
+    );
+  }
 
 }, initialState);
 
@@ -101,12 +124,11 @@ export default patternsReducer;
 // SELECTORS (named exports)
 export const getPatternsLoading = state => state.loading;
 
-export const getPatternsErrorMsg = state => (
-  (state.error && state.error.message) ? state.error.message : ''
-);
+export const getPatternsError = state => state.error;
 
-export const getPatternsErrorCode = state => (
-  (state.error && state.error.status) ? state.error.status : 200
+export const getPatternsErrorCode = createSelector(
+  getPatternsError,
+  error => ((error && error.status) ? error.status : 200)
 );
 
 const getPatternsById = state => state.byId;

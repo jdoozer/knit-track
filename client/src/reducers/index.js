@@ -17,8 +17,8 @@ export const getPatternsLoading = state => (
   patternSelectors.getPatternsLoading(state.patterns)
 );
 
-export const getPatternsErrorMsg = state => (
-  patternSelectors.getPatternsErrorMsg(state.patterns)
+export const getPatternsError = state => (
+  patternSelectors.getPatternsError(state.patterns)
 );
 
 export const getPatternsErrorCode = state => (
@@ -42,24 +42,8 @@ export const getSectionsLoading = state => (
   sectionSelectors.getSectionsLoading(state.sections)
 );
 
-export const getSectionsErrorMsg = state => (
-  sectionSelectors.getSectionsErrorMsg(state.sections)
-);
-
-export const getSectionLoading = (state, sectionId) => (
-  sectionSelectors.getSectionLoading(state.sections, sectionId)
-);
-
-export const getSectionErrorMsg = (state, sectionId) => (
-  sectionSelectors.getSectionErrorMsg(state.sections, sectionId)
-);
-
-export const getCurrentRow = (state, sectionId) => (
-  sectionSelectors.getCurrentRow(state.sections, sectionId)
-);
-
-export const getRowsFromSection = (state, sectionId) => (
-  sectionSelectors.getRowsFromSection(state.sections, sectionId)
+export const getSectionsError = state => (
+  sectionSelectors.getSectionsError(state.sections)
 );
 
 export const getSectionsById = (state, sectionIds) => (

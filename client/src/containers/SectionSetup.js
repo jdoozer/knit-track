@@ -6,7 +6,7 @@ import {
   getPatternById,
   getPatternIdLastCreatedSection,
   getSectionsLoading,
-  getSectionsErrorMsg
+  getSectionsError
 } from 'reducers';
 import SectionSetupForm from 'components/SectionSetupForm';
 
@@ -14,7 +14,7 @@ const mapStateToProps = state => ({
   patternById: patternId => getPatternById(state, patternId),
   patternIdLastCreatedSection: getPatternIdLastCreatedSection(state),
   loading: getSectionsLoading(state),
-  error: Boolean(getSectionsErrorMsg(state)),
+  error: Boolean(getSectionsError(state)),
 });
 
 const mapDispatchToProps = {

@@ -34,7 +34,7 @@ const styles = theme => ({
     width: 100,
     height: 94,
     marginRight: theme.spacing(1),
-    color: ({ section: { error, loading } }) => {
+    color: ({ error, loading }) => {
       if (error) return textErrorColor;
       if (loading) return textUpdatingColor;
       return textColor;
@@ -62,9 +62,9 @@ const styles = theme => ({
   },
 });
 
-const RowCounterDisplay = ({
-  section: { currentRow, rows },
-  onUpdateCountClick,
+const RowCounter = ({
+  currentRow, rows,
+  onClick,
   classes
 }) => (
   <div className={classes.root}>
@@ -77,20 +77,20 @@ const RowCounterDisplay = ({
           variant="contained"
           className={classes.counterButton}
           color="secondary"
-          onClick={() => onUpdateCountClick("INCREMENT")}>
+          onClick={() => onClick("INCREMENT")}>
             <PlusIcon className={classes.plusIcon} />
         </Button>
         <div className={classes.counterButtonSecondary}>
           <Button
             variant="contained"
             className={classes.counterButton}
-            onClick={() => onUpdateCountClick("RESET")}>
+            onClick={() => onClick("RESET")}>
               <ResetIcon />
           </Button>
           <Button
             variant="contained"
             className={classes.counterButton}
-            onClick={() => onUpdateCountClick("DECREMENT")}>
+            onClick={() => onClick("DECREMENT")}>
               <MinusIcon />
           </Button>
         </div>
@@ -101,13 +101,13 @@ const RowCounterDisplay = ({
   </div>
 );
 
-RowCounterDisplay.propTypes = {
-  onUpdateCountClick: PropTypes.func.isRequired,
-  section: PropTypes.shape({
-    currentRow: PropTypes.number.isRequired,
-    rows: PropTypes.object.isRequired,
-  }).isRequired,
+RowCounter.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  currentRow: PropTypes.number.isRequired,
+  rows: PropTypes.object.isRequired,
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.bool.isRequired,
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(RowCounterDisplay);
+export default withStyles(styles)(RowCounter);

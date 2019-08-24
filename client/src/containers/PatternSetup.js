@@ -3,16 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createPattern, clearLastCreated, clearError } from 'actions';
 import {
-  getLastCreatedPatternId,
-  getPatternsLoading,
-  getPatternsErrorMsg
+  getLastCreatedPatternId, getPatternsLoading, getPatternsError
 } from 'reducers';
 import PatternSetupForm from 'components/PatternSetupForm';
 
 const mapStateToProps = state => ({
   lastCreatedId: getLastCreatedPatternId(state),
   loading: getPatternsLoading(state),
-  error: Boolean(getPatternsErrorMsg(state)),
+  error: Boolean(getPatternsError(state)),
 });
 
 const mapDispatchToProps = {

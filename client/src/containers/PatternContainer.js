@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { fetchPatternExpandedIfNeeded } from 'actions';
 import {
-  getPatternsLoading, getPatternsErrorMsg, getPatternsErrorCode
+  getPatternsLoading, getPatternsError, getPatternsErrorCode
 } from 'reducers';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MessageBlock from 'components/MessageBlock';
@@ -13,7 +13,7 @@ import SectionSetup from 'containers/SectionSetup';
 
 const mapStateToProps = state => ({
   loading: getPatternsLoading(state),
-  error: Boolean(getPatternsErrorMsg(state)),
+  error: Boolean(getPatternsError(state)),
   errorCode: getPatternsErrorCode(state),
 });
 

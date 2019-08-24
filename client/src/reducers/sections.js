@@ -1,5 +1,4 @@
 import { handleActions } from 'redux-actions';
-import { createSelector } from 'reselect';
 import {
   updateState,
   updateItem,
@@ -97,13 +96,9 @@ const sectionsReducer = handleActions({
   },
 
   UPDATE_ROW_COUNT_OPTIMISTIC: (state, action) => {
-    const { error } = state;
-    if (error) {
-      return state;
-    }
     const { updateType, sectionId } = action.payload;
     const section = state.byId[sectionId];
-    if (section.error) {
+    if (section.error || section.loading) {
       return state;
     }
     return updateItem(
@@ -133,10 +128,10 @@ const sectionsReducer = handleActions({
   CLEAR_ERROR: (state, action) => {
     const { dataTypes, id } = action.payload;
     if (id) {
-      return updateItem(state, id, { error: null, loading: false });
+      return updateItem(state, id, { error: null });
     }
     return updateState(
-      state, { error: null, loading: false }, dataTypes, 'sections'
+      state, { error: null }, dataTypes, 'sections'
     );
   }
 
@@ -147,36 +142,9 @@ export default sectionsReducer;
 
 // SELECTORS (named exports)
 export const getSectionsLoading = state => state.loading;
-
-const getSectionsError = state => state.error;
-
-export const getSectionsErrorMsg = createSelector(
-  getSectionsError,
-  error => (error && error.message) ? error.message : ''
-);
+export const getSectionsError = state => state.error;
 
 const getSectionById = (state, sectionId) => state.byId[sectionId];
-
-const getSectionError = (state, sectionId) => (
-  getSectionById(state, sectionId).error
-);
-
-export const getSectionLoading = (state, sectionId) => (
-  getSectionById(state, sectionId).loading
-);
-
-export const getSectionErrorMsg = createSelector(
-  getSectionError,
-  error => (error && error.message) ? error.message : ''
-);
-
-export const getCurrentRow = (state, sectionId) => (
-  getSectionById(state, sectionId).currentRow
-);
-
-export const getRowsFromSection = (state, sectionId) => (
-  getSectionById(state, sectionId).rows
-);
 
 export const getSectionsById = (state, sectionIds) => (
   sectionIds.map(sectionId => getSectionById(state, sectionId))

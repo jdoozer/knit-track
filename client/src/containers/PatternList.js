@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchPatterns } from 'actions';
-import { getPatternTitlesSorted, getPatternsLoading, getPatternsErrorMsg } from 'reducers';
+import { getPatternTitlesSorted, getPatternsLoading, getPatternsError } from 'reducers';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MessageBlock from 'components/MessageBlock';
 import PatternListItems from 'components/PatternListItems';
@@ -10,7 +10,7 @@ import PatternListItems from 'components/PatternListItems';
 const mapStateToProps = state => ({
   patternTitles: getPatternTitlesSorted(state),
   loading: getPatternsLoading(state),
-  error: Boolean(getPatternsErrorMsg(state))
+  error: Boolean(getPatternsError(state))
 });
 
 const mapDispatchToProps = {

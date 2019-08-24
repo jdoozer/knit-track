@@ -46,9 +46,7 @@ const PatternContent = ({
         <SectionPanel
           key={section.sectionId}
           section={section}
-          onRowCounterClick={updateType => (
-            updateRowCount(section.sectionId, updateType)
-          )}
+          updateRowCount={updateRowCount}
           deleteSection={deleteSection}
           clearError={clearError}
         />

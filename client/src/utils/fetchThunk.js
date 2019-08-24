@@ -33,7 +33,9 @@ const fetchThunk = ({
         dispatch(receiveAction(json)) :
         dispatch(errorAction({ status, message: json.error }))
     ))
-    .catch(error => dispatch(errorAction({ message: error.toString() })))
+    .catch(error => dispatch(
+      errorAction({ status: 500, message: error.toString() }))
+    )
   }
 };
 
