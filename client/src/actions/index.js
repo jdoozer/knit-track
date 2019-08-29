@@ -15,7 +15,7 @@ const {
   clearLastCreated,
 } = createActions({
 
-  REQUEST_DATA: (dataTypes, id) => ({ dataTypes, id }),
+  REQUEST_DATA: (dataTypes, id, actionType) => ({ dataTypes, id, actionType }),
 
   RECEIVE_DATA: json => ({ ...json }),
 
@@ -83,8 +83,8 @@ export const createSection = ({ ...sectionData }) => fetchThunk({
   body: { section: sectionData },
 });
 
-const updateSection = (sectionId, sectionUpdates) => fetchThunk({
-  requestAction: requestData(['sections'], sectionId),
+const updateSection = (sectionId, sectionUpdates, actionType) => fetchThunk({
+  requestAction: requestData(['sections'], sectionId, actionType),
   receiveAction: receiveUpdatedSection,
   errorAction: error => receiveError(error, ['sections'], sectionId),
   path: `sections/${sectionId}`,
@@ -101,7 +101,7 @@ export const deletePattern = patternId => fetchThunk({
 });
 
 export const deleteSection = sectionId => fetchThunk({
-  requestAction: requestData(['sections'], sectionId),
+  requestAction: requestData(['sections'], sectionId, 'deleteSection'),
   receiveAction: receiveDeleteSectionKeys,
   errorAction: error => receiveError(error, ['sections'], sectionId),
   path: `sections/${sectionId}`,
@@ -147,6 +147,8 @@ export const updateRowCount = (sectionId, updateType) => (
       return null;
     }
 
-    return dispatch(updateSection(sectionId, { currentRow: rowAfterUpdate }));
+    return dispatch(
+      updateSection(sectionId, { currentRow: rowAfterUpdate }, 'updateRowCount')
+    );
   }
 );

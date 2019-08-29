@@ -61,12 +61,8 @@ export function updateItem(state, itemId, itemUpdates, stateUpdates) {
 }
 
 
-export function updateState(state, updates, payloadDataTypes, dataType) {
-  const updateDataBasedOnType = (
-    payloadDataTypes
-    && payloadDataTypes.includes(dataType)
-  );
-  if (!payloadDataTypes || updateDataBasedOnType) {
+export function updateState(state, updates) {
+  if (updates) {
     return { ...state, ...updates };
   }
   return state;

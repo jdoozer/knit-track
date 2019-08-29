@@ -18,6 +18,7 @@ const initialState = {
 const sectionDefaultFields = {
   loading: false,
   error: null,
+  lastActionType: ''
 };
 
 const getNextRow = (updateType, { currentRow, numRows }) => {
@@ -36,12 +37,16 @@ const getNextRow = (updateType, { currentRow, numRows }) => {
 const sectionsReducer = handleActions({
 
   REQUEST_DATA: (state, action) => {
-    const { dataTypes, id } = action.payload;
+    const { dataTypes, id, actionType } = action.payload;
+    let updates = { loading: true };
+    if (actionType) {
+      updates.lastActionType = actionType;
+    }
     if (dataTypes.includes('sections')) {
       if (id) {
-        return updateItem(state, id, { loading: true });
+        return updateItem(state, id, updates);
       }
-      return updateState(state, { loading: true });
+      return updateState(state, updates);
     }
     return state;
   },
@@ -60,7 +65,7 @@ const sectionsReducer = handleActions({
   RECEIVE_DATA: (state, action) => mergeItems(
     state,
     action.payload.sections,
-    { loading: false, error: null },
+    { loading: false, error: null, lastActionType: '' },
     sectionDefaultFields
   ),
 
@@ -122,9 +127,9 @@ const sectionsReducer = handleActions({
     const { dataTypes, id } = action.payload;
     if (dataTypes.includes('sections')) {
       if (id) {
-        return updateItem(state, id, { error: null });
+        return updateItem(state, id, { error: null, lastActionType: '' });
       }
-      return updateState(state, { error: null });
+      return updateState(state, { error: null, lastActionType: '' });
     }
     return state;
   },

@@ -50,7 +50,10 @@ class SectionPanel extends React.Component {
 
   render() {
     const {
-      section: { title, currentRow, numRows, sectionId, loading, error, rows },
+      section: {
+        title, currentRow, numRows, sectionId,
+        loading, error, rows, lastActionType
+      },
       deleteSection, updateRowCount, clearError, classes
     } = this.props;
     const { expanded } = this.state;
@@ -79,14 +82,14 @@ class SectionPanel extends React.Component {
             <RowCounter
               currentRow={currentRow}
               rows={rows}
-              error={Boolean(error)}
-              loading={loading}
+              error={Boolean(error) && lastActionType==='updateRowCount'}
+              loading={loading  && lastActionType==='updateRowCount'}
               onClick={updateType => updateRowCount(sectionId, updateType)}
             />
             <div className={classes.button}>
               <DeleteSection
-                loading={loading}
-                error={Boolean(error)}
+                loading={loading && lastActionType==='deleteSection'}
+                error={Boolean(error) && lastActionType==='deleteSection'}
                 onClick={() => deleteSection(sectionId)}
                 clearError={() => clearError(['sections'], sectionId)}
               />
