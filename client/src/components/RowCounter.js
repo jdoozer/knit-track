@@ -62,11 +62,7 @@ const styles = theme => ({
   },
 });
 
-const RowCounter = ({
-  currentRow, rows,
-  onClick,
-  classes
-}) => (
+const RowCounter = ({ currentRow, rows, onClick, classes }) => (
   <div className={classes.root}>
     <div className={classes.rowCounter}>
       <Paper className={classes.row} elevation={1}>

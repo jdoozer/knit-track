@@ -5,7 +5,7 @@ import Hidden from '@material-ui/core/Hidden';
 import Typography from '@material-ui/core/Typography';
 import DeletePattern from 'containers/DeletePattern';
 import ContentHeader from 'components/ContentHeader';
-import SectionPanel from 'components/SectionPanel';
+import Section from 'containers/Section';
 import AddSection from 'components/AddSection';
 
 const styles = theme => ({
@@ -21,16 +21,13 @@ const styles = theme => ({
   },
 });
 
-const PatternContent = ({
-  pattern: { patternId, title, info },
-  sections, deleteSection, updateRowCount, clearError, classes
+const Pattern = ({
+  pattern: { patternId, title, info, sectionIds }, classes
 }) => (
 
   <div className={classes.root}>
 
-    <ContentHeader
-      button={(<DeletePattern patternId={patternId} />)}
-    >
+    <ContentHeader button={(<DeletePattern patternId={patternId} />)}>
       {title}
     </ContentHeader>
 
@@ -39,15 +36,7 @@ const PatternContent = ({
     </Typography>
 
     <div className={classes.sectionCards}>
-      {sections.map(section => (
-        <SectionPanel
-          key={section.sectionId}
-          section={section}
-          updateRowCount={updateRowCount}
-          deleteSection={deleteSection}
-          clearError={clearError}
-        />
-      ))}
+      {sectionIds.map(id => <Section key={id} sectionId={id} />)}
     </div>
 
     <Hidden xsDown>
@@ -58,21 +47,14 @@ const PatternContent = ({
 
 );
 
-PatternContent.propTypes = {
+Pattern.propTypes = {
   pattern: PropTypes.shape({
     title: PropTypes.string.isRequired,
     info: PropTypes.string.isRequired,
     patternId: PropTypes.string.isRequired,
+    sectionIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   }).isRequired,
-  sections: PropTypes.arrayOf(
-    PropTypes.shape({
-      sectionId: PropTypes.string.isRequired
-    }).isRequired
-  ).isRequired,
-  deleteSection: PropTypes.func.isRequired,
-  updateRowCount: PropTypes.func.isRequired,
-  clearError: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(PatternContent);
+export default withStyles(styles)(Pattern);

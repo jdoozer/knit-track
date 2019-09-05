@@ -10,8 +10,8 @@ import {
 } from 'reducers';
 import SectionSetupForm from 'components/SectionSetupForm';
 
-const mapStateToProps = state => ({
-  patternById: patternId => getPatternById(state, patternId),
+const mapStateToProps = (state, { match: { params: { patternId } } }) => ({
+  pattern: getPatternById(state, patternId),
   patternIdLastCreatedSection: getPatternIdLastCreatedSection(state),
   loading: getSectionsLoading(state),
   error: Boolean(getSectionsError(state)),
@@ -38,13 +38,11 @@ class SectionSetup extends React.Component {
   }
 
   render() {
-    const {
-      match, patternById, createSection, loading, error, clearError
-     } = this.props;
+    const { pattern, createSection, loading, error, clearError } = this.props;
 
     return (
       <SectionSetupForm
-        pattern={patternById(match.params.patternId)}
+        pattern={pattern}
         createSection={createSection}
         clearError={clearError}
         loading={loading}
@@ -61,6 +59,10 @@ SectionSetup.propTypes = {
       patternId: PropTypes.string.isRequired
     }).isRequired
   }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+  pattern: PropTypes.object.isRequired,
   createSection: PropTypes.func.isRequired,
   clearError: PropTypes.func.isRequired,
   clearLastCreated: PropTypes.func.isRequired,

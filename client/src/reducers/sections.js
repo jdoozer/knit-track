@@ -143,7 +143,7 @@ export default sectionsReducer;
 export const getSectionsLoading = state => state.loading;
 export const getSectionsError = state => state.error;
 
-const getSectionById = (state, sectionId) => state.byId[sectionId];
+export const getSectionById = (state, sectionId) => state.byId[sectionId];
 
 export const getSectionsById = (state, sectionIds) => (
   sectionIds.map(sectionId => getSectionById(state, sectionId))
@@ -155,3 +155,15 @@ export const getPatternIdLastCreatedSection = state => {
   const sectionId = getLastCreatedSectionId(state);
   return sectionId ? state.byId[sectionId].patternId : '';
 };
+
+const getSectionField = (field, defaultVal) => (state, sectionId) => {
+  const section = getSectionById(state, sectionId);
+  if (section) {
+    return section[field];
+  }
+  return defaultVal;
+};
+
+export const getSectionLoading = getSectionField('loading', false);
+export const getSectionError = getSectionField('error', null);
+export const getSectionLastAction = getSectionField('lastActionType', '');

@@ -9,7 +9,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import TotalRows from 'components/TotalRows';
 import CurrentRowSmall from 'components/CurrentRowSmall';
 import RowCounter from 'components/RowCounter';
-import DeleteSection from 'components/DeleteSection';
+import DeleteSection from 'containers/DeleteSection';
 
 const styles = theme => ({
   titleColumn: {
@@ -53,10 +53,10 @@ class SectionPanel extends React.Component {
     // knowledge of section shape in this component... could fix with selectors?
     const {
       section: {
-        title, currentRow, numRows, sectionId,
-        loading, error, rows, lastActionType
+        title, currentRow, numRows, sectionId, rows,
+        loading, error, lastActionType
       },
-      deleteSection, updateRowCount, clearError, classes
+      updateRowCount, classes
     } = this.props;
     const { expanded } = this.state;
 
@@ -89,12 +89,7 @@ class SectionPanel extends React.Component {
               onClick={updateType => updateRowCount(sectionId, updateType)}
             />
             <div className={classes.button}>
-              <DeleteSection
-                loading={loading && lastActionType==='deleteSection'}
-                error={Boolean(error) && lastActionType==='deleteSection'}
-                onClick={() => deleteSection(sectionId)}
-                clearError={() => clearError(['sections'], sectionId)}
-              />
+              <DeleteSection sectionId={sectionId} />
             </div>
           </React.Fragment>)}
         </ExpansionPanelDetails>
@@ -109,8 +104,6 @@ SectionPanel.propTypes = {
     currentRow: PropTypes.number.isRequired,
     numRows: PropTypes.number.isRequired,
   }).isRequired,
-  deleteSection: PropTypes.func.isRequired,
-  clearError: PropTypes.func.isRequired,
   updateRowCount: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 };

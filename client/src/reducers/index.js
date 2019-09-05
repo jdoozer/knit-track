@@ -55,10 +55,26 @@ export const getSectionsError = state => (
   sectionSelectors.getSectionsError(state.sections)
 );
 
+export const getPatternIdLastCreatedSection = state => (
+  sectionSelectors.getPatternIdLastCreatedSection(state.sections)
+);
+
 export const getSectionsById = (state, sectionIds) => (
   sectionSelectors.getSectionsById(state.sections, sectionIds)
 );
 
-export const getPatternIdLastCreatedSection = state => (
-  sectionSelectors.getPatternIdLastCreatedSection(state.sections)
+export const getSectionById = (state, sectionId) => (
+  sectionSelectors.getSectionById(state.sections, sectionId)
+);
+
+export const getSectionLoading = (state, sectionId) => (
+  sectionSelectors.getSectionLoading(state.sections, sectionId)
+);
+
+export const getSectionError = (state, sectionId) => (
+  sectionSelectors.getSectionError(state.sections, sectionId)
+);
+
+export const getSectionLastAction = (state, sectionId) => (
+  sectionSelectors.getSectionLastAction(state.sections, sectionId)
 );

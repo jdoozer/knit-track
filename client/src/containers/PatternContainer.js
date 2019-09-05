@@ -8,7 +8,7 @@ import {
 } from 'reducers';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MessageBlock from 'components/MessageBlock';
-import Pattern from 'containers/Pattern';
+import Pattern from 'components/Pattern';
 import SectionSetup from 'containers/SectionSetup';
 
 const mapStateToProps = (state, { match: { params: { patternId }}}) => ({
@@ -30,8 +30,10 @@ class PatternContainer extends React.Component {
 
   componentDidMount() {
 
-    const { match, fetchPatternExpandedIfNeeded } = this.props;
-    const patternId = match.params.patternId;
+    const {
+      match: { params: { patternId } },
+      fetchPatternExpandedIfNeeded
+    } = this.props;
 
     if (patternId) {
       fetchPatternExpandedIfNeeded(patternId);
@@ -42,7 +44,6 @@ class PatternContainer extends React.Component {
   }
 
   componentDidUpdate() {
-
     const { pattern, history } = this.props;
     if (!pattern) {
       history.push('/patterns');
@@ -52,20 +53,17 @@ class PatternContainer extends React.Component {
   render() {
 
     const {
-      match: { path },
+      match: { path }, pattern,
       loading, error, lastActionType
     } = this.props;
 
-    if (
-      lastActionType === ""
-      && (loading || this.state.initialLoadingIndicator)
-    ) {
+    if ((loading || this.state.initialLoadingIndicator) && !lastActionType) {
       return (
         <CircularProgress />
       );
     }
 
-    if (lastActionType === "" && Boolean(error)) {
+    if (error && !lastActionType) {
       if (error.status === 404) {
         return (<MessageBlock>Pattern ID is invalid</MessageBlock>);
       }
@@ -79,7 +77,7 @@ class PatternContainer extends React.Component {
     return (
       <Switch>
         <Route path={`${path}/newsection`} component={SectionSetup} />
-        <Route component={Pattern} />
+        <Route render={() => <Pattern pattern={pattern} />} />
       </Switch>
     );
   }
@@ -92,6 +90,9 @@ PatternContainer.propTypes = {
     params: PropTypes.shape({
       patternId: PropTypes.string.isRequired
     }).isRequired
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
   }).isRequired,
   loading: PropTypes.bool.isRequired,
   error: PropTypes.object,
