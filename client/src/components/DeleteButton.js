@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -34,12 +33,7 @@ class DeleteButton extends React.Component {
 
   handleCloseAction = () => {
     this.handleCloseDefault();
-    // const { onClick, newLocation, history } = this.props;
-
     this.props.onClick();
-    // if (newLocation) {
-    //   history.push(newLocation);
-    // }
   }
 
   render() {
@@ -86,10 +80,8 @@ class DeleteButton extends React.Component {
 
 DeleteButton.propTypes = {
   classes: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
   onClick: PropTypes.func.isRequired,
-  newLocation: PropTypes.string,
   dataType: PropTypes.string.isRequired,
 };
 
-export default withStyles(styles)(withRouter(DeleteButton));
+export default withStyles(styles)(DeleteButton);

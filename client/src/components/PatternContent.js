@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Hidden from '@material-ui/core/Hidden';
 import Typography from '@material-ui/core/Typography';
-import DeleteButton from 'components/DeleteButton';
+import DeletePattern from 'containers/DeletePattern';
 import ContentHeader from 'components/ContentHeader';
 import SectionPanel from 'components/SectionPanel';
 import AddSection from 'components/AddSection';
@@ -23,16 +23,13 @@ const styles = theme => ({
 
 const PatternContent = ({
   pattern: { patternId, title, info },
-  sections, deletePattern, deleteSection, updateRowCount, clearError, classes
+  sections, deleteSection, updateRowCount, clearError, classes
 }) => (
 
   <div className={classes.root}>
 
     <ContentHeader
-      button={(<DeleteButton
-        onClick={() => deletePattern(patternId)}
-        dataType="pattern"
-      />)}
+      button={(<DeletePattern patternId={patternId} />)}
     >
       {title}
     </ContentHeader>
@@ -72,7 +69,6 @@ PatternContent.propTypes = {
       sectionId: PropTypes.string.isRequired
     }).isRequired
   ).isRequired,
-  deletePattern: PropTypes.func.isRequired,
   deleteSection: PropTypes.func.isRequired,
   updateRowCount: PropTypes.func.isRequired,
   clearError: PropTypes.func.isRequired,

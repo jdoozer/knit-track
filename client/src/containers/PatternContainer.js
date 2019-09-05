@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { fetchPatternExpandedIfNeeded } from 'actions';
 import {
-  getPatternLoading, getPatternError, getPatternLastAction
+  getPatternLoading, getPatternError, getPatternLastAction, getPatternById
 } from 'reducers';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MessageBlock from 'components/MessageBlock';
@@ -14,7 +14,8 @@ import SectionSetup from 'containers/SectionSetup';
 const mapStateToProps = (state, { match: { params: { patternId }}}) => ({
   loading: getPatternLoading(state, patternId),
   error: getPatternError(state, patternId),
-  lastActionType: getPatternLastAction(state, patternId)
+  lastActionType: getPatternLastAction(state, patternId),
+  pattern: getPatternById(state, patternId),
 });
 
 const mapDispatchToProps = {
@@ -40,9 +41,20 @@ class PatternContainer extends React.Component {
 
   }
 
+  componentDidUpdate() {
+
+    const { pattern, history } = this.props;
+    if (!pattern) {
+      history.push('/patterns');
+    }
+  }
+
   render() {
 
-    const { match: { path }, loading, error, lastActionType } = this.props;
+    const {
+      match: { path },
+      loading, error, lastActionType
+    } = this.props;
 
     if (
       lastActionType === ""
@@ -52,7 +64,8 @@ class PatternContainer extends React.Component {
         <CircularProgress />
       );
     }
-    if (lastActionType === "" && error) {
+
+    if (lastActionType === "" && Boolean(error)) {
       if (error.status === 404) {
         return (<MessageBlock>Pattern ID is invalid</MessageBlock>);
       }
@@ -82,6 +95,8 @@ PatternContainer.propTypes = {
   }).isRequired,
   loading: PropTypes.bool.isRequired,
   error: PropTypes.object,
+  lastActionType: PropTypes.string.isRequired,
+  pattern: PropTypes.object,
   fetchPatternExpandedIfNeeded: PropTypes.func.isRequired,
 };
 

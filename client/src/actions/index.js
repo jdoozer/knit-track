@@ -95,7 +95,7 @@ const updateSection = (sectionId, sectionUpdates, actionType) => fetchThunk({
 });
 
 export const deletePattern = patternId => fetchThunk({
-  requestAction: requestData(['patterns']),
+  requestAction: requestData(['patterns'], patternId, 'deletePattern'),
   receiveAction: receiveDeletePatternKeys,
   errorAction: error => receiveError(error, ['patterns'], patternId),
   path: `patterns/${patternId}`,

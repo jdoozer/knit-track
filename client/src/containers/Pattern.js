@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  deletePattern, deleteSection, updateRowCount, clearError
+  deleteSection, updateRowCount, clearError
 } from 'actions';
 import { getPatternById, getSectionsById } from 'reducers';
 import PatternContent from 'components/PatternContent';
@@ -13,7 +13,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  deletePattern: patternId => deletePattern(patternId),
   deleteSection: sectionId => deleteSection(sectionId),
   updateRowCount: (sectionId, updateType) => (
     updateRowCount(sectionId, updateType)
@@ -25,7 +24,6 @@ const Pattern = ({
   match,
   patternById,
   getSectionsFromIds,
-  deletePattern,
   deleteSection,
   updateRowCount,
   clearError
@@ -38,7 +36,6 @@ const Pattern = ({
     <PatternContent
       pattern={pattern}
       sections={sections}
-      deletePattern={deletePattern}
       deleteSection={deleteSection}
       clearError={clearError}
       updateRowCount={updateRowCount}
@@ -52,7 +49,6 @@ Pattern.propTypes = {
       patternId: PropTypes.string.isRequired
     }).isRequired
   }).isRequired,
-  deletePattern: PropTypes.func.isRequired,
   deleteSection: PropTypes.func.isRequired,
   updateRowCount: PropTypes.func.isRequired,
   clearError: PropTypes.func.isRequired,

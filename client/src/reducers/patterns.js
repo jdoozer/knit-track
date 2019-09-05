@@ -109,9 +109,9 @@ const patternsReducer = handleActions({
     const { dataTypes, id } = action.payload;
     if (dataTypes.includes('patterns')) {
       if (id) {
-        return updateItem(state, id, { error: null });
+        return updateItem(state, id, { error: null, lastActionType: '' });
       }
-      return updateState(state, { error: null });
+      return updateState(state, { error: null, lastActionType: '' });
     }
     return state;
   },
