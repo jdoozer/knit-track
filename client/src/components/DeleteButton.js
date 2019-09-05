@@ -23,13 +23,9 @@ class DeleteButton extends React.Component {
 
   state = { dialogOpen: false };
 
-  handleClickOpen = () => {
-    this.setState({ dialogOpen: true });
-  };
+  handleClickOpen = () => { this.setState({ dialogOpen: true }) };
 
-  handleCloseDefault = () => {
-    this.setState({ dialogOpen: false });
-  };
+  handleCloseDefault = () => { this.setState({ dialogOpen: false }) };
 
   handleCloseAction = () => {
     this.handleCloseDefault();
@@ -38,6 +34,7 @@ class DeleteButton extends React.Component {
 
   render() {
     const { classes, dataType } = this.props;
+    const { dialogOpen } = this.state;
 
     return (
       <React.Fragment>
@@ -51,12 +48,10 @@ class DeleteButton extends React.Component {
         </IconButton>
 
         <Dialog
-          open={this.state.dialogOpen}
+          open={dialogOpen}
           onClose={this.handleCloseDefault}
         >
-          <DialogTitle className={classes.title}>
-            Delete {dataType}
-          </DialogTitle>
+          <DialogTitle className={classes.title}>Delete {dataType}</DialogTitle>
           <DialogContent>
             <DialogContentText>
               Are you sure you want to delete this {dataType} and all its contents?
@@ -66,7 +61,12 @@ class DeleteButton extends React.Component {
             <Button onClick={this.handleCloseDefault} color="primary">
               cancel
             </Button>
-            <Button onClick={this.handleCloseAction} color="primary" variant="contained" autoFocus>
+            <Button
+              onClick={this.handleCloseAction}
+              color="primary"
+              variant="contained"
+              autoFocus
+            >
               okay
             </Button>
           </DialogActions>

@@ -4,9 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 
 const rowInputField = ({
-  property='',
-  rowInd=0,
-  classes, currState, onChange, rowProps
+  property, rowInd, classes, currState, onChange, rowProps
 }) => (
   <TextField label=''
     className={[classes.textField, classes[property]].join(' ')}

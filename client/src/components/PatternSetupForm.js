@@ -30,8 +30,8 @@ class PatternSetupForm extends React.Component {
     info: '',
   };
 
-  handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
+  handleChange = ({ target: { name, value } }) => {
+    this.setState({ [name]: value });
   };
 
   handleSubmit = event => {
@@ -51,10 +51,7 @@ class PatternSetupForm extends React.Component {
       <React.Fragment>
 
         <ContentHeader>Pattern Setup</ContentHeader>
-        <form
-          onSubmit={this.handleSubmit}
-          className={classes.root}
-        >
+        <form onSubmit={this.handleSubmit} className={classes.root}>
           <TextField label="Pattern Title"
             className={classes.textField}
             name="title"
@@ -73,7 +70,8 @@ class PatternSetupForm extends React.Component {
             variant="contained"
             color="primary"
             className={classes.button}
-            type="submit">
+            type="submit"
+          >
             Create Pattern
           </Button>
         </form>

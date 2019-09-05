@@ -56,7 +56,7 @@ const styles = theme => ({
     border: 'solid 1px ' + borderColor,
     color: textColor,
   },
-  plusIcon: {
+  bigIcon: {
     width: 50,
     height: 50,
   },
@@ -73,21 +73,24 @@ const RowCounter = ({ currentRow, rows, onClick, classes }) => (
           variant="contained"
           className={classes.counterButton}
           color="secondary"
-          onClick={() => onClick("INCREMENT")}>
-            <PlusIcon className={classes.plusIcon} />
+          onClick={() => onClick("INCREMENT")}
+        >
+          <PlusIcon className={classes.bigIcon} />
         </Button>
         <div className={classes.counterButtonSecondary}>
           <Button
             variant="contained"
             className={classes.counterButton}
-            onClick={() => onClick("RESET")}>
-              <ResetIcon />
+            onClick={() => onClick("RESET")}
+          >
+            <ResetIcon />
           </Button>
           <Button
             variant="contained"
             className={classes.counterButton}
-            onClick={() => onClick("DECREMENT")}>
-              <MinusIcon />
+            onClick={() => onClick("DECREMENT")}
+          >
+            <MinusIcon />
           </Button>
         </div>
       </div>

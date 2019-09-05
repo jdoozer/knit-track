@@ -80,18 +80,21 @@ class SectionPanel extends React.Component {
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>
-          {expanded && (<React.Fragment>
-            <RowCounter
-              currentRow={currentRow}
-              rows={rows}
-              error={Boolean(error) && lastActionType==='updateRowCount'}
-              loading={loading  && lastActionType==='updateRowCount'}
-              onClick={updateType => updateRowCount(sectionId, updateType)}
-            />
-            <div className={classes.button}>
-              <DeleteSection sectionId={sectionId} />
-            </div>
-          </React.Fragment>)}
+          {
+            expanded
+            && (<React.Fragment>
+              <RowCounter
+                currentRow={currentRow}
+                rows={rows}
+                error={Boolean(error) && lastActionType==='updateRowCount'}
+                loading={loading  && lastActionType==='updateRowCount'}
+                onClick={updateType => updateRowCount(sectionId, updateType)}
+              />
+              <div className={classes.button}>
+                <DeleteSection sectionId={sectionId} />
+              </div>
+            </React.Fragment>)
+          }
         </ExpansionPanelDetails>
       </ExpansionPanel>
     );

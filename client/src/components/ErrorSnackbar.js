@@ -21,10 +21,7 @@ const styles = theme => ({
 
 const ErrorSnackbar = ({ open, classes, onClose, children }) => (
   <Snackbar
-    anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'center',
-    }}
+    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
     open={open}
     autoHideDuration={3000}
     onClose={onClose}

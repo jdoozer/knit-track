@@ -13,7 +13,7 @@ const styles = theme => ({
   },
   text: {
     flex: 1,
-    textAlign: props => props.button ? 'left' : 'center',
+    textAlign: ({ button }) => button ? 'left' : 'center',
   },
 });
 
@@ -25,11 +25,7 @@ const ContentHeader = ({ classes, children, button }) => (
     color="secondary"
   >
     <Toolbar>
-      <Typography
-        variant="h5"
-        color="inherit"
-        className={classes.text}
-      >
+      <Typography variant="h5" color="inherit" className={classes.text}>
         {children}
       </Typography>
       {button}
@@ -40,7 +36,7 @@ const ContentHeader = ({ classes, children, button }) => (
 ContentHeader.propTypes = {
   classes: PropTypes.object.isRequired,
   children: PropTypes.node,
-  button: PropTypes.node,
+  button: PropTypes.element,
 };
 
 export default withStyles(styles)(ContentHeader);

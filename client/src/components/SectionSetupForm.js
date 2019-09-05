@@ -147,7 +147,12 @@ class SectionSetupForm extends React.Component {
             rowProps={rowProps}
             numRows={this.state.numRows}
           />
-          <Button variant="contained" color="primary" className={classes.button} type="submit">
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            type="submit"
+          >
             Create Section
           </Button>
         </form>
