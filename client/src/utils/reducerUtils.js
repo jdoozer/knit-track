@@ -1,5 +1,5 @@
 
-export function addItem(state, newItem, idField, updates) {
+function addItem(state, newItem, idField, updates) {
   const newItemId = newItem[idField];
   if (newItem && newItemId) {
     return {
@@ -19,7 +19,7 @@ export function addItem(state, newItem, idField, updates) {
 }
 
 
-export function mergeItems(state, newItems, stateUpdates, itemUpdates) {
+function mergeItems(state, newItems, stateUpdates, itemUpdates) {
   if (newItems) {
     const newState = {
       ...state,
@@ -43,7 +43,7 @@ export function mergeItems(state, newItems, stateUpdates, itemUpdates) {
 }
 
 
-export function updateItem(state, itemId, itemUpdates) {
+function updateItem(state, itemId, itemUpdates) {
   if (itemId && itemUpdates) {
     return {
       ...state,
@@ -60,7 +60,7 @@ export function updateItem(state, itemId, itemUpdates) {
 }
 
 
-export function updateState(state, updates) {
+function updateState(state, updates) {
   if (updates) {
     return { ...state, ...updates };
   }
@@ -68,7 +68,7 @@ export function updateState(state, updates) {
 }
 
 
-export function deleteItemsFromArray(array, itemsToDelete) {
+function deleteItemsFromArray(array, itemsToDelete) {
 
   const itemsToDeleteType = typeof(itemsToDelete);
 
@@ -81,7 +81,6 @@ export function deleteItemsFromArray(array, itemsToDelete) {
   }
 
   return array;
-
 }
 
 
@@ -113,7 +112,7 @@ function deleteItemsByKeys(obj, keys, keysToDelete) {
 
 }
 
-export function deleteFromState(state, itemIds) {
+function deleteFromState(state, itemIds) {
   if (itemIds) {
     return {
       ...state,
@@ -123,3 +122,8 @@ export function deleteFromState(state, itemIds) {
   }
   return state;
 }
+
+export {
+  addItem, mergeItems, updateItem, updateState,
+  deleteItemsFromArray, deleteFromState
+};

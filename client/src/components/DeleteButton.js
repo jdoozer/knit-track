@@ -25,16 +25,16 @@ class DeleteButton extends React.Component {
 
   handleClickOpen = () => {
     this.setState({ dialogOpen: true });
-  }
+  };
 
   handleCloseDefault = () => {
     this.setState({ dialogOpen: false });
-  }
+  };
 
   handleCloseAction = () => {
     this.handleCloseDefault();
     this.props.onClick();
-  }
+  };
 
   render() {
     const { classes, dataType } = this.props;

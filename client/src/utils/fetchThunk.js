@@ -1,7 +1,7 @@
 
 const MOCK_SERVER_URL = '/api/';
 
-const fetchThunk = ({
+function fetchThunk({
   requestAction = (() => {}),
   receiveAction = (() => {}),
   errorAction = (() => {}),
@@ -9,7 +9,7 @@ const fetchThunk = ({
   path = '',
   host = MOCK_SERVER_URL,
   requestType = 'GET',
-}) => {
+}) {
   let fetchObj = {
     method: requestType,
     headers: {
@@ -37,6 +37,6 @@ const fetchThunk = ({
       errorAction({ status: 500, message: error.toString() }))
     )
   }
-};
+}
 
 export default fetchThunk;

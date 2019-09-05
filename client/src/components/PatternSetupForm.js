@@ -30,28 +30,17 @@ class PatternSetupForm extends React.Component {
     info: '',
   };
 
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleReset = this.handleReset.bind(this);
-  }
-
-  handleChange(event) {
+  handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
-  }
+  };
 
-  handleSubmit(event) {
+  handleSubmit = event => {
     const { createPattern } = this.props;
     const { title, info } = this.state;
 
     createPattern({ title, info });
     event.preventDefault();
-  }
-
-  handleReset(event) {
-    event.preventDefault();
-  }
+  };
 
   render() {
 
@@ -64,7 +53,6 @@ class PatternSetupForm extends React.Component {
         <ContentHeader>Pattern Setup</ContentHeader>
         <form
           onSubmit={this.handleSubmit}
-          onReset={this.handleReset}
           className={classes.root}
         >
           <TextField label="Pattern Title"

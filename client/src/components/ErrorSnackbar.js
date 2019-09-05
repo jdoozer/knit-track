@@ -45,7 +45,7 @@ ErrorSnackbar.propTypes = {
   classes: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  children: PropTypes.string,
+  children: PropTypes.node.isRequired,
 };
 
 export default withStyles(styles)(ErrorSnackbar);

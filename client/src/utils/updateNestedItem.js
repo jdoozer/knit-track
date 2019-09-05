@@ -1,4 +1,4 @@
-const updateNestedItem = (input, key1, key2, newValue) => {
+function updateNestedItem(input, key1, key2, newValue) {
 
   const itemToUpdate = input[key1];
   let updatedItem;

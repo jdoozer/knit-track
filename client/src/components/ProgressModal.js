@@ -31,6 +31,6 @@ const ProgressModal = ({ open, classes }) => (
 ProgressModal.propTypes = {
   classes: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
-  };
+};
 
 export default withStyles(styles)(ProgressModal);

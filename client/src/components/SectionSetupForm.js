@@ -8,7 +8,7 @@ import ErrorSnackbar from 'components/ErrorSnackbar';
 import ContentHeader from 'components/ContentHeader';
 import SectionRowInputs from 'components/SectionRowInputs';
 import updateNestedItem from 'utils/updateNestedItem';
-import objValsNotEmpty from 'utils/objValsNotEmpty';
+import arrayToRowObject from 'utils/arrayToRowObject';
 
 // keys here should match the props pulled out in RowInfo component
 const rowProps = {
@@ -78,24 +78,16 @@ class SectionSetupForm extends React.Component {
 
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
     this.handleRowDataChange = this.handleRowDataChange.bind(this);
-    this.handleRowNumChange = this.handleRowNumChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleReset = this.handleReset.bind(this);
   }
 
-  handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
-  }
+  handleChange = ({ target: { name, value } }) => {
+    this.setState({ [name]: value });
+  };
 
-  handleRowNumChange(event) {
-
-    const numRowsValue = event.target.value;
-    console.log(numRowsValue);
-
-    if (numRowsValue !== '') {
-      const numRows = Math.max(parseInt(numRowsValue, 10), 1);
+  handleRowNumChange = ({ target: { value } }) => {
+    if (value !== '') {
+      const numRows = Math.max(parseInt(value, 10), 1);
       this.setState(state => {
         const rowData = [...state.rowData];
         while (numRows > rowData.length) {
@@ -104,41 +96,23 @@ class SectionSetupForm extends React.Component {
         return { numRows, rowData }
       });
     }
-  }
+  };
 
-  handleRowDataChange(rowInd, event) {
-
-    const { name, value } = event.target;
-
+  handleRowDataChange = (rowInd, { target: { name, value } }) => {
     this.setState(state => ({
       rowData: updateNestedItem(state.rowData, rowInd, name, value)
     }));
+  };
 
-  }
-
-  handleSubmit(event) {
-
+  handleSubmit = event => {
     const { createSection, pattern: { patternId } } = this.props;
     const { title, numRows, rowData } = this.state;
-
-    // convert array to 1-indexed object
-    const rowDataObject = rowData.reduce((acc, item, index) => {
-      if (objValsNotEmpty(item)) {
-        acc[index+1] = item;
-      }
-      return acc;
-    }, {});
-
-    const newSection = { patternId, title, numRows, rows: rowDataObject };
-
+    const newSection = {
+      patternId, title, numRows, rows: arrayToRowObject(rowData)
+    };
     createSection(newSection);
-
     event.preventDefault();
-  }
-
-  handleReset(event) {
-    event.preventDefault();
-  }
+  };
 
   render() {
 
@@ -151,7 +125,6 @@ class SectionSetupForm extends React.Component {
         <ContentHeader>{title} - New Section Setup</ContentHeader>
         <form
           onSubmit={this.handleSubmit}
-          onReset={this.handleReset}
           className={classes.root}
         >
           <TextField label="Section Title"
