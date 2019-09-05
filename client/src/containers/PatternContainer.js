@@ -4,17 +4,17 @@ import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { fetchPatternExpandedIfNeeded } from 'actions';
 import {
-  getPatternsLoading, getPatternsError, getPatternsErrorCode
+  getPatternLoading, getPatternError, getPatternLastAction
 } from 'reducers';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MessageBlock from 'components/MessageBlock';
 import Pattern from 'containers/Pattern';
 import SectionSetup from 'containers/SectionSetup';
 
-const mapStateToProps = state => ({
-  loading: getPatternsLoading(state),
-  error: Boolean(getPatternsError(state)),
-  errorCode: getPatternsErrorCode(state),
+const mapStateToProps = (state, { match: { params: { patternId }}}) => ({
+  loading: getPatternLoading(state, patternId),
+  error: getPatternError(state, patternId),
+  lastActionType: getPatternLastAction(state, patternId)
 });
 
 const mapDispatchToProps = {
@@ -29,10 +29,10 @@ class PatternContainer extends React.Component {
 
   componentDidMount() {
 
-    const { match, fetchPatternExpandedIfNeeded, error } = this.props;
+    const { match, fetchPatternExpandedIfNeeded } = this.props;
     const patternId = match.params.patternId;
 
-    if (patternId && !error) {
+    if (patternId) {
       fetchPatternExpandedIfNeeded(patternId);
     }
 
@@ -42,15 +42,18 @@ class PatternContainer extends React.Component {
 
   render() {
 
-    const { match, loading, error, errorCode } = this.props;
+    const { match: { path }, loading, error, lastActionType } = this.props;
 
-    if (loading || this.state.initialLoadingIndicator) {
+    if (
+      lastActionType === ""
+      && (loading || this.state.initialLoadingIndicator)
+    ) {
       return (
         <CircularProgress />
       );
     }
-    if (error) {
-      if (errorCode === 404) {
+    if (lastActionType === "" && error) {
+      if (error.status === 404) {
         return (<MessageBlock>Pattern ID is invalid</MessageBlock>);
       }
       return (
@@ -62,7 +65,7 @@ class PatternContainer extends React.Component {
 
     return (
       <Switch>
-        <Route path={`${match.path}/newsection`} component={SectionSetup} />
+        <Route path={`${path}/newsection`} component={SectionSetup} />
         <Route component={Pattern} />
       </Switch>
     );
@@ -78,8 +81,7 @@ PatternContainer.propTypes = {
     }).isRequired
   }).isRequired,
   loading: PropTypes.bool.isRequired,
-  error: PropTypes.bool.isRequired,
-  errorCode: PropTypes.number,
+  error: PropTypes.object,
   fetchPatternExpandedIfNeeded: PropTypes.func.isRequired,
 };
 

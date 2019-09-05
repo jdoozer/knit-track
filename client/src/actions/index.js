@@ -58,10 +58,12 @@ export const fetchPatterns = () => fetchThunk({
   path: 'patterns',
 });
 
+// data types here only patterns even though we're fetching sections too; all
+// done with a single fetch request and patterns is the primary update
 const fetchPatternExpanded = patternId => fetchThunk({
-  requestAction: requestData(['patterns', 'sections']),
+  requestAction: requestData(['patterns'], patternId),
   receiveAction: receiveData,
-  errorAction: error => receiveError(error, ['patterns', 'sections']),
+  errorAction: error => receiveError(error, ['patterns'], patternId),
   path: `patterns/${patternId}`,
 });
 

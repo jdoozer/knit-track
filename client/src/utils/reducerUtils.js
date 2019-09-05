@@ -43,8 +43,8 @@ export function mergeItems(state, newItems, stateUpdates, itemUpdates) {
 }
 
 
-export function updateItem(state, itemId, itemUpdates, stateUpdates) {
-  if (itemUpdates || stateUpdates) {
+export function updateItem(state, itemId, itemUpdates) {
+  if (itemId && itemUpdates) {
     return {
       ...state,
       byId: {
@@ -54,7 +54,6 @@ export function updateItem(state, itemId, itemUpdates, stateUpdates) {
           ...itemUpdates,
         }
       },
-      ...stateUpdates
     };
   }
   return state;

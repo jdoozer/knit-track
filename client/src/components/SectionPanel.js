@@ -49,6 +49,8 @@ class SectionPanel extends React.Component {
   }
 
   render() {
+    // TODO: Maybe shouldn't destructure section like this? Requires lots of
+    // knowledge of section shape in this component... could fix with selectors?
     const {
       section: {
         title, currentRow, numRows, sectionId,

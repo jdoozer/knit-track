@@ -1,4 +1,4 @@
-import { deleteFromState, deleteItemsByKeys, deleteItemsFromArray } from 'utils/reducerUtils';
+import { deleteFromState, deleteItemsFromArray, updateItem } from 'utils/reducerUtils';
 // import * as data from 'stateData/patternData';
 
 const emptyState = {
@@ -48,30 +48,90 @@ const threeItems = {
   allIds: ['id1', 'id2', 'id3']
 };
 
+const newFields = { field1: 'value1', field2: 'value2' };
+
+const twoItemsNewFieldsItem1 = {
+  byId: {
+    id1: {
+      id: 'id1',
+      word: 'hi',
+      ...newFields,
+    },
+    id2: {
+      id: 'id2',
+      word: 'there'
+    }
+  },
+  allIds: ['id1', 'id2']
+};
+
+const twoItemsNewFieldsItem3 = {
+  byId: {
+    id1: {
+      id: 'id1',
+      word: 'hi',
+    },
+    id2: {
+      id: 'id2',
+      word: 'there'
+    },
+    id3: {
+      ...newFields
+    }
+  },
+  allIds: ['id1', 'id2']
+};
+
+
+
 describe('reducer utility deleteItemsFromArray', () => {
 
   it('should return the given array with no keys', () => {
-    expect(deleteItemsFromArray(emptyState.allIds, [])).toEqual(emptyState.allIds);
-    expect(deleteItemsFromArray(oneItem.allIds, [])).toEqual(oneItem.allIds);
-    expect(deleteItemsFromArray(twoItems.allIds, [])).toEqual(twoItems.allIds);
-    expect(deleteItemsFromArray(threeItems.allIds, [])).toEqual(threeItems.allIds);
+    expect(
+      deleteItemsFromArray(emptyState.allIds, [])
+    ).toEqual(emptyState.allIds);
+    expect(
+      deleteItemsFromArray(oneItem.allIds, [])
+    ).toEqual(oneItem.allIds);
+    expect(
+      deleteItemsFromArray(twoItems.allIds, [])
+    ).toEqual(twoItems.allIds);
+    expect(
+      deleteItemsFromArray(threeItems.allIds, [])
+    ).toEqual(threeItems.allIds);
   });
 
   it('should handle deleting one item with array input', () => {
-    expect(deleteItemsFromArray(oneItem.allIds, ['id1'])).toEqual(emptyState.allIds);
-    expect(deleteItemsFromArray(twoItems.allIds, ['id2'])).toEqual(oneItem.allIds);
-    expect(deleteItemsFromArray(threeItems.allIds, ['id3'])).toEqual(twoItems.allIds);
+    expect(
+      deleteItemsFromArray(oneItem.allIds, ['id1'])
+    ).toEqual(emptyState.allIds);
+    expect(
+      deleteItemsFromArray(twoItems.allIds, ['id2'])
+    ).toEqual(oneItem.allIds);
+    expect(
+      deleteItemsFromArray(threeItems.allIds, ['id3'])
+    ).toEqual(twoItems.allIds);
   });
 
   it('should handle deleting one item with string input', () => {
-    expect(deleteItemsFromArray(oneItem.allIds, 'id1')).toEqual(emptyState.allIds);
-    expect(deleteItemsFromArray(twoItems.allIds, 'id2')).toEqual(oneItem.allIds);
-    expect(deleteItemsFromArray(threeItems.allIds, 'id3')).toEqual(twoItems.allIds);
+    expect(
+      deleteItemsFromArray(oneItem.allIds, 'id1')
+    ).toEqual(emptyState.allIds);
+    expect(
+      deleteItemsFromArray(twoItems.allIds, 'id2')
+    ).toEqual(oneItem.allIds);
+    expect(
+      deleteItemsFromArray(threeItems.allIds, 'id3')
+    ).toEqual(twoItems.allIds);
   });
 
   it('should handle deleting two items', () => {
-    expect(deleteItemsFromArray(twoItems.allIds, ['id1', 'id2'])).toEqual(emptyState.allIds);
-    expect(deleteItemsFromArray(threeItems.allIds, ['id2', 'id3'])).toEqual(oneItem.allIds);
+    expect(
+      deleteItemsFromArray(twoItems.allIds, ['id1', 'id2'])
+    ).toEqual(emptyState.allIds);
+    expect(
+      deleteItemsFromArray(threeItems.allIds, ['id2', 'id3'])
+    ).toEqual(oneItem.allIds);
   });
 
 });
@@ -96,4 +156,24 @@ describe('reducer utility deleteFromState', () => {
     expect(deleteFromState(threeItems, ['id2', 'id3'])).toEqual(oneItem);
   });
 
+});
+
+describe('reducer utility updateItem', () => {
+// updateItem(state, itemId, itemUpdates)
+
+  it('should do nothing when no updates given', () => {
+    expect(updateItem(twoItems, undefined, undefined)).toEqual(twoItems);
+  });
+
+  it('should update item when item updates given for existing item', () => {
+    expect(
+      updateItem(twoItems, 'id1', newFields)
+    ).toEqual(twoItemsNewFieldsItem1);
+  });
+
+  it('should create item when item updates given for non-existing item', () => {
+    expect(
+      updateItem(twoItems, 'id3', newFields)
+    ).toEqual(twoItemsNewFieldsItem3);
+  });
 });

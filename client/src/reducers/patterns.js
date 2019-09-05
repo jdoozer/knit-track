@@ -18,15 +18,26 @@ const initialState = {
   lastCreatedId: ''
 };
 
+const patternDefaultFields = {
+  loading: false,
+  error: null,
+  lastActionType: ''
+};
+
+// REDUCER (default export)
 const patternsReducer = handleActions({
 
   REQUEST_DATA: (state, action) => {
-    const { dataTypes, id } = action.payload;
+    const { dataTypes, id, actionType } = action.payload;
+    let updates = { loading: true, lastActionType: '', error: null };
+    if (actionType) {
+      updates.lastActionType = actionType;
+    }
     if (dataTypes.includes('patterns')) {
       if (id) {
-        return updateItem(state, id, { loading: true });
+        return updateItem(state, id, updates)
       }
-      return updateState(state, { loading: true });
+      return updateState(state, updates);
     }
     return state;
   },
@@ -45,7 +56,8 @@ const patternsReducer = handleActions({
   RECEIVE_DATA: (state, action) => mergeItems(
     state,
     action.payload.patterns,
-    { loading: false, error: null }
+    { loading: false, error: null, lastActionType: '' },
+    patternDefaultFields
   ),
 
   RECEIVE_NEW_PATTERN: (state, action) => addItem(
@@ -66,8 +78,7 @@ const patternsReducer = handleActions({
     return updateItem(
       state,
       patternId,
-      { sectionIds: sectionIds.concat(sectionId) },
-      { loading: false, error: null }
+      { sectionIds: sectionIds.concat(sectionId) }
     );
   },
 
@@ -111,17 +122,9 @@ export default patternsReducer;
 
 
 // SELECTORS (named exports)
-export const getPatternsLoading = state => state.loading;
-
-export const getPatternsError = state => state.error;
-
-export const getPatternsErrorCode = createSelector(
-  getPatternsError,
-  error => ((error && error.status) ? error.status : 200)
-);
-
 const getPatternsById = state => state.byId;
 const getPatternIds = state => state.allIds;
+
 const getPatternTitles = createSelector(
   getPatternsById,
   getPatternIds,
@@ -135,8 +138,23 @@ export const getPatternTitlesSorted = createSelector(
   patternTitles => sortByKey(patternTitles, 'title')
 );
 
+export const getPatternsLoading = state => state.loading;
+export const getPatternsError = state => state.error;
+export const getLastCreatedPatternId = state => state.lastCreatedId;
+
+
 export const getPatternById = (state, patternId) => (
   getPatternsById(state)[patternId]
 );
 
-export const getLastCreatedPatternId = state => state.lastCreatedId;
+const getPatternField = (field, defaultVal) => (state, patternId) => {
+  const pattern = getPatternById(state, patternId);
+  if (pattern) {
+    return pattern[field];
+  }
+  return defaultVal;
+};
+
+export const getPatternLoading = getPatternField('loading', false);
+export const getPatternError = getPatternField('error', null);
+export const getPatternLastAction = getPatternField('lastActionType', '');

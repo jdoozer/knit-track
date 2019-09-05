@@ -21,21 +21,30 @@ export const getPatternsError = state => (
   patternSelectors.getPatternsError(state.patterns)
 );
 
-export const getPatternsErrorCode = state => (
-  patternSelectors.getPatternsErrorCode(state.patterns)
-);
-
 export const getPatternTitlesSorted = state => (
   patternSelectors.getPatternTitlesSorted(state.patterns)
+);
+
+export const getLastCreatedPatternId = state => (
+  patternSelectors.getLastCreatedPatternId(state.patterns)
 );
 
 export const getPatternById = (state, patternId) => (
   patternSelectors.getPatternById(state.patterns, patternId)
 );
 
-export const getLastCreatedPatternId = state => (
-  patternSelectors.getLastCreatedPatternId(state.patterns)
+export const getPatternLoading = (state, patternId) => (
+  patternSelectors.getPatternLoading(state.patterns, patternId)
 );
+
+export const getPatternError = (state, patternId) => (
+  patternSelectors.getPatternError(state.patterns, patternId)
+);
+
+export const getPatternLastAction = (state, patternId) => (
+  patternSelectors.getPatternLastAction(state.patterns, patternId)
+);
+
 
 // SELECTORS [sections]
 export const getSectionsLoading = state => (

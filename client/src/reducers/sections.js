@@ -38,7 +38,7 @@ const sectionsReducer = handleActions({
 
   REQUEST_DATA: (state, action) => {
     const { dataTypes, id, actionType } = action.payload;
-    let updates = { loading: true };
+    let updates = { loading: true, lastActionType: '' };
     if (actionType) {
       updates.lastActionType = actionType;
     }
