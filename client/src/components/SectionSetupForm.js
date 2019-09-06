@@ -49,6 +49,7 @@ const styles = theme => {
   };
 
   let rowPropStyles = {};
+  // eslint-disable-next-line
   for (let prop in rowProps) {
     rowPropStyles[prop] = { width: rowProps[prop].width };
   }
