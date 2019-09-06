@@ -15,7 +15,9 @@ const initialState = {
   lastCreatedId: ''
 };
 
-const sectionDefaultFields = {
+const sectionInitialFields = { currentRow: 1 };
+
+const sectionReduxFields = {
   loading: false,
   error: null,
   lastActionType: ''
@@ -66,14 +68,15 @@ const sectionsReducer = handleActions({
     state,
     action.payload.sections,
     { loading: false, error: null, lastActionType: '' },
-    sectionDefaultFields
+    { ...sectionInitialFields, ...sectionReduxFields }
   ),
 
   RECEIVE_NEW_SECTION: (state, action) => addItem(
     state,
     {
       ...action.payload.section,
-      ...sectionDefaultFields
+      ...sectionInitialFields,
+      ...sectionReduxFields,
     },
     'sectionId',
     {
@@ -89,7 +92,7 @@ const sectionsReducer = handleActions({
     return updateItem(
       state,
       sectionId,
-      { ...sectionUpdates, ...sectionDefaultFields },
+      { ...sectionUpdates, ...sectionReduxFields },
     );
   },
 

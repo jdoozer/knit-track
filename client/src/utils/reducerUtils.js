@@ -18,8 +18,36 @@ function addItem(state, newItem, idField, updates) {
   return state;
 }
 
+// function mergeItems(state, newItems, stateUpdates, newItemFields) {
+//   if (newItems) {
+//     const newIds = Object.keys(newItems);
+//     const newState = {
+//       ...state,
+//       byId: {
+//         ...state.byId,
+//         ...newItems,
+//       },
+//       allIds: [...new Set([...state.allIds, ...newIds])],
+//       ...stateUpdates,
+//     };
+//     if (newItemFields) {
+//       newIds.forEach(
+//         itemId => {
+//           newState.byId[itemId] = {
+//             ...newItemFields,
+//             ...newState.byId[itemId]
+//           };
+//         }
+//       );
+//     }
+//     return newState;
+//   }
+//   return state;
+// }
 
-function mergeItems(state, newItems, stateUpdates, itemUpdates) {
+
+// The version of "mergeItems" below assumes the input already has byId, allId
+function mergeItems(state, newItems, stateUpdates, newItemFields) {
   if (newItems) {
     const newState = {
       ...state,
@@ -30,10 +58,13 @@ function mergeItems(state, newItems, stateUpdates, itemUpdates) {
       allIds: [...new Set([...state.allIds ,...newItems.allIds])],
       ...stateUpdates,
     };
-    if (itemUpdates) {
+    if (newItemFields) {
       newItems.allIds.forEach(
         itemId => {
-          newState.byId[itemId] = { ...newState.byId[itemId], ...itemUpdates };
+          newState.byId[itemId] = {
+            ...newItemFields,
+            ...newState.byId[itemId]
+          };
         }
       );
     }

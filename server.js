@@ -76,25 +76,16 @@ app.get('/api/sections/:sectionId', (req, res, next) => {
 // POST requests
 app.post('/api/patterns', (req, res, next) => {
 
-  const patternId = generateId();
-  let pattern = req.body.pattern;
-  pattern.patternId = patternId;
-  pattern.sectionIds = [];
-
-  setTimeout(() => res.send(pattern), delayTime);
+  setTimeout(() => res.send({ name: generateId() }), delayTime);
   // next('test error');
 
 });
 
 app.post('/api/sections', (req, res, next) => {
 
-  const sectionId = generateId();
-  let section = req.body.section;
-  section.sectionId = sectionId;
-  section.currentRow = 1;
+  setTimeout(() => res.send({ name: generateId() }), delayTime);
+  // next('test error');
 
-  setTimeout(() => res.send(section), delayTime);
-  // next('test error')
 });
 
 

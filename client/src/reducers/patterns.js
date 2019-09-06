@@ -18,10 +18,12 @@ const initialState = {
   lastCreatedId: ''
 };
 
-const patternDefaultFields = {
+const patternInitialFields = { sectionIds: [] };
+
+const patternReduxFields = {
   loading: false,
   error: null,
-  lastActionType: ''
+  lastActionType: '',
 };
 
 // REDUCER (default export)
@@ -57,14 +59,15 @@ const patternsReducer = handleActions({
     state,
     action.payload.patterns,
     { loading: false, error: null, lastActionType: '' },
-    patternDefaultFields
+    { ...patternInitialFields, ...patternReduxFields }
   ),
 
   RECEIVE_NEW_PATTERN: (state, action) => addItem(
     state,
     {
       ...action.payload.pattern,
-      ...patternDefaultFields
+      ...patternInitialFields,
+      ...patternReduxFields
     },
     'patternId',
     {
