@@ -62,7 +62,10 @@ const patternsReducer = handleActions({
 
   RECEIVE_NEW_PATTERN: (state, action) => addItem(
     state,
-    action.payload.pattern,
+    {
+      ...action.payload.pattern,
+      ...patternDefaultFields
+    },
     'patternId',
     {
       loading: false,
