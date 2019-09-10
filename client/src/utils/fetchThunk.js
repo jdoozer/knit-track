@@ -31,10 +31,10 @@ function fetchThunk({
     .then(({ status, json }) => (
       (status === 200) ?
         dispatch(receiveAction(json)) :
-        dispatch(errorAction({ status, message: json.error }))
+        dispatch(errorAction({ status, message: json.error.message }))
     ))
     .catch(error => dispatch(
-      errorAction({ status: 500, message: error.toString() }))
+      errorAction({ status: 500, message: error.message }))
     )
   }
 }
