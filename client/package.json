@@ -21,12 +21,11 @@
     "typeface-roboto": "0.0.75"
   },
   "scripts": {
-    "start": "NODE_PATH=src react-scripts start",
-    "build": "NODE_PATH=src react-scripts build",
-    "test": "NODE_PATH=src react-scripts test --env=jsdom",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:5000/",
   "devDependencies": {
     "react-test-renderer": "^16.9.0",
     "redux-devtools-extension": "^2.13.8"

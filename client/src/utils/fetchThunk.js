@@ -1,5 +1,8 @@
 
-const MOCK_SERVER_URL = '/api/';
+const server = {
+  proxy: '/api',
+  firebase: 'https://us-central1-knit-track.cloudfunctions.net/api'
+};
 
 function fetchThunk({
   requestAction = (() => {}),
@@ -7,7 +10,7 @@ function fetchThunk({
   errorAction = (() => {}),
   body = null,
   path = '',
-  host = MOCK_SERVER_URL,
+  host = server.firebase,
   requestType = 'GET',
 }) {
   let fetchObj = {
