@@ -19,10 +19,10 @@ const HYDRATE_STATE = false;
 const SAVE_STATE = false;
 
 const persistedState = loadState();
-const loggerMiddleware = createLogger();
-const middleware = composeWithDevTools(
-  applyMiddleware(thunkMiddleware, loggerMiddleware)
-);
+const middleware = (process.env.NODE_ENV === `development`)
+  ? composeWithDevTools(applyMiddleware(thunkMiddleware, createLogger()))
+  : applyMiddleware(thunkMiddleware);
+
 
 const storeInputArgs = HYDRATE_STATE
   ? [createRootReducer, persistedState, middleware]
