@@ -1,53 +1,116 @@
-const mockServerData = require('./../mockServerData');
-const generateId = require('uuid/v4');
-
 const express = require('express');
 const createError = require('http-errors');
-const router = express.Router();
+
+function makeRouter(db) {
+
+  const router = express.Router();
+
+  router.get('/:sectionId', async (req, res, next) => {
+
+    const sectionId = req.params.sectionId;
+
+    try {
+      const sectionSnapshot = await db.ref('sections').child(sectionId)
+        .once('value');
+      const section = sectionSnapshot.val();
+
+      if (section) {
+        const sections = {
+          byId: { [sectionId]: section },
+          allIds: [sectionId]
+        };
+        res.send({ sections });
+      } else {
+        next(createError(404, 'section not found'));
+        return;
+      }
+    } catch(error) {
+      next(createError(500, error.message));
+      return;
+    }
+  });
+
+  router.post('/', async (req, res, next) => {
+    try {
+      let section = req.body.section;
+      const { patternId } = section;
+      const pattSectionIdsRef = db.ref(`patterns/${patternId}/sectionIds`);
+
+      // Create new slot in section database and get ID
+      // Get pattern's sectionIds in parallel
+      const sectionRefPromise = db.ref('sections').push();
+      const pattSectionIdsSnapshotPromise = pattSectionIdsRef.once('value');
+      const [sectionRef, pattSectionIdsSnapshot] = await Promise.all([
+        sectionRefPromise,
+        pattSectionIdsSnapshotPromise
+      ]);
+
+      // add new ID as field in section and add to pattern's sectionIds
+      const sectionId = sectionRef.key;
+      section.sectionId = sectionId;
+
+      const patternSectionIds = pattSectionIdsSnapshot.val();
+      patternSectionIds.push(sectionId);
+
+      // send data to database
+      await Promise.all([
+        sectionRef.set(section),
+        pattSectionIdsRef.set(patternSectionIds)
+      ]);
+
+      res.send({ name: sectionId });
+    } catch(error) {
+      next(createError(500, error.message));
+      return;
+    }
+  });
+
+  router.patch('/:sectionId', async (req, res, next) => {
+    try {
+      const sectionUpdates = req.body;
+      const sectionId = req.params.sectionId;
+      await db.ref('sections').child(sectionId).update(sectionUpdates);
+      res.send(sectionUpdates);
+    } catch(error) {
+      next(createError(500, error.message));
+      return;
+    }
+  });
 
 
-router.get('/:sectionId', (req, res, next) => {
+  router.delete('/:sectionId', async (req, res, next) => {
+    try {
+      const sectionId = req.params.sectionId;
+      const sectionRef = db.ref('sections').child(sectionId);
 
-  const sectionId = req.params.sectionId;
-  const section = mockServerData.sections.byId[sectionId];
+      // get patternId to update before we delete the section
+      const patternIdSnapshot = await sectionRef.child('patternId')
+        .once('value');
+      const patternId = patternIdSnapshot.val();
 
-  if (section) {
-    const sections = {
-      byId: { [section.sectionId]: section },
-      allIds: [section.sectionId],
-    };
-    res.send({ sections });
-  } else {
-    res.status(404).send({ error: "section not found "});
-  }
-});
+      // set up new sectionIds array for pattern
+      const patternSectionIdsRef = db.ref(`patterns/${patternId}/sectionIds`);
+      const sectionIdsSnapshot = await patternSectionIdsRef.once('value');
+      const sectionIds = sectionIdsSnapshot.val();
+      const updatedSectionIds = sectionIds
+        ? sectionIds.filter(id => id !== sectionId)
+        : [];
 
-router.post('/', (req, res, next) => {
-  res.send({ name: generateId() });
-});
+      // delete section and update sectionIds in pattern
+      await Promise.all([
+        sectionRef.remove(),
+        patternSectionIdsRef.set(updatedSectionIds)
+      ]);
 
-router.patch('/:sectionId', (req, res, next) => {
+      res.send({ patternId, sectionId });
 
-  let sectionUpdates = req.body;
-  sectionUpdates.sectionId = req.params.sectionId;
+    } catch(error) {
+      next(createError(500, error.message));
+      return;
+    }
+  });
 
-  if (sectionUpdates.currentRow === 3) {
-    next(createError(500, 'test error'));
-  }
-  else {
-    res.send(sectionUpdates);
-  }
+  return router;
+}
 
-});
-
-router.delete('/:sectionId', (req, res, next) => {
-
-  const sectionId = req.params.sectionId;
-  const patternId = mockServerData.sections.byId[sectionId].patternId;
-
-  res.send({ patternId, sectionId });
-
-});
-
-
-module.exports = router;
+module.exports = makeRouter;

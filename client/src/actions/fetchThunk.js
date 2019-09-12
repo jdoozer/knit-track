@@ -1,8 +1,7 @@
 
-const server = {
-  proxy: '/api',
-  firebase: 'https://us-central1-knit-track.cloudfunctions.net/api'
-};
+const server = (process.env.NODE_ENV === 'development')
+  ? '/api'
+  : 'https://us-central1-knit-track.cloudfunctions.net/api';
 
 function fetchThunk({
   requestAction = (() => {}),
@@ -10,7 +9,7 @@ function fetchThunk({
   errorAction = (() => {}),
   body = null,
   path = '',
-  host = server.firebase,
+  host = server,
   requestType = 'GET',
 }) {
   let fetchObj = {

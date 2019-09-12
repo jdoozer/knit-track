@@ -3,7 +3,7 @@ exports.patterns = {
   byId: {
     'f797d396-9949-4626-9dd3-0f2e8304a0c7': {
       patternId: 'f797d396-9949-4626-9dd3-0f2e8304a0c7',
-      title: 'My Pattern',
+      title: 'My Pattern MOCK',
       info: 'pattern info placeholder',
       sectionIds: [
         'e1aa9ab9-7596-4e24-8e45-05b035e3b366',

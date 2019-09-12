@@ -1,5 +1,5 @@
 import { createActions } from 'redux-actions';
-import fetchThunk from 'utils/fetchThunk';
+import fetchThunk from 'actions/fetchThunk';
 
 const {
   requestData,
@@ -27,7 +27,8 @@ const {
     { section: { sectionId: json.name, ...sectionData }}
   ),
 
-  RECEIVE_UPDATED_SECTION: json => ({ section: json }),
+  RECEIVE_UPDATED_SECTION: (json, sectionId) => (
+    { section: { sectionId, ...json } }),
 
   UPDATE_ROW_COUNT_OPTIMISTIC: (sectionId, updateType) => (
     { sectionId, updateType }
@@ -91,7 +92,7 @@ export const createSection = ({ ...sectionData }) => fetchThunk({
 
 const updateSection = (sectionId, sectionUpdates, actionType) => fetchThunk({
   requestAction: requestData(['sections'], sectionId, actionType),
-  receiveAction: receiveUpdatedSection,
+  receiveAction: json => receiveUpdatedSection(json, sectionId),
   errorAction: error => receiveError(error, ['sections'], sectionId),
   path: `sections/${sectionId}`,
   requestType: 'PATCH',

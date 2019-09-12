@@ -1,57 +1,108 @@
-const mockServerData = require('./../mockServerData');
-const utils = require('./../utils');
-const generateId = require('uuid/v4');
-
 const express = require('express');
 const createError = require('http-errors');
-const router = express.Router();
 
+function makeRouter(db) {
 
-router.get('/', (_, res, next) => {
-  res.send({ patterns: mockServerData.patterns });
-});
+  const router = express.Router();
 
-
-router.get('/:patternId', (req, res, next) => {
-
-  const patternId = req.params.patternId;
-  const pattern = mockServerData.patterns.byId[patternId];
-
-  if (pattern) {
-    const patterns = {
-      byId: { [patternId]: pattern },
-      allIds: [patternId]
-    };
-    let sections = { byId: {}, allIds: [] };
-    if (pattern.sectionIds) {
-      sections = {
-        byId: utils.filterObject(
-          mockServerData.sections.byId,
-          pattern.sectionIds
-        ),
-        allIds: pattern.sectionIds
-      };
+  router.get('/', async (_, res, next) => {
+    try {
+      const patternsSnapshot = await db.ref('patterns').once('value');
+      const patternsById = patternsSnapshot.val();
+      res.send({ patterns:
+        { byId: patternsById, allIds: Object.keys(patternsById) }
+      });
+    } catch(error) {
+      next(createError(500, error.message));
+      return;
     }
-    res.send({ patterns, sections });
-  } else {
-    next(createError(404, 'pattern not found'));
-  }
-});
+  });
+
+  router.get('/:patternId', async (req, res, next) => {
+    try {
+      const patternId = req.params.patternId;
+      const patternSnapshot = await db.ref('patterns').child(patternId)
+        .once('value');
+      const pattern = patternSnapshot.val();
+
+      if (pattern) {
+        const patterns = {
+          byId: { [patternId]: pattern },
+          allIds: [patternId]
+        };
+        const { sectionIds } = pattern;
+
+        let sections = { byId: {}, allIds: [] };
+
+        if (sectionIds) {
+          const sectionSnapshotPromises = sectionIds.map(id =>
+            db.ref('sections').child(id).once('value')
+          );
+          const sectionSnapshots = await Promise.all(sectionSnapshotPromises);
+
+          sectionIds.forEach((id, index) => {
+            sections.byId[id] = sectionSnapshots[index].val();
+            sections.allIds.push(id);
+          });
+        }
+
+        res.send({ patterns, sections });
+
+      } else {
+        next(createError(404, 'pattern not found'));
+        return;
+      }
+    } catch(error) {
+      next(createError(500, error.message));
+      return;
+    }
+  });
+
+  router.post('/', async (req, res, next) => {
+    try {
+      let pattern = req.body.pattern;
+      // create new slot in database and get ID
+      const patternRef = await db.ref('patterns').push();
+      const patternId = patternRef.key;
+
+      // add new ID as field in pattern, then push pattern to database
+      pattern.patternId = patternId;
+      await patternRef.set(pattern);
+
+      res.send({ name: patternId });
+    } catch(error) {
+      next(createError(500, error.message));
+      return;
+    }
+  });
 
 
-router.post('/', (req, res, next) => {
-  res.send({ name: generateId() });
-});
+  router.delete('/:patternId', async (req, res, next) => {
+    try {
+      const patternId = req.params.patternId;
+      const patternRef = db.ref('patterns').child(patternId);
 
+      // get sectionIds to delete before we delete the pattern
+      const sectionIdsSnapshot = await patternRef.child('sectionIds')
+        .once('value');
+      const sectionIds = sectionIdsSnapshot.val();
 
-router.delete('/:patternId', (req, res, next) => {
+      // delete all the things
+      let removePromises = sectionIds
+        ? sectionIds.map(id => db.ref('sections').child(id).remove())
+        : [];
+      removePromises.push(patternRef.remove());
+      await Promise.all(removePromises);
 
-  const patternId = req.params.patternId;
-  const sectionIds = mockServerData.patterns.byId[patternId].sectionIds;
+      res.send({ patternId, sectionIds });
 
-  res.send({ patternId, sectionIds });
+    } catch(error) {
+      next(createError(500, error.message));
+      return;
+    }
+  });
 
-});
+  return router;
+}
 
-
-module.exports = router;
+module.exports = makeRouter;

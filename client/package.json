@@ -24,9 +24,13 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "firebase": "firebase serve -p 5000",
+    "dev": "concurrently --kill-others-on-fail \"npm run firebase\" \"npm run start\""
   },
+  "proxy": "http://localhost:5000",
   "devDependencies": {
+    "concurrently": "^4.1.2",
     "react-test-renderer": "^16.9.0",
     "redux-devtools-extension": "^2.13.8"
   },
