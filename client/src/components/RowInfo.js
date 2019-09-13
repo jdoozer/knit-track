@@ -36,7 +36,9 @@ RowInfo.propTypes = {
   currentRow: PropTypes.number.isRequired,
   fullText: PropTypes.string.isRequired,
   quickText: PropTypes.string.isRequired,
-  stitches: PropTypes.string.isRequired,
+  stitches: PropTypes.oneOfType(
+    [ PropTypes.number, PropTypes.string]
+  ).isRequired,
   classes: PropTypes.object.isRequired,
 };
 

@@ -103,7 +103,7 @@ const RowCounter = ({ currentRow, rows, onClick, classes }) => (
 RowCounter.propTypes = {
   onClick: PropTypes.func.isRequired,
   currentRow: PropTypes.number.isRequired,
-  rows: PropTypes.object.isRequired,
+  rows: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]).isRequired,
   loading: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
   classes: PropTypes.object.isRequired,
