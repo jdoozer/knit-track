@@ -85,7 +85,7 @@ class SectionPanel extends React.Component {
             && (<React.Fragment>
               <RowCounter
                 currentRow={currentRow}
-                rows={rows}
+                rows={rows || {}}
                 error={Boolean(error) && lastActionType==='updateRowCount'}
                 loading={loading  && lastActionType==='updateRowCount'}
                 onClick={updateType => updateRowCount(sectionId, updateType)}

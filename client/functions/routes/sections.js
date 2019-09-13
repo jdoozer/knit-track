@@ -45,12 +45,16 @@ function makeRouter(db) {
         pattSectionIdsSnapshotPromise
       ]);
 
-      // add new ID as field in section and add to pattern's sectionIds
+      // add new ID as field in section, initialize current row
       const sectionId = sectionRef.key;
       section.sectionId = sectionId;
+      section.currentRow = 1;
 
-      const patternSectionIds = pattSectionIdsSnapshot.val();
-      patternSectionIds.push(sectionId);
+      // add new ID to pattern's sectionIds
+      // (need conditional b/c firebase won't store empty arrays)
+      const patternSectionIds = (pattSectionIdsSnapshot.exists())
+        ? pattSectionIdsSnapshot.val().concat(sectionId)
+        : [sectionId];
 
       // send data to database
       await Promise.all([
@@ -58,7 +62,7 @@ function makeRouter(db) {
         pattSectionIdsRef.set(patternSectionIds)
       ]);
 
-      res.send({ name: sectionId });
+      res.send(section);
     } catch(error) {
       next(createError(500, error.message));
       return;
@@ -91,15 +95,15 @@ function makeRouter(db) {
       // set up new sectionIds array for pattern
       const patternSectionIdsRef = db.ref(`patterns/${patternId}/sectionIds`);
       const sectionIdsSnapshot = await patternSectionIdsRef.once('value');
-      const sectionIds = sectionIdsSnapshot.val();
-      const updatedSectionIds = sectionIds
-        ? sectionIds.filter(id => id !== sectionId)
+      const sectionIds = (sectionIdsSnapshot.exists())
+        ? pattSectionIdsSnapshot.val().filter(id => id !== sectionId)
         : [];
+
 
       // delete section and update sectionIds in pattern
       await Promise.all([
         sectionRef.remove(),
-        patternSectionIdsRef.set(updatedSectionIds)
+        patternSectionIdsRef.set(sectionIds)
       ]);
 
       res.send({ patternId, sectionId });

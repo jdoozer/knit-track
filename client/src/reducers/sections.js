@@ -15,9 +15,7 @@ const initialState = {
   lastCreatedId: ''
 };
 
-const sectionInitialFields = { currentRow: 1 };
-
-const sectionReduxFields = {
+const sectionDefaultFields = {
   loading: false,
   error: null,
   lastActionType: ''
@@ -65,34 +63,32 @@ const sectionsReducer = handleActions({
   },
 
   RECEIVE_DATA: (state, action) => mergeItems(
-    state,
-    action.payload.sections,
-    { loading: false, error: null, lastActionType: '' },
-    { ...sectionInitialFields, ...sectionReduxFields }
-  ),
+     state,
+     action.payload.sections,
+     { loading: false, error: null, lastActionType: '' },
+     sectionDefaultFields
+   ),
 
-  RECEIVE_NEW_SECTION: (state, action) => addItem(
-    state,
-    {
-      ...action.payload.section,
-      ...sectionInitialFields,
-      ...sectionReduxFields,
-    },
-    'sectionId',
-    {
-      loading: false,
-      error: null,
-      lastCreatedId: action.payload.section.sectionId
-    }
-
-  ),
+   RECEIVE_NEW_SECTION: (state, action) => addItem(
+     state,
+     {
+       ...action.payload.section,
+       ...sectionDefaultFields
+     },
+     'sectionId',
+     {
+       loading: false,
+       error: null,
+       lastCreatedId: action.payload.section.sectionId
+     }
+   ),
 
   RECEIVE_UPDATED_SECTION: (state, action) => {
     const { sectionId, ...sectionUpdates } = action.payload.section;
     return updateItem(
       state,
       sectionId,
-      { ...sectionUpdates, ...sectionReduxFields },
+      { ...sectionUpdates, ...sectionDefaultFields },
     );
   },
 

@@ -19,13 +19,9 @@ const {
 
   RECEIVE_DATA: json => ({ ...json }),
 
-  RECEIVE_NEW_PATTERN: (json, patternData) => (
-    { pattern: { patternId: json.name, ...patternData }}
-  ),
+  RECEIVE_NEW_PATTERN: json => ({ pattern: json }),
 
-  RECEIVE_NEW_SECTION: (json, sectionData) => (
-    { section: { sectionId: json.name, ...sectionData }}
-  ),
+  RECEIVE_NEW_SECTION: json => ({ section: json }),
 
   RECEIVE_UPDATED_SECTION: (json, sectionId) => (
     { section: { sectionId, ...json } }),
@@ -74,7 +70,7 @@ const fetchPatternExpanded = patternId => fetchThunk({
 
 export const createPattern = ({ ...patternData }) => fetchThunk({
   requestAction: requestData(['patterns']),
-  receiveAction: json => receiveNewPattern(json, patternData),
+  receiveAction: receiveNewPattern,
   errorAction: error => receiveError(error, ['patterns']),
   path: 'patterns',
   requestType: 'POST',
@@ -83,7 +79,7 @@ export const createPattern = ({ ...patternData }) => fetchThunk({
 
 export const createSection = ({ ...sectionData }) => fetchThunk({
   requestAction: requestData(['sections']),
-  receiveAction: json => receiveNewSection(json, sectionData),
+  receiveAction: receiveNewSection,
   errorAction: error => receiveError(error, ['sections']),
   path: 'sections',
   requestType: 'POST',
@@ -129,7 +125,9 @@ export const fetchPatternExpandedIfNeeded = patternId => (
 
       const patternSections = patterns.byId[patternId].sectionIds;
 
-      if (patternSections.every(id => sections.allIds.includes(id))) {
+      if (patternSections && patternSections.every(
+        id => sections.allIds.includes(id)
+      )) {
         return null;
       }
     }
