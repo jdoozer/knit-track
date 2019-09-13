@@ -21,6 +21,10 @@
       {
         "source": "/api/**",
         "function": "api"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
       }
     ]
   }

@@ -20,7 +20,7 @@ if (production) {
   admin.initializeApp(functions.config().firebase);
 } else {
   const serviceAccount = require(
-    './../../../keys/knit-track-8aef8cbb1d1d.json'
+    './../../keys/knit-track-8aef8cbb1d1d.json'
   );
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
