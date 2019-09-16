@@ -103,7 +103,7 @@ function makeRouter(db) {
 
       // delete all the things
       let removePromises = sectionIdsSnapshot.exists()
-        ? sectionIdsSnapshot.val().map(id => db.ref(`sections${id}`).remove())
+        ? sectionIdsSnapshot.val().map(id => db.ref(`sections/${id}`).remove())
         : [];
       removePromises.push(patternRef.remove());
       await Promise.all(removePromises);

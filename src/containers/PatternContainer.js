@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { fetchPatternExpandedIfNeeded } from 'actions';
 import {
   getPatternLoading, getPatternError, getPatternLastAction, getPatternById
@@ -43,13 +43,6 @@ class PatternContainer extends React.Component {
 
   }
 
-  componentDidUpdate() {
-    const { pattern, history } = this.props;
-    if (!pattern) {
-      history.push('/patterns');
-    }
-  }
-
   render() {
 
     const {
@@ -77,7 +70,11 @@ class PatternContainer extends React.Component {
     return (
       <Switch>
         <Route path={`${path}/newsection`} component={SectionSetup} />
-        <Route render={() => <Pattern pattern={pattern} />} />
+        <Route render={() => (
+          (pattern === undefined)
+            ? (<Redirect push to="/patterns" />)
+            : (<Pattern pattern={pattern} />)
+        )} />
       </Switch>
     );
   }
@@ -90,9 +87,6 @@ PatternContainer.propTypes = {
     params: PropTypes.shape({
       patternId: PropTypes.string.isRequired
     }).isRequired
-  }).isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
   }).isRequired,
   loading: PropTypes.bool.isRequired,
   error: PropTypes.object,

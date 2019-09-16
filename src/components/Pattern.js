@@ -31,9 +31,9 @@ const Pattern = ({
       {title}
     </ContentHeader>
 
-    <Typography variant="subtitle1" className={classes.info}>
+    {info && (<Typography variant="subtitle1" className={classes.info}>
       {info}
-    </Typography>
+    </Typography>)}
 
     <div className={classes.sectionCards}>
       {sectionIds.map(id => <Section key={id} sectionId={id} />)}
@@ -50,7 +50,7 @@ const Pattern = ({
 Pattern.propTypes = {
   pattern: PropTypes.shape({
     title: PropTypes.string.isRequired,
-    info: PropTypes.string.isRequired,
+    info: PropTypes.string,
     patternId: PropTypes.string.isRequired,
     sectionIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   }).isRequired,

@@ -96,7 +96,7 @@ function makeRouter(db) {
       const patternSectionIdsRef = db.ref(`patterns/${patternId}/sectionIds`);
       const sectionIdsSnapshot = await patternSectionIdsRef.once('value');
       const sectionIds = (sectionIdsSnapshot.exists())
-        ? pattSectionIdsSnapshot.val().filter(id => id !== sectionId)
+        ? sectionIdsSnapshot.val().filter(id => id !== sectionId)
         : [];
 
 
