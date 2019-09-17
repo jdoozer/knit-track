@@ -1,5 +1,7 @@
 import { createActions } from 'redux-actions';
 import fetchThunk from 'actions/fetchThunk';
+import db from 'config/firebaseDB';
+
 
 const {
   requestData,
@@ -49,16 +51,33 @@ const {
 // EXPORT SYNCHRONOUS ACTION CREATORS
 export { clearError, clearLastCreated };
 
+// FORMATTING FOR REALTIME DB REQUESTS (replicated from express server)
+const formatPatterns = (patternsFromDB) => {
+  if (patternsFromDB) {
+    const patternKeys = Object.keys(patternsFromDB);
+    patternKeys.forEach(patternId => {
+      const pattern = patternsFromDB[patternId];
+      if (!pattern.sectionIds) { pattern.sectionIds = [] }
+    });
+    return { patterns: { byId: patternsFromDB, allIds: patternKeys } };
+  } else {
+    return { patterns: { byId: {}, allIds: [] } };
+  }
+};
 
-// ASYNC THUNK FUNCTIONS
+// ASYNC THUNK FUNCTIONS - REALTIME DATABASE
+export const fetchPatterns = () => (dispatch) => {
+  dispatch(requestData(['patterns']));
+  db.ref('patterns').on('value',
+    snapshot => dispatch(receiveData(formatPatterns(snapshot.val()))),
+    error => dispatch(receiveError(
+      { status: 500, message: error.message },
+      ['patterns']
+    ))
+  );
+};
 
-export const fetchPatterns = () => fetchThunk({
-  requestAction: requestData(['patterns']),
-  receiveAction: receiveData,
-  errorAction: error => receiveError(error, ['patterns']),
-  path: 'patterns',
-});
-
+// ASYNC THUNK FUNCTIONS - FETCH FROM REST API
 // data types here only patterns even though we're fetching sections too; all
 // done with a single fetch request and patterns is the primary update
 const fetchPatternExpanded = patternId => fetchThunk({
