@@ -4,8 +4,11 @@ import lime from '@material-ui/core/colors/lime';
 
 const theme = createMuiTheme({
   palette: {
-    primary: teal,
-    secondary: lime
+    primary: {
+      ...teal,
+      bg: teal['A200'],
+    },
+    secondary: lime,
   },
 });
 

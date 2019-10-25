@@ -7,35 +7,29 @@ const styles = theme => ({
   root: {
     marginTop: theme.spacing(2),
   },
-  quickText: {
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-  },
 });
 
 /* props here should match the keys used in SectionSetup component */
-const RowInfo = ({ currentRow, fullText, quickText, stitches, classes }) => {
+const RowInfo = ({ currentRow, rowInstructions, notes, stitches, classes }) => {
 
-  let infoString = (fullText || stitches) ? `Row ${currentRow}` : '';
-  infoString += fullText ? `: ${fullText} ` : '';
-  infoString += stitches ? ` [${stitches} sts]` : '';
+  let row = (rowInstructions || stitches) ? [(<b>Row {currentRow}</b>)] : [];
+  if (rowInstructions)  row.push(`: ${rowInstructions}`);
+  if (stitches)  row.push(` [${stitches} sts]`);
+
+  const notesDisplay = notes && notes.trim() && [(<b>Notes</b>), `: ${notes}`];
 
   return (
     <div className={classes.root}>
-      <Typography variant="body1">
-        {infoString}
-      </Typography>
-      <Typography variant="subtitle1" className={classes.quickText}>
-        {quickText && quickText.trim() && <span>{quickText}</span>}
-      </Typography>
+      {row.length && <Typography variant="body1">{row}</Typography>}
+      <Typography variant="subtitle1">{notesDisplay}</Typography>
     </div>
   );
 };
 
 RowInfo.propTypes = {
   currentRow: PropTypes.number.isRequired,
-  fullText: PropTypes.string.isRequired,
-  quickText: PropTypes.string.isRequired,
+  rowInstructions: PropTypes.string.isRequired,
+  notes: PropTypes.string.isRequired,
   stitches: PropTypes.oneOfType(
     [ PropTypes.number, PropTypes.string]
   ).isRequired,

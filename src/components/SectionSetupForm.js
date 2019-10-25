@@ -12,12 +12,12 @@ import arrayToRowObject from 'utils/arrayToRowObject';
 
 // keys here should match the props pulled out in RowInfo component
 const rowProps = {
-  fullText: {
+  rowInstructions: {
     display: 'Full Row Instructions',
     width: 300,
     type: 'string',
   },
-  quickText: {
+  notes: {
     display: 'Shorthand/Alert',
     width: 150,
     type: 'string',
