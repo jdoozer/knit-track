@@ -32,7 +32,7 @@ const ErrorSnackbar = ({ open, classes, onClose, children }) => (
         <span className={classes.message}>
           <ErrorIcon className={classes.icon} />
           {children}
-       </span>
+        </span>
       }
     />
   </Snackbar>

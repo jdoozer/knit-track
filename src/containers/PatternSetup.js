@@ -22,9 +22,8 @@ const mapDispatchToProps = {
 class PatternSetup extends React.Component {
 
   componentDidUpdate() {
-    const { lastCreatedId, history } = this.props;
-    if (lastCreatedId) {
-      history.push(`/patterns/${lastCreatedId}`);
+    if (this.props.lastCreatedId) {
+      this.props.history.push(`/patterns/${this.props.lastCreatedId}`);
     }
   }
 

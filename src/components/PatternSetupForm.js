@@ -8,12 +8,13 @@ import ErrorSnackbar from 'components/ErrorSnackbar';
 import ContentHeader from 'components/ContentHeader';
 
 const styles = theme => ({
-  root: {
+  form: {
     padding: theme.spacing(3),
     paddingTop: theme.spacing(2),
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    minWidth: 330,
   },
   textField: {
     width: '100%',
@@ -28,43 +29,70 @@ class PatternSetupForm extends React.Component {
   state = {
     title: '' ,
     info: '',
+    linkPattSource: '',
+    linkRavPatt: '',
+    linkRavProj: '',
   };
 
-  handleChange = ({ target: { name, value } }) => {
-    this.setState({ [name]: value });
+  handleChange = ({ target }) => {
+    this.setState({ [target.name]: target.value });
   };
 
   handleSubmit = event => {
-    const { createPattern } = this.props;
-    const { title, info } = this.state;
-
-    createPattern({ title, info });
+    this.props.createPattern(this.state);
     event.preventDefault();
   };
 
   render() {
 
     const { classes, loading, error, clearError } = this.props;
-    const { title, info } = this.state;
 
     return (
       <React.Fragment>
 
         <ContentHeader>Pattern Setup</ContentHeader>
-        <form onSubmit={this.handleSubmit} className={classes.root}>
+        <form onSubmit={this.handleSubmit} className={classes.form}>
           <TextField label="Pattern Title"
             className={classes.textField}
             name="title"
-            value={title}
+            value={this.state.title}
             onChange={this.handleChange}
+            margin="dense"
+            variant="filled"
+          />
+          <TextField label="Link: Pattern Source"
+            className={classes.textField}
+            name="linkPattSource"
+            value={this.state.linkPattSource}
+            onChange={this.handleChange}
+            margin="dense"
+            variant="filled"
+          />
+          <TextField label="Link: Pattern Ravelry Page"
+            className={classes.textField}
+            name="linkRavPatt"
+            value={this.state.linkRavPatt}
+            onChange={this.handleChange}
+            margin="dense"
+            variant="filled"
+          />
+          <TextField label="Link: Project Ravelry Page"
+            className={classes.textField}
+            name="linkRavProj"
+            value={this.state.linkRavProj}
+            onChange={this.handleChange}
+            margin="dense"
+            variant="filled"
           />
           <TextField label="Pattern Notes/Information"
             className={classes.textField}
             name="info"
-            value={info}
+            value={this.state.info}
             onChange={this.handleChange}
             multiline
             rowsMax="10"
+            margin="dense"
+            variant="filled"
           />
           <Button
             variant="contained"

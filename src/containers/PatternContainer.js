@@ -29,18 +29,22 @@ class PatternContainer extends React.Component {
   state = { initialLoadingIndicator: true};
 
   componentDidMount() {
-
-    const {
-      match: { params: { patternId } },
-      fetchPatternExpandedIfNeeded
-    } = this.props;
+    const patternId = this.props.match.params.patternId;
 
     if (patternId) {
-      fetchPatternExpandedIfNeeded(patternId);
+      this.props.fetchPatternExpandedIfNeeded(patternId);
     }
 
     this.setState({ initialLoadingIndicator: false });
+  }
 
+  componentDidUpdate(prevProps) {
+    const patternId = this.props.match.params.patternId;
+    const prevPatternId = prevProps.match.params.patternId;
+
+    if (patternId && prevPatternId && !(patternId === prevPatternId)) {
+      this.props.fetchPatternExpandedIfNeeded(patternId);
+    }
   }
 
   render() {

@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Hidden from '@material-ui/core/Hidden';
 import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
 import DeletePattern from 'containers/DeletePattern';
 import ContentHeader from 'components/ContentHeader';
 import Section from 'containers/Section';
@@ -10,42 +10,74 @@ import AddSection from 'components/AddSection';
 
 const styles = theme => ({
   root: {
-    paddingBottom: 1,
   },
   info: {
     textAlign: 'left',
     margin: theme.spacing(3),
   },
-  sectionCards: {
+  links: {
     margin: theme.spacing(3),
+    marginBottom: (({ pattern }) => pattern.info ? 0 : theme.spacing(3)),
+    '& span::after': {
+      content: `' | '`,
+    },
+    '& span:last-child::after': {
+      content: `''`,
+    },
+  },
+  sectionCards: {
+    margin: `0 ${theme.spacing(3)}px`,
+    width: '100%'
   },
 });
 
-const Pattern = ({
-  pattern: { patternId, title, info, sectionIds }, classes
-}) => (
+const Pattern = ({ pattern, classes }) => {
 
-  <div className={classes.root}>
+  const {
+    patternId, title, info, linkPattSource, linkRavPatt, linkRavProj, sectionIds
+  } = pattern;
 
-    <ContentHeader button={(<DeletePattern patternId={patternId} />)}>
+  let linkBlock = [];
+  if (linkPattSource) {
+    linkBlock.push(<span key="pattSource">
+      <Link href={linkPattSource}>Pattern Source</Link>
+    </span>);
+  }
+  if (linkRavPatt) {
+    linkBlock.push(<span key="ravPatt">
+      <Link href={linkRavPatt}>Ravelry Pattern</Link>
+    </span>);
+  }
+  if (linkRavProj) {
+    linkBlock.push(<span key="ravProj">
+      <Link href={linkRavProj}>Ravelry Project</Link>
+    </span>);
+  }
+
+  return (<React.Fragment>
+
+    <ContentHeader iconButton={(<DeletePattern patternId={patternId} />)}>
       {title}
     </ContentHeader>
+
+    {(linkBlock.length > 0) && (
+      <Typography variant="subtitle1" className={classes.links}>
+        {linkBlock}
+      </Typography>
+    )}
 
     {info && (<Typography variant="subtitle1" className={classes.info}>
       {info}
     </Typography>)}
 
-    <div className={classes.sectionCards}>
+    <span className={classes.sectionCards}>
       {sectionIds.map(id => <Section key={id} sectionId={id} />)}
-    </div>
+    </span>
 
-    <Hidden xsDown>
-      <AddSection patternId={patternId} />
-    </Hidden>
+    <AddSection patternId={patternId} />
 
-  </div>
-
-);
+  </React.Fragment>);
+};
 
 Pattern.propTypes = {
   pattern: PropTypes.shape({

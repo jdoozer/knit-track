@@ -6,7 +6,8 @@ import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   root: {
-    margin: theme.spacing(3),
+    margin: theme.spacing(5),
+    marginBottom: theme.spacing(1),
   },
 });
 
@@ -16,12 +17,12 @@ const AddPatternLink = React.forwardRef(
 
 const AddPattern = ({ classes }) => (
   <Button
-    variant="contained"
+    variant="outlined"
     color="primary"
     className={classes.root}
     component={AddPatternLink}
   >
-    New Pattern
+    + New Pattern
   </Button>
 );
 

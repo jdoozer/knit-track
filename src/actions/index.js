@@ -66,15 +66,19 @@ const formatPatterns = (patternsFromDB) => {
 };
 
 // ASYNC THUNK FUNCTIONS - REALTIME DATABASE
-export const fetchPatterns = () => (dispatch) => {
-  dispatch(requestData(['patterns']));
-  db.ref('patterns').on('value',
-    snapshot => dispatch(receiveData(formatPatterns(snapshot.val()))),
-    error => dispatch(receiveError(
-      { status: 500, message: error.message },
-      ['patterns']
-    ))
-  );
+export const fetchPatterns = (listenerOn) => (dispatch) => {
+  if (listenerOn) {
+    dispatch(requestData(['patterns']));
+    db.ref('patterns').on('value',
+      snapshot => dispatch(receiveData(formatPatterns(snapshot.val()))),
+      error => dispatch(receiveError(
+        { status: 500, message: error.message },
+        ['patterns']
+      ))
+    );
+  } else {
+    db.ref('patterns').off('value');
+  }
 };
 
 // ASYNC THUNK FUNCTIONS - FETCH FROM REST API
@@ -138,13 +142,11 @@ export const fetchPatternExpandedIfNeeded = patternId => (
 
     const { patterns, sections } = getState();
 
-    if (patterns.loading || sections.loading) return null;
-
     if (patterns.allIds.includes(patternId)) {
 
-      const patternSections = patterns.byId[patternId].sectionIds;
+      const patternSectionIds = patterns.byId[patternId].sectionIds;
 
-      if (patternSections && patternSections.every(
+      if (patternSectionIds && patternSectionIds.every(
         id => sections.allIds.includes(id)
       )) {
         return null;

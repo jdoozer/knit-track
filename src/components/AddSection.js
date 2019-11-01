@@ -7,7 +7,6 @@ import Button from '@material-ui/core/Button';
 const styles = theme => ({
   root: {
     margin: theme.spacing(3),
-    marginTop: 0,
   },
 });
 
@@ -23,12 +22,12 @@ const AddSectionLink = patternId => React.forwardRef(
 
 const AddSection = ({ classes, patternId }) => (
   <Button
-    variant="contained"
+    variant="outlined"
     color="primary"
     className={classes.root}
     component={AddSectionLink(patternId)}
   >
-    New Section
+    + New Section
   </Button>
 );
 

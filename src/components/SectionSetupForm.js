@@ -8,23 +8,22 @@ import ErrorSnackbar from 'components/ErrorSnackbar';
 import ContentHeader from 'components/ContentHeader';
 import SectionRowInputs from 'components/SectionRowInputs';
 import updateNestedItem from 'utils/updateNestedItem';
-import arrayToRowObject from 'utils/arrayToRowObject';
 
 // keys here should match the props pulled out in RowInfo component
 const rowProps = {
   rowInstructions: {
-    display: 'Full Row Instructions',
-    width: 300,
+    display: rowInd => `Row ${rowInd+1} Instructions`,
+    flex: '8 0 250px',
     type: 'string',
   },
   notes: {
-    display: 'Shorthand/Alert',
-    width: 150,
+    display: () => 'Notes',
+    flex: '5 0 150px',
     type: 'string',
   },
   stitches: {
-    display: 'Sts',
-    width: 40,
+    display: () => 'Sts',
+    flex: '1 0 75px',
     type: 'number',
   },
 };
@@ -32,26 +31,50 @@ const rowProps = {
 const styles = theme => {
   const mainStyles = {
     root: {
-      padding: theme.spacing(3),
+      padding: `${theme.spacing(3)}px 0`,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      width: '100%'
     },
-    textField: {
-      marginLeft: theme.spacing(2),
-      marginBottom: theme.spacing(1),
+    setup: {
+      '& button': {
+        marginLeft: theme.spacing(2),
+      },
+      width: 350,
+      marginBottom: theme.spacing(3),
     },
     row: {
       display: 'flex',
       flexDirection: 'row',
-      alignItems: 'center'
+      alignItems: 'center',
+    },
+    dataRow: {
+      width: '100%',
+      '& > div': {
+        margin: `${theme.spacing(1)}px ${theme.spacing(.5)}px`,
+      },
+      '& > div:first-child': {
+        marginLeft: 0
+      },
+      '& > div:last-child': {
+        marginRight: 0
+      }
     },
     button: {
       marginTop: theme.spacing(2),
     },
+    textField: {
+      flexGrow: 1,
+      verticalAlign: 'bottom'
+    }
   };
 
   let rowPropStyles = {};
   // eslint-disable-next-line
   for (let prop in rowProps) {
-    rowPropStyles[prop] = { width: rowProps[prop].width };
+    // rowPropStyles[prop] = { width: rowProps[prop].width };
+    rowPropStyles[prop] = { flex: rowProps[prop].flex };
   }
 
   return Object.assign(mainStyles, rowPropStyles);
@@ -73,6 +96,7 @@ class SectionSetupForm extends React.Component {
 
   state = {
     title: '' ,
+    numRowsInput: numRowsStart,
     numRows: numRowsStart,
     rowData
   };
@@ -86,14 +110,20 @@ class SectionSetupForm extends React.Component {
     this.setState({ [name]: value });
   };
 
-  handleRowNumChange = ({ target: { value } }) => {
+  handleRowNumChange = () => {
+    const value = this.state.numRowsInput;
     if (value !== '') {
       const numRows = Math.max(parseInt(value, 10), 1);
       this.setState(state => {
+        if (numRows < state.rowData.length) {
+          return { numRows, rowData: state.rowData.slice(0, numRows) }
+        }
+
         const rowData = [...state.rowData];
         while (numRows > rowData.length) {
-          rowData.push({...initialRow})
+          rowData.push({...initialRow});
         }
+
         return { numRows, rowData }
       });
     }
@@ -109,7 +139,7 @@ class SectionSetupForm extends React.Component {
     const { createSection, pattern: { patternId } } = this.props;
     const { title, numRows, rowData } = this.state;
     const newSection = {
-      patternId, title, numRows, rows: arrayToRowObject(rowData)
+      patternId, title, numRows, rows: [{}].concat(rowData)
     };
     createSection(newSection);
     event.preventDefault();
@@ -128,19 +158,39 @@ class SectionSetupForm extends React.Component {
           onSubmit={this.handleSubmit}
           className={classes.root}
         >
-          <TextField label="Section Title"
-            className={classes.textField}
-            name="title"
-            value={this.state.title}
-            onChange={this.handleChange}
-          />
-          <TextField label="Number of Rows"
-            className={classes.textField}
-            name="numRows"
-            value={this.state.numRows}
-            onChange={this.handleRowNumChange}
-            type="number"
-          />
+
+          <div className={classes.setup}>
+            <div className={classes.row}>
+              <TextField label="Section Title"
+                className={classes.textField}
+                name="title"
+                value={this.state.title}
+                onChange={this.handleChange}
+                margin="dense"
+                variant="filled"
+              />
+            </div>
+            <div className={classes.row}>
+              <TextField label="# Rows"
+                className={classes.textField}
+                name="numRowsInput"
+                value={this.state.numRowsInput}
+                onChange={this.handleChange}
+                type="number"
+                margin="dense"
+                variant="filled"
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                onClick={this.handleRowNumChange}
+              >
+                update
+              </Button>
+            </div>
+          </div>
+
           <SectionRowInputs
             classes={classes}
             currState={this.state.rowData}
@@ -148,6 +198,7 @@ class SectionSetupForm extends React.Component {
             rowProps={rowProps}
             numRows={this.state.numRows}
           />
+
           <Button
             variant="contained"
             color="primary"

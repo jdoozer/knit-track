@@ -81,7 +81,7 @@ const patternsReducer = handleActions({
     return updateItem(
       state,
       patternId,
-      { sectionIds: sectionIds.concat(sectionId) }
+      { sectionIds: [...new Set([...sectionIds, sectionId])] }
     );
   },
 

@@ -11,6 +11,9 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
 import createRootReducer from 'reducers';
 import { loadState, saveState } from 'utils/localStorage';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider } from '@material-ui/styles';
+import theme from 'mui/knitTrackTheme';
 import 'typeface-roboto';
 import 'index.css';
 
@@ -40,7 +43,10 @@ if (SAVE_STATE) {
 ReactDOM.render(
   <Provider store={store}>
     <Router>
-      <App />
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <App />
+      </ThemeProvider>
     </Router>
   </Provider>,
   document.getElementById('root'));

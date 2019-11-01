@@ -7,17 +7,18 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
 
-const styles = () => ({
+const styles = theme => ({
   root: {
     width: '100%',
+    zIndex: theme.zIndex.drawer + 1,
   },
 });
 
 const Header = ({ classes }) => (
-  <AppBar position="sticky" className={classes.root}>
+  <AppBar position="fixed" className={classes.root}>
     <Toolbar>
       <Typography variant="h5" color="inherit">
-        <Link to="/">
+        <Link to="/home">
           KnitTrack Smart Row Counter
         </Link>
       </Typography>

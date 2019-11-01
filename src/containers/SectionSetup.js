@@ -10,8 +10,8 @@ import {
 } from 'reducers';
 import SectionSetupForm from 'components/SectionSetupForm';
 
-const mapStateToProps = (state, { match: { params: { patternId } } }) => ({
-  pattern: getPatternById(state, patternId),
+const mapStateToProps = (state, ownProps) => ({
+  pattern: getPatternById(state, ownProps.match.params.patternId),
   patternIdLastCreatedSection: getPatternIdLastCreatedSection(state),
   loading: getSectionsLoading(state),
   error: Boolean(getSectionsError(state)),

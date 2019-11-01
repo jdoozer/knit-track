@@ -6,24 +6,22 @@ import Typography from '@material-ui/core/Typography';
 const rowInputField = ({
   property, rowInd, classes, currState, onChange, rowProps
 }) => (
-  <TextField label=''
-    className={[classes.textField, classes[property]].join(' ')}
+  <TextField
+    label={rowProps[property].display(rowInd)}
+    className={`${classes.textField} ${classes[property]}`}
     name={property}
     key={property + rowInd}
     value={currState[rowInd][property]}
     onChange={event => onChange(rowInd, event)}
-    placeholder={rowProps[property].display}
     type={rowProps[property].type}
+    variant="filled"
   />
 );
 
 const rowInputFields = props => {
   const { rowInd, classes, rowProps } = props;
   return (
-    <div className={classes.row} key={rowInd}>
-      <Typography variant="subtitle1" className={classes.rowLabel}>
-        Row {rowInd+1}
-      </Typography>
+    <div className={`${classes.row} ${classes.dataRow}`} key={rowInd}>
       {Object.keys(rowProps).map(
         property => rowInputField({ property, ...props })
       )}
