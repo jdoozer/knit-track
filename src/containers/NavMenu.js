@@ -5,8 +5,7 @@ import { fetchPatterns, clearError } from 'actions';
 import { getPatternTitlesSorted, getPatternsLoading, getPatternsError } from 'reducers';
 import ProgressModal from 'components/ProgressModal';
 import ErrorSnackbar from 'components/ErrorSnackbar';
-
-import NavMenuContent from 'components/NavMenuContent';
+import NavDrawer from 'components/NavDrawer';
 
 const mapStateToProps = state => ({
   patternTitles: getPatternTitlesSorted(state),
@@ -54,7 +53,7 @@ class NavMenu extends React.Component {
           Error loading patterns
         </ErrorSnackbar>
 
-        <NavMenuContent placeholder={placeholderProp} patternTitles={patternTitles} />
+        <NavDrawer placeholder={placeholderProp} patternTitles={patternTitles} />
 
       </React.Fragment>
     );
