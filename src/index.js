@@ -5,7 +5,6 @@ import { createStore, applyMiddleware } from 'redux';
 import { createLogger } from 'redux-logger';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
-import registerServiceWorker from './registerServiceWorker';
 import throttle from 'lodash/throttle';
 import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
@@ -25,7 +24,6 @@ const persistedState = loadState();
 const middleware = (process.env.NODE_ENV === `development`)
   ? composeWithDevTools(applyMiddleware(thunkMiddleware, createLogger()))
   : applyMiddleware(thunkMiddleware);
-
 
 const storeInputArgs = HYDRATE_STATE
   ? [createRootReducer, persistedState, middleware]
@@ -49,5 +47,5 @@ ReactDOM.render(
       </ThemeProvider>
     </Router>
   </Provider>,
-  document.getElementById('root'));
-registerServiceWorker();
+  document.getElementById('root')
+);
