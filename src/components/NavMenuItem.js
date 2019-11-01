@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 
 const NavMenuItem = (props) => {
 
-  const { link, level, children } = props;
+  const { link, level, children, onClick } = props;
   const classes = useStyles(props);
   const levelVariants = ['h6', 'body1', 'body2'];
   const variant = (level < levelVariants.length)
@@ -39,6 +39,7 @@ const NavMenuItem = (props) => {
       />
     ));
     itemProps.button = true;
+    itemProps.onClick = onClick;
   } else {
     itemProps.component = 'div';
   }

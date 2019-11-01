@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
   patternTitles: getPatternTitlesSorted(state),
   loading: getPatternsLoading(state),
   error: Boolean(getPatternsError(state)),
-  lastActionType: 'loadPatterns'
+  lastActionType: 'loadPatterns' //TODO: set this thru action/reducer
 });
 
 const mapDispatchToProps = {
@@ -19,7 +19,7 @@ const mapDispatchToProps = {
   clearError: () => clearError(['patterns'])
 };
 
-class NavMenu extends React.Component {
+class Navigation extends React.Component {
 
   componentDidMount() {
     if (!this.props.placeholder)
@@ -34,7 +34,8 @@ class NavMenu extends React.Component {
   render() {
 
     const {
-      loading, error, patternTitles, placeholder, lastActionType
+      loading, error, patternTitles, placeholder, lastActionType, mobileOpen,
+      handleDrawerToggle
     } = this.props;
 
     let placeholderProp = placeholder;
@@ -53,18 +54,23 @@ class NavMenu extends React.Component {
           Error loading patterns
         </ErrorSnackbar>
 
-        <NavDrawer placeholder={placeholderProp} patternTitles={patternTitles} />
+        <NavDrawer
+          placeholder={placeholderProp}
+          patternTitles={patternTitles}
+          mobileOpen={mobileOpen}
+          handleDrawerToggle={handleDrawerToggle}
+        />
 
       </React.Fragment>
     );
   }
 }
 
-NavMenu.propTypes = {
+Navigation.propTypes = {
   patternTitles: PropTypes.array.isRequired,
   fetchPatterns: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(Navigation);

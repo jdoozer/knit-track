@@ -7,16 +7,23 @@ import Login from 'components/Login';
 import About from 'components/About';
 import PatternContainer from 'containers/PatternContainer';
 import PatternSetup from 'containers/PatternSetup';
-import NavMenu from 'containers/NavMenu';
+import Navigation from 'containers/Navigation';
 
 const App = () => {
+
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
   const loggedIn = true;
-  const navProps = { placeholder: !loggedIn};
+  const navProps = { placeholder: !loggedIn, mobileOpen, handleDrawerToggle };
 
   return (
     <React.Fragment>
-      <Header />
-      <Route component={() => (<NavMenu {...navProps} />)} />
+      <Header handleDrawerToggle={handleDrawerToggle} />
+      <Route component={() => (<Navigation {...navProps} />)} />
       <MainContentWrapper>
         <Switch>
           <Route exact path="/" component={Login} />
