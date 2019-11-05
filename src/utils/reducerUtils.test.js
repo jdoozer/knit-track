@@ -1,5 +1,5 @@
 import { deleteFromState, deleteItemsFromArray, updateItem } from 'utils/reducerUtils';
-// import * as data from 'stateData/patternData';
+// import * as data from 'testData/patternData';
 
 const emptyState = {
   byId: {},

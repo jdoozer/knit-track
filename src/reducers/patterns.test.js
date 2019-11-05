@@ -1,5 +1,5 @@
 import reducer from 'reducers/patterns';
-// import * as data from 'stateData/patternData';
+// import * as data from 'testData/patternData';
 
 const testError = { message: 'error message goes here', status: 500 };
 const testId = 'pattern-ID-goes-here';

@@ -1,4 +1,4 @@
-import { initialStateNormal } from 'stateData/initialState';
+import { initialStateNormal } from 'testData/initialState';
 
 export const patternTitle1 = 'pattern title';
 export const patternTitle2 = 'pattern title 2';

@@ -1,4 +1,4 @@
-import { initialStateNormal } from 'stateData/initialState';
+import { initialStateNormal } from 'testData/initialState';
 
 export const sectionId1 = 'sectionIdString1';
 export const sectionId2 = 'sectionIdString2';

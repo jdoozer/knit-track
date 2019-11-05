@@ -1,4 +1,4 @@
-import { initialStateFull, initialStateNormal } from 'stateData/initialState';
+import { initialStateFull, initialStateNormal } from 'testData/initialState';
 
 export const patternTitles = num => ('pattern title ' + num);
 export const patternInfo = '<pattern info placeholder>';
