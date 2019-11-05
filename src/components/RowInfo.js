@@ -13,18 +13,20 @@ const styles = theme => ({
 /* props here should match the keys used in SectionSetup component */
 const RowInfo = ({ currentRow, rowInstructions, notes, stitches, classes }) => {
 
-  let row = (rowInstructions || stitches)
-    ? [(<strong key="label">Row {currentRow}</strong>)]
-    : [];
-  if (rowInstructions) row.push(`: ${rowInstructions}`);
-  if (stitches) row.push(` [${stitches} sts]`);
+  let rowText = [];
+  if (rowInstructions || stitches)
+    rowText.push(<strong key="label">Row {currentRow}</strong>);
+  if (rowInstructions)
+    rowText.push(`: ${rowInstructions}`);
+  if (stitches)
+    rowText.push(` [${stitches} sts]`);
 
   const notesDisplay = [ (<strong key="label">Notes</strong>), `: ${notes}` ];
 
   return (
     <div className={classes.root}>
-      {(row.length > 0) &&
-        <Typography variant="body1">{row}</Typography>
+      {(rowText.length > 0) &&
+        <Typography variant="body1">{rowText}</Typography>
       }
       {notes && notes.trim() &&
         <Typography variant="body1">{notesDisplay}</Typography>

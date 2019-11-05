@@ -42,7 +42,7 @@ class PatternContainer extends React.Component {
     const patternId = this.props.match.params.patternId;
     const prevPatternId = prevProps.match.params.patternId;
 
-    if (patternId && prevPatternId && !(patternId === prevPatternId)) {
+    if (patternId && prevPatternId && (patternId !== prevPatternId)) {
       this.props.fetchPatternExpandedIfNeeded(patternId);
     }
   }
@@ -61,9 +61,8 @@ class PatternContainer extends React.Component {
     }
 
     if (error && !lastActionType) {
-      if (error.status === 404) {
+      if (error.status === 404)
         return (<MessageBlock>Pattern ID is invalid</MessageBlock>);
-      }
       return (
         <MessageBlock>
           An error occurred while fetching data. Please reload to try again.

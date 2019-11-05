@@ -50,11 +50,13 @@ const styles = theme => ({
 const RowCounter = ({
   currentRow, rows, onClick, classes, error, loading, final
 }) => {
-  const rowColor = error
-    ? textErrorColor
-    : loading
-      ? textUpdatingColor
-      : textColor;
+  
+  let rowColor = textColor;
+  if (error)
+    rowColor = textErrorColor;
+  if (loading)
+    rowColor = textUpdatingColor;
+
   return (
     <div className={classes.root}>
       <div className={classes.rowCounter}>

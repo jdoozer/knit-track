@@ -18,7 +18,7 @@ function addItem(state, newItem, idField, updates) {
   return state;
 }
 
-// The version of "mergeItems" below assumes the input already has byId, allId
+// mergeItems assumes the input already has byId, allId fields
 function mergeItems(state, newItems, stateUpdates, newItemFields) {
   if (newItems) {
     const newState = {
@@ -75,13 +75,11 @@ function deleteItemsFromArray(array, itemsToDelete) {
 
   const itemsToDeleteType = typeof(itemsToDelete);
 
-  if (itemsToDeleteType === 'object' && itemsToDelete.length) {
+  if (itemsToDeleteType === 'object' && itemsToDelete.length)
     return array.filter(currItem => !itemsToDelete.includes(currItem));
-  }
 
-  if (itemsToDeleteType === 'string') {
-    return array.filter(currItem => !(currItem === itemsToDelete));
-  }
+  if (itemsToDeleteType === 'string')
+    return array.filter(currItem => (currItem !== itemsToDelete));
 
   return array;
 }
@@ -94,7 +92,8 @@ function deleteItemsByKeys(obj, keys, keysToDelete) {
   if (keysToDeleteType === 'object' && keysToDelete.length) {
     return keys.reduce(
       (newObj, currKey) => {
-        if (!keysToDelete.includes(currKey))  newObj[currKey] = obj[currKey];
+        if (!keysToDelete.includes(currKey))
+          newObj[currKey] = obj[currKey];
         return newObj;
       },
       {}
@@ -104,7 +103,8 @@ function deleteItemsByKeys(obj, keys, keysToDelete) {
   if (keysToDeleteType === 'string') {
     return keys.reduce(
       (newObj, currKey) => {
-        if (!(keysToDelete === currKey))  newObj[currKey] = obj[currKey];
+        if (!(keysToDelete === currKey))
+          newObj[currKey] = obj[currKey];
         return newObj;
       },
       {}
