@@ -16,12 +16,13 @@ const styles = theme => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       display: 'none',
     },
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
+    paddingRight: theme.spacing(1)
   }
 });
 

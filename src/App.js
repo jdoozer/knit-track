@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { saveLoginState } from 'utils/localStorage';
-import ProtectedRoute from 'components/ProtectedRoute';
 import { getUserLoggedIn } from 'reducers';
 import { updateLogin } from 'actions';
-import MainContentWrapper from 'mui/MainContentWrapper';
+import ProtectedRoute from 'components/ProtectedRoute';
+import MainContentWrapper from 'components/MainContentWrapper';
 import Header from 'components/Header';
 import HomeScreen from 'components/HomeScreen';
 import About from 'components/About';
@@ -14,26 +14,24 @@ import PatternContainer from 'containers/PatternContainer';
 import PatternSetup from 'containers/PatternSetup';
 import Navigation from 'containers/Navigation';
 
-const mapStateToProps = state => ({ loggedIn: getUserLoggedIn(state) });
+const mapStateToProps = state => ({
+  loggedIn: getUserLoggedIn(state)
+});
 
 const mapDispatchToProps = {
   logout: () => updateLogin(false)
 };
 
-const App = props => {
+const App = ({ loggedIn, logout }) => {
 
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  useEffect(() => saveLoginState(loggedIn), [loggedIn]);
 
-  React.useEffect(() => {
-    saveLoginState(props.loggedIn);
-  },
-  [props.loggedIn]);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const loggedIn = props.loggedIn;
   const navProps = { placeholder: !loggedIn, mobileOpen, handleDrawerToggle };
 
   const AppProtectedRoute = props => (
@@ -45,7 +43,7 @@ const App = props => {
       <Header
         handleDrawerToggle={handleDrawerToggle}
         loggedIn={loggedIn}
-        logout={props.logout}
+        logout={logout}
       />
       <Route component={() => (<Navigation {...navProps} />)} />
       <MainContentWrapper>

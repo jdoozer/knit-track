@@ -11,7 +11,7 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
   drawer: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       width: drawerWidth,
       flexShrink: 0,
     },
@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
   },
   toolbar: {
-    [theme.breakpoints.up('sm')]: theme.mixins.toolbar
+    [theme.breakpoints.up('md')]: theme.mixins.toolbar
   },
 }));
 
@@ -31,6 +31,10 @@ const NavDrawer = (
   if (placeholder) {
     return (<div className={classes.drawer} />);
   }
+
+  let mobileDrawerLinkProps = {};
+  if (mobileOpen)
+    mobileDrawerLinkProps.onClick = handleDrawerToggle;
 
   const drawer = (
     <React.Fragment>
@@ -43,7 +47,7 @@ const NavDrawer = (
             level={1}
             link={`/patterns/${patternId}`}
             key={patternId}
-            onClick={handleDrawerToggle}
+            {...mobileDrawerLinkProps}
           >
             {title}
           </NavMenuItem>
@@ -52,7 +56,7 @@ const NavDrawer = (
           level={0}
           link="/about"
           key="about"
-          onClick={handleDrawerToggle}
+          {...mobileDrawerLinkProps}
         >
           About
         </NavMenuItem>
@@ -62,7 +66,7 @@ const NavDrawer = (
 
   return (
     <React.Fragment>
-      <Hidden smUp implementation="css">
+      <Hidden mdUp implementation="css">
         <Drawer
           variant="temporary"
           open={mobileOpen}
@@ -73,7 +77,7 @@ const NavDrawer = (
           {drawer}
         </Drawer>
       </Hidden>
-      <Hidden xsDown implementation="css">
+      <Hidden smDown implementation="css">
         <Drawer
           className={classes.drawer}
           classes={{ paper: classes.drawerPaper }}
