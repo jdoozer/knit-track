@@ -15,6 +15,7 @@ const {
   receiveDeleteSectionKeys,
   clearError,
   clearLastCreated,
+  updateLogin
 } = createActions({
 
   REQUEST_DATA: (dataTypes, id, actionType) => ({ dataTypes, id, actionType }),
@@ -46,10 +47,12 @@ const {
 
   CLEAR_LAST_CREATED: dataTypes => ({ dataTypes }),
 
+  UPDATE_LOGIN: loggedIn => ({ loggedIn })
+
 });
 
 // EXPORT SYNCHRONOUS ACTION CREATORS
-export { clearError, clearLastCreated };
+export { clearError, clearLastCreated, updateLogin };
 
 // FORMATTING FOR REALTIME DB REQUESTS (replicated from express server)
 const formatPatterns = (patternsFromDB) => {
@@ -169,9 +172,8 @@ export const updateRowCount = (sectionId, updateType) => (
     const sectionsAfterUpdate = getState().sections;
     const rowAfterUpdate = sectionsAfterUpdate.byId[sectionId].currentRow;
 
-    if (rowBeforeUpdate === rowAfterUpdate) {
+    if (rowBeforeUpdate === rowAfterUpdate)
       return null;
-    }
 
     return dispatch(
       updateSection(sectionId, { currentRow: rowAfterUpdate }, 'updateRowCount')

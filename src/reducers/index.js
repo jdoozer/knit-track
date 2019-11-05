@@ -1,12 +1,15 @@
 import { combineReducers } from 'redux';
 import patterns from 'reducers/patterns';
 import sections from 'reducers/sections';
+import users from 'reducers/users';
 import * as patternSelectors from 'reducers/patterns';
 import * as sectionSelectors from 'reducers/sections';
+import * as userSelectors from 'reducers/users';
 
-const createRootReducer = combineReducers({
+const createRootReducer = loginState => combineReducers({
   patterns,
   sections,
+  users: users(loginState),
 });
 
 export default createRootReducer;
@@ -77,4 +80,9 @@ export const getSectionError = (state, sectionId) => (
 
 export const getSectionLastAction = (state, sectionId) => (
   sectionSelectors.getSectionLastAction(state.sections, sectionId)
+);
+
+// SELECTORS [users]
+export const getUserLoggedIn = state => (
+  userSelectors.getUserLoggedIn(state.users)
 );

@@ -19,4 +19,12 @@ function saveState(state) {
   }
 }
 
-export { loadState, saveState };
+function loadLoginState() {
+  return Boolean(JSON.parse(localStorage.getItem('loginState')));
+}
+
+function saveLoginState(loginState) {
+  localStorage.setItem('loginState', JSON.stringify(loginState));
+}
+
+export { loadState, saveState, loadLoginState, saveLoginState };
