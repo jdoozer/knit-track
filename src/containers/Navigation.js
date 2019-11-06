@@ -11,7 +11,6 @@ const mapStateToProps = state => ({
   patternTitles: getPatternTitlesSorted(state),
   loading: getPatternsLoading(state),
   error: Boolean(getPatternsError(state)),
-  lastActionType: 'loadPatterns' //TODO: set this thru action/reducer
 });
 
 const mapDispatchToProps = {
@@ -23,34 +22,25 @@ class Navigation extends React.Component {
 
   componentDidMount() {
     if (!this.props.placeholder)
-      this.props.fetchPatterns(true);
-  }
-
-  componentWillUnmount() {
-    if (!this.props.placeholder)
-      this.props.fetchPatterns(false);
+      this.props.fetchPatterns();
   }
 
   render() {
 
     const {
-      loading, error, patternTitles, placeholder, lastActionType, mobileOpen,
-      handleDrawerToggle
+      loading, error, patternTitles, placeholder, mobileOpen, handleDrawerToggle
     } = this.props;
 
     let placeholderProp = placeholder;
-    if (!(patternTitles && patternTitles.length) || loading || error) {
+    if (!(patternTitles && patternTitles.length) || loading || error)
       placeholderProp = true;
-    }
 
     return (
       <React.Fragment>
-        <ProgressModal open={loading && lastActionType==='loadPatterns'} />
 
-        <ErrorSnackbar
-          open={error && !loading && lastActionType==='loadPatterns'}
-          onClose={clearError}
-        >
+        <ProgressModal open={loading} />
+
+        <ErrorSnackbar open={error && !loading} onClose={clearError}>
           Error loading patterns
         </ErrorSnackbar>
 
@@ -68,9 +58,11 @@ class Navigation extends React.Component {
 
 Navigation.propTypes = {
   patternTitles: PropTypes.array.isRequired,
-  fetchPatterns: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
+  fetchPatterns: PropTypes.func.isRequired,
+  clearError: PropTypes.func.isRequired,
+  placeholder: PropTypes.bool.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
