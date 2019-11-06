@@ -48,7 +48,6 @@ const App = ({ loggedIn, logout }) => {
       <Route component={() => (<Navigation {...navProps} />)} />
       <MainContentWrapper>
         <Switch>
-          <Route exact path="/" component={LoginPage} />
           <Route path="/login" component={LoginPage} />
           <AppProtectedRoute path="/home" component={HomeScreen} />
           <AppProtectedRoute path="/about" component={About} />
