@@ -55,25 +55,25 @@ export { clearError, clearLastCreated, updateLogin };
 
 
 // FORMATTING FOR REALTIME DB REQUESTS (replicated from express server)
-const formatPatterns = (patternsFromDB) => {
-  if (patternsFromDB) {
-    const patternKeys = Object.keys(patternsFromDB);
-    patternKeys.forEach(patternId => {
-      const pattern = patternsFromDB[patternId];
-      if (!pattern.sectionIds) { pattern.sectionIds = [] }
-    });
-    return { patterns: { byId: patternsFromDB, allIds: patternKeys } };
-  } else {
-    return { patterns: { byId: {}, allIds: [] } };
-  }
-};
+const formatPatterns = (patterns) => ({
+  patterns: { byId: patterns, allIds: Object.keys(patterns) }
+});
 
 // ASYNC THUNK FUNCTIONS - REALTIME DATABASE
 export const subscribePatternList = (listenerOn) => (dispatch) => {
   if (listenerOn) {
     dispatch(requestData('patterns'));
     db.ref('patterns').on('value',
-      snapshot => dispatch(receiveData(formatPatterns(snapshot.val()))),
+      snapshot => {
+        let patterns = {};
+        snapshot.forEach(patternSnapshot => {
+          patterns[patternSnapshot.key] = {
+            patternId: patternSnapshot.key,
+            title: patternSnapshot.child('title').val()
+          }
+        });
+        return dispatch(receiveData(formatPatterns(patterns)));
+      },
       error => dispatch(
         receiveError({ status: 500, message: error.message }, 'patterns')
       )

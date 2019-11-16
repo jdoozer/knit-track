@@ -71,7 +71,9 @@ const Pattern = ({ pattern, classes }) => {
     </Typography>)}
 
     <span className={classes.sectionCards}>
-      {sectionIds.map(id => <Section key={id} sectionId={id} />)}
+      {sectionIds ?
+        sectionIds.map(id => <Section key={id} sectionId={id} />)
+        : 'loading...'}
     </span>
 
     <AddSection patternId={patternId} />
