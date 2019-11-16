@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchPatterns, clearError } from 'actions';
+import { subscribePatternList, clearError } from 'actions';
 import { getPatternTitlesSorted, getPatternsLoading, getPatternsError } from 'reducers';
 import ProgressModal from 'components/ProgressModal';
 import ErrorSnackbar from 'components/ErrorSnackbar';
@@ -14,7 +14,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  fetchPatterns,
+  subscribePatternList,
   clearError: () => clearError('patterns')
 };
 
@@ -22,7 +22,11 @@ class Navigation extends React.Component {
 
   componentDidMount() {
     if (!this.props.placeholder)
-      this.props.fetchPatterns();
+      this.props.subscribePatternList(true);
+  }
+
+  componentWillUnmount() {
+    this.props.subscribePatternList(false);
   }
 
   render() {
@@ -60,7 +64,7 @@ Navigation.propTypes = {
   patternTitles: PropTypes.array.isRequired,
   loading: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
-  fetchPatterns: PropTypes.func.isRequired,
+  subscribePatternList: PropTypes.func.isRequired,
   clearError: PropTypes.func.isRequired,
   placeholder: PropTypes.bool.isRequired
 }
