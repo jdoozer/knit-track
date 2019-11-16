@@ -19,7 +19,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = {
   createSection: section => createSection(section),
-  clearError: () => clearError(['sections']),
+  clearError: () => clearError('sections'),
   clearLastCreated: () => clearLastCreated(['sections']),
 };
 

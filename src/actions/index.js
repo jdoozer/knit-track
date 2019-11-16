@@ -16,7 +16,7 @@ const {
   updateLogin
 } = createActions({
 
-  REQUEST_DATA: (dataTypes, id, actionType) => ({ dataTypes, id, actionType }),
+  REQUEST_DATA: (dataType, id, actionType) => ({ dataType, id, actionType }),
 
   RECEIVE_DATA: json => ({ ...json }),
 
@@ -31,7 +31,7 @@ const {
     { sectionId, updateType }
   ),
 
-  RECEIVE_ERROR: (error, dataTypes, id) => ({ error, dataTypes, id }),
+  RECEIVE_ERROR: (error, dataType, id) => ({ error, dataType, id }),
 
   RECEIVE_DELETE_PATTERN_KEYS: ({ patternId, sectionIds }) => (
     { patternId, sectionIds }
@@ -41,9 +41,9 @@ const {
     { patternId, sectionId }
   ),
 
-  CLEAR_ERROR: (dataTypes, id) => ({ dataTypes, id }),
+  CLEAR_ERROR: (dataType, id) => ({ dataType, id }),
 
-  CLEAR_LAST_CREATED: dataTypes => ({ dataTypes }),
+  CLEAR_LAST_CREATED: dataType => ({ dataType }),
 
   UPDATE_LOGIN: loggedIn => ({ loggedIn })
 
@@ -55,60 +55,60 @@ export { clearError, clearLastCreated, updateLogin };
 
 // ASYNC THUNK FUNCTIONS
 export const fetchPatterns = () => fetchThunk({
-  requestAction: requestData(['patterns']),
+  requestAction: requestData('patterns'),
   receiveAction: receiveData,
-  errorAction: error => receiveError(error, ['patterns']),
+  errorAction: error => receiveError(error, 'patterns'),
   path: 'patterns',
 });
 
 // data types here only patterns even though we're fetching sections too; all
 // done with a single fetch request and patterns is the primary update
 const fetchPatternExpanded = patternId => fetchThunk({
-  requestAction: requestData(['patterns'], patternId),
+  requestAction: requestData('patterns', patternId),
   receiveAction: receiveData,
-  errorAction: error => receiveError(error, ['patterns'], patternId),
+  errorAction: error => receiveError(error, 'patterns', patternId),
   path: `patterns/${patternId}`,
 });
 
 export const createPattern = ({ ...patternData }) => fetchThunk({
-  requestAction: requestData(['patterns']),
+  requestAction: requestData('patterns'),
   receiveAction: receiveNewPattern,
-  errorAction: error => receiveError(error, ['patterns']),
+  errorAction: error => receiveError(error, 'patterns'),
   path: 'patterns',
   requestType: 'POST',
   body: { pattern: patternData },
 });
 
 export const createSection = ({ ...sectionData }) => fetchThunk({
-  requestAction: requestData(['sections']),
+  requestAction: requestData('sections'),
   receiveAction: receiveNewSection,
-  errorAction: error => receiveError(error, ['sections']),
+  errorAction: error => receiveError(error, 'sections'),
   path: 'sections',
   requestType: 'POST',
   body: { section: sectionData },
 });
 
 const updateSection = (sectionId, sectionUpdates, actionType) => fetchThunk({
-  requestAction: requestData(['sections'], sectionId, actionType),
+  requestAction: requestData('sections', sectionId, actionType),
   receiveAction: json => receiveUpdatedSection(json, sectionId),
-  errorAction: error => receiveError(error, ['sections'], sectionId),
+  errorAction: error => receiveError(error, 'sections', sectionId),
   path: `sections/${sectionId}`,
   requestType: 'PATCH',
   body: sectionUpdates,
 });
 
 export const deletePattern = patternId => fetchThunk({
-  requestAction: requestData(['patterns'], patternId, 'deletePattern'),
+  requestAction: requestData('patterns', patternId, 'deletePattern'),
   receiveAction: receiveDeletePatternKeys,
-  errorAction: error => receiveError(error, ['patterns'], patternId),
+  errorAction: error => receiveError(error, 'patterns', patternId),
   path: `patterns/${patternId}`,
   requestType: 'DELETE',
 });
 
 export const deleteSection = sectionId => fetchThunk({
-  requestAction: requestData(['sections'], sectionId, 'deleteSection'),
+  requestAction: requestData('sections', sectionId, 'deleteSection'),
   receiveAction: receiveDeleteSectionKeys,
-  errorAction: error => receiveError(error, ['sections'], sectionId),
+  errorAction: error => receiveError(error, 'sections', sectionId),
   path: `sections/${sectionId}`,
   requestType: 'DELETE',
 });

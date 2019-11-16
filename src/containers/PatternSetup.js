@@ -15,7 +15,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   createPattern: patternData => createPattern(patternData),
-  clearError: () => clearError(['patterns']),
+  clearError: () => clearError('patterns'),
   clearLastCreated: () => clearLastCreated(['patterns']),
 };
 

@@ -17,7 +17,7 @@ const mapStateToProps = (state, { patternId }) => ({
 
 const mapDispatchToProps = {
   deletePattern: patternId => deletePattern(patternId),
-  clearError: patternId => clearError(['patterns'], patternId)
+  clearError: patternId => clearError('patterns', patternId)
 };
 
 const DeletePattern = ({

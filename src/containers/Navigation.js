@@ -15,7 +15,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   fetchPatterns,
-  clearError: () => clearError(['patterns'])
+  clearError: () => clearError('patterns')
 };
 
 class Navigation extends React.Component {

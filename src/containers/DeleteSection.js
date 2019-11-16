@@ -17,7 +17,7 @@ const mapStateToProps = (state, { sectionId }) => ({
 
 const mapDispatchToProps = {
   deleteSection: sectionId => deleteSection(sectionId),
-  clearError: sectionId => clearError(['sections'], sectionId)
+  clearError: sectionId => clearError('sections', sectionId)
 };
 
 const DeleteSection = ({
