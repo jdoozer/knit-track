@@ -1,15 +1,17 @@
 import { combineReducers } from 'redux';
-import patterns from 'reducers/patterns';
-import sections from 'reducers/sections';
-import users from 'reducers/users';
+import reduceReducers from 'reduce-reducers';
+import patternsReducer from 'reducers/patterns';
+import sectionsReducer from 'reducers/sections';
+import sharedReducers from 'reducers/shared';
+import usersReducer from 'reducers/users';
 import * as patternSelectors from 'reducers/patterns';
 import * as sectionSelectors from 'reducers/sections';
 import * as userSelectors from 'reducers/users';
 
 const createRootReducer = loginState => combineReducers({
-  patterns,
-  sections,
-  users: users(loginState),
+  patterns: reduceReducers(patternsReducer, sharedReducers('patterns')),
+  sections: reduceReducers(sectionsReducer, sharedReducers('sections')),
+  users: usersReducer(loginState),
 });
 
 export default createRootReducer;

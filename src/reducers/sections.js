@@ -1,25 +1,9 @@
 import { handleActions } from 'redux-actions';
+import { update, addItem, deleteFromState } from 'utils/reducerUtils';
 import {
-  updateState,
-  updateItem,
-  addItem,
-  mergeItems,
-  deleteFromState,
-} from 'utils/reducerUtils';
+  initialState, itemMetaState, collectionMetaState
+} from 'reducers/shared';
 
-const initialState = {
-  byId: {},
-  allIds: [],
-  loading: false,
-  error: null,
-  lastCreatedId: ''
-};
-
-const sectionDefaultFields = {
-  loading: false,
-  error: null,
-  lastActionType: ''
-};
 
 const getNextRow = (updateType, { currentRow, numRows }) => {
   switch(updateType) {
@@ -36,59 +20,22 @@ const getNextRow = (updateType, { currentRow, numRows }) => {
 
 const sectionsReducer = handleActions({
 
-  REQUEST_DATA: (state, action) => {
-    const { dataTypes, id, actionType } = action.payload;
-    let updates = { loading: true, lastActionType: '' };
-    if (actionType) {
-      updates.lastActionType = actionType;
-    }
-    if (dataTypes.includes('sections')) {
-      if (id) {
-        return updateItem(state, id, updates);
-      }
-      return updateState(state, updates);
-    }
-    return state;
-  },
-
-  RECEIVE_ERROR: (state, action) => {
-    const { error, dataTypes, id } = action.payload;
-    if (dataTypes.includes('sections')) {
-      if (id) {
-        return updateItem(state, id, { loading: false, error });
-      }
-      return updateState(state, { loading: false, error });
-    }
-    return state;
-  },
-
-  RECEIVE_DATA: (state, action) => mergeItems(
-     state,
-     action.payload.sections,
-     { loading: false, error: null, lastActionType: '' },
-     sectionDefaultFields
-   ),
-
    RECEIVE_NEW_SECTION: (state, action) => addItem(
      state,
-     {
-       ...action.payload.section,
-       ...sectionDefaultFields
-     },
+     { ...action.payload.section, ...itemMetaState },
      'sectionId',
      {
-       loading: false,
-       error: null,
+       ...collectionMetaState,
        lastCreatedId: action.payload.section.sectionId
      }
    ),
 
   RECEIVE_UPDATED_SECTION: (state, action) => {
     const { sectionId, ...sectionUpdates } = action.payload.section;
-    return updateItem(
+    return update(
       state,
+      { ...sectionUpdates, ...itemMetaState },
       sectionId,
-      { ...sectionUpdates, ...sectionDefaultFields },
     );
   },
 
@@ -98,10 +45,10 @@ const sectionsReducer = handleActions({
     if (section.error || section.loading) {
       return state;
     }
-    return updateItem(
+    return update(
       state,
-      sectionId,
-      { currentRow: getNextRow(updateType, section) }
+      { currentRow: getNextRow(updateType, section) },
+      sectionId
     );
   },
 
@@ -114,24 +61,6 @@ const sectionsReducer = handleActions({
     state,
     action.payload.sectionId
   ),
-
-  CLEAR_LAST_CREATED: (state, action) => {
-    if (action.payload.dataTypes.includes('sections')) {
-      return updateState(state, { lastCreatedId: '' });
-    }
-    return state;
-  },
-
-  CLEAR_ERROR: (state, action) => {
-    const { dataTypes, id } = action.payload;
-    if (dataTypes.includes('sections')) {
-      if (id) {
-        return updateItem(state, id, { error: null, lastActionType: '' });
-      }
-      return updateState(state, { error: null, lastActionType: '' });
-    }
-    return state;
-  },
 
 }, initialState);
 
