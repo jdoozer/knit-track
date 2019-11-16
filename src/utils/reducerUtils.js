@@ -71,6 +71,27 @@ function updateState(state, updates) {
 }
 
 
+function update(state, updates, itemId) {
+  if (updates) {
+    if (itemId) {
+      return {
+        ...state,
+        byId: {
+          ...state.byId,
+          [itemId]: {
+            ...state.byId[itemId],
+            ...updates,
+          }
+        },
+      };
+    } else {
+      return { ...state, ...updates };
+    }
+  }
+  return state;
+}
+
+
 function deleteItemsFromArray(array, itemsToDelete) {
 
   const itemsToDeleteType = typeof(itemsToDelete);
@@ -127,6 +148,6 @@ function deleteFromState(state, itemIds) {
 }
 
 export {
-  addItem, mergeItems, updateItem, updateState,
+  addItem, mergeItems, update, updateItem, updateState,
   deleteItemsFromArray, deleteFromState
 };
