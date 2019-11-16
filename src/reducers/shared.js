@@ -3,7 +3,8 @@ import { update, mergeItems } from 'utils/reducerUtils';
 export const collectionMetaState = {
   loading: false,
   error: null,
-  lastCreatedId: ''
+  lastCreatedId: '',
+  lastActionType: ''
 };
 
 export const initialState = {

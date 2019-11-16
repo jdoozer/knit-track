@@ -1,4 +1,4 @@
-import { deleteFromState, deleteItemsFromArray, updateItem } from 'utils/reducerUtils';
+import { deleteFromState, deleteItemsFromArray, update } from 'utils/reducerUtils';
 // import * as data from 'testData/patternData';
 
 const emptyState = {
@@ -158,22 +158,22 @@ describe('reducer utility deleteFromState', () => {
 
 });
 
-describe('reducer utility updateItem', () => {
-// updateItem(state, itemId, itemUpdates)
+describe('reducer utility update', () => {
+// update(state, itemId, itemUpdates)
 
   it('should do nothing when no updates given', () => {
-    expect(updateItem(twoItems, undefined, undefined)).toEqual(twoItems);
+    expect(update(twoItems, undefined, undefined)).toEqual(twoItems);
   });
 
   it('should update item when item updates given for existing item', () => {
     expect(
-      updateItem(twoItems, 'id1', newFields)
+      update(twoItems, newFields, 'id1')
     ).toEqual(twoItemsNewFieldsItem1);
   });
 
   it('should create item when item updates given for non-existing item', () => {
     expect(
-      updateItem(twoItems, 'id3', newFields)
+      update(twoItems, newFields, 'id3')
     ).toEqual(twoItemsNewFieldsItem3);
   });
 });

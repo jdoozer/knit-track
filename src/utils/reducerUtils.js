@@ -46,31 +46,6 @@ function mergeItems(state, newItems, stateUpdates, newItemFields) {
 }
 
 
-function updateItem(state, itemId, itemUpdates) {
-  if (itemId && itemUpdates) {
-    return {
-      ...state,
-      byId: {
-        ...state.byId,
-        [itemId]: {
-          ...state.byId[itemId],
-          ...itemUpdates,
-        }
-      },
-    };
-  }
-  return state;
-}
-
-
-function updateState(state, updates) {
-  if (updates) {
-    return { ...state, ...updates };
-  }
-  return state;
-}
-
-
 function update(state, updates, itemId) {
   if (updates) {
     if (itemId) {
@@ -92,49 +67,45 @@ function update(state, updates, itemId) {
 }
 
 
-function deleteItemsFromArray(array, itemsToDelete) {
+function checkDeleteFunc(deleteKeys) {
 
-  const itemsToDeleteType = typeof(itemsToDelete);
+  const keysType = typeof(deleteKeys);
 
-  if (itemsToDeleteType === 'object' && itemsToDelete.length)
-    return array.filter(currItem => !itemsToDelete.includes(currItem));
+  if (keysType === 'string' && deleteKeys)
+    return (input, data) => (input === data);
 
-  if (itemsToDeleteType === 'string')
-    return array.filter(currItem => (currItem !== itemsToDelete));
+  if (keysType === 'object' && deleteKeys.length)
+    return (input, data) => (input.includes(data));
 
-  return array;
+  return null;
 }
 
+
+function deleteItemsFromArray(array, itemsToDelete) {
+
+  const checkDelete = checkDeleteFunc(itemsToDelete);
+
+  if (!checkDelete)
+    return array;
+
+  return array.filter(currItem => !checkDelete(itemsToDelete, currItem));
+
+}
 
 function deleteItemsByKeys(obj, keys, keysToDelete) {
 
-  const keysToDeleteType = typeof(keysToDelete);
+  const checkDelete = checkDeleteFunc(keysToDelete);
 
-  if (keysToDeleteType === 'object' && keysToDelete.length) {
-    return keys.reduce(
-      (newObj, currKey) => {
-        if (!keysToDelete.includes(currKey))
-          newObj[currKey] = obj[currKey];
-        return newObj;
-      },
-      {}
-    );
-  }
+  if (!checkDelete)
+    return obj;
 
-  if (keysToDeleteType === 'string') {
-    return keys.reduce(
-      (newObj, currKey) => {
-        if (!(keysToDelete === currKey))
-          newObj[currKey] = obj[currKey];
-        return newObj;
-      },
-      {}
-    );
-  }
-
-  return obj;
-
+  return keys.reduce((newObj, currKey) => {
+    if (!checkDelete(keysToDelete, currKey))
+      newObj[currKey] = obj[currKey];
+    return newObj;
+  }, {});
 }
+
 
 function deleteFromState(state, itemIds) {
   if (itemIds) {
@@ -147,7 +118,4 @@ function deleteFromState(state, itemIds) {
   return state;
 }
 
-export {
-  addItem, mergeItems, update, updateItem, updateState,
-  deleteItemsFromArray, deleteFromState
-};
+export { addItem, mergeItems, update, deleteItemsFromArray, deleteFromState };
