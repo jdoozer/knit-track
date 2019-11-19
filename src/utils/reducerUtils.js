@@ -11,7 +11,7 @@ function addItem(state, newItem, idField, updates) {
           [idField]: newItemId,
         },
       },
-      allIds: state.allIds.concat(newItemId),
+      allIds: [...new Set([...state.allIds, newItemId])],
       ...updates,
     };
   }
