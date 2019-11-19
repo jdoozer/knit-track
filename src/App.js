@@ -45,7 +45,7 @@ const App = ({ loggedIn, logout }) => {
         loggedIn={loggedIn}
         logout={logout}
       />
-      <Route component={() => (<Navigation {...navProps} />)} />
+      <Navigation {...navProps} />
       <MainContentWrapper>
         <Switch>
           <Route path="/login" component={LoginPage} />
