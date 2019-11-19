@@ -37,7 +37,7 @@ const NavDrawer = (
     mobileDrawerLinkProps.onClick = handleDrawerToggle;
 
   const drawer = (
-    <React.Fragment>
+    <>
       <div className={classes.toolbar} />
       <AddPattern />
       <List component="nav">
@@ -61,11 +61,11 @@ const NavDrawer = (
           About
         </NavMenuItem>
       </List>
-    </React.Fragment>
+    </>
   );
 
   return (
-    <React.Fragment>
+    <>
       <Hidden mdUp implementation="css">
         <Drawer
           variant="temporary"
@@ -87,7 +87,7 @@ const NavDrawer = (
           {drawer}
         </Drawer>
       </Hidden>
-    </React.Fragment>
+    </>
   )
 };
 

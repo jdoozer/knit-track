@@ -85,7 +85,7 @@ class SectionPanel extends React.Component {
         <ExpansionPanelDetails className={classes.details}>
           {
             expanded
-            && (<React.Fragment>
+            && (<>
               <RowCounter
                 currentRow={currentRow}
                 final={currentRow===numRows}
@@ -97,7 +97,7 @@ class SectionPanel extends React.Component {
               <div className={classes.button}>
                 <DeleteSection sectionId={sectionId} />
               </div>
-            </React.Fragment>)
+            </>)
           }
         </ExpansionPanelDetails>
       </ExpansionPanel>

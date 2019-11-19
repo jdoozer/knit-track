@@ -151,7 +151,7 @@ class SectionSetupForm extends React.Component {
     } = this.props;
 
     return (
-      <React.Fragment>
+      <>
         <ContentHeader>{title} - New Section Setup</ContentHeader>
         <form
           onSubmit={this.handleSubmit}
@@ -213,7 +213,7 @@ class SectionSetupForm extends React.Component {
           Error creating section, please retry!
         </ErrorSnackbar>
 
-      </React.Fragment>
+      </>
     );
   }
 };

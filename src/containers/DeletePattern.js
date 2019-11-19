@@ -23,7 +23,7 @@ const mapDispatchToProps = {
 const DeletePattern = ({
   patternId, loading, error, lastActionType, clearError, deletePattern
 }) => (
-  <React.Fragment>
+  <>
 
     <DeleteButton
       onClick={() => deletePattern(patternId)}
@@ -39,7 +39,7 @@ const DeletePattern = ({
       Error deleting pattern, please retry!
     </ErrorSnackbar>
 
-  </React.Fragment>
+  </>
 );
 
 DeletePattern.propTypes = {

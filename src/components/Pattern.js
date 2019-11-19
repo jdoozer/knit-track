@@ -52,7 +52,7 @@ const Pattern = ({ pattern, classes }) => {
     </span>);
   }
 
-  return (<React.Fragment>
+  return (<>
 
     <ContentHeader iconButton={(<DeletePattern patternId={patternId} />)}>
       {title}
@@ -76,7 +76,7 @@ const Pattern = ({ pattern, classes }) => {
 
     <AddSection patternId={patternId} />
 
-  </React.Fragment>);
+  </>);
 };
 
 Pattern.propTypes = {

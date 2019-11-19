@@ -48,7 +48,7 @@ class PatternSetupForm extends React.Component {
     const { classes, loading, error, clearError } = this.props;
 
     return (
-      <React.Fragment>
+      <>
 
         <ContentHeader>Pattern Setup</ContentHeader>
         <form onSubmit={this.handleSubmit} className={classes.form}>
@@ -109,7 +109,7 @@ class PatternSetupForm extends React.Component {
           Error creating pattern, please retry!
         </ErrorSnackbar>
 
-      </React.Fragment>
+      </>
     );
   }
 };

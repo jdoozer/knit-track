@@ -39,7 +39,7 @@ const App = ({ loggedIn, logout }) => {
   );
 
   return (
-    <React.Fragment>
+    <>
       <Header
         handleDrawerToggle={handleDrawerToggle}
         loggedIn={loggedIn}
@@ -56,7 +56,7 @@ const App = ({ loggedIn, logout }) => {
           <AppProtectedRoute component={HomeScreen} />
         </Switch>
       </MainContentWrapper>
-    </React.Fragment>
+    </>
   )
 };
 

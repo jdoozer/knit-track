@@ -23,7 +23,7 @@ const mapDispatchToProps = {
 const DeleteSection = ({
   sectionId, loading, error, lastActionType, clearError, deleteSection
 }) => (
-  <React.Fragment>
+  <>
 
     <DeleteButton
       onClick={() => deleteSection(sectionId)}
@@ -39,7 +39,7 @@ const DeleteSection = ({
       Error deleting section, please retry!
     </ErrorSnackbar>
 
-  </React.Fragment>
+  </>
 );
 
 DeleteSection.propTypes = {

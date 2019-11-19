@@ -37,7 +37,7 @@ class DeleteButton extends React.Component {
     const { dialogOpen } = this.state;
 
     return (
-      <React.Fragment>
+      <>
 
         <IconButton
           color="inherit"
@@ -72,7 +72,7 @@ class DeleteButton extends React.Component {
           </DialogActions>
         </Dialog>
 
-      </React.Fragment>
+      </>
     );
   }
 

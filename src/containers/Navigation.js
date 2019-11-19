@@ -40,7 +40,7 @@ class Navigation extends React.Component {
       placeholderProp = true;
 
     return (
-      <React.Fragment>
+      <>
 
         <ProgressModal open={loading} />
 
@@ -55,7 +55,7 @@ class Navigation extends React.Component {
           handleDrawerToggle={handleDrawerToggle}
         />
 
-      </React.Fragment>
+      </>
     );
   }
 }
