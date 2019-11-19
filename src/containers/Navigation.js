@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { subscribePatternList, clearError } from 'actions';
 import { getPatternTitlesSorted, getPatternsLoading, getPatternsError } from 'reducers';
-import ProgressModal from 'components/ProgressModal';
+// import ProgressModal from 'components/ProgressModal';
 import ErrorSnackbar from 'components/ErrorSnackbar';
 import NavDrawer from 'components/NavDrawer';
 
@@ -35,26 +35,18 @@ class Navigation extends React.Component {
       loading, error, patternTitles, placeholder, mobileOpen, handleDrawerToggle
     } = this.props;
 
-    let placeholderProp = placeholder;
-    if (!(patternTitles && patternTitles.length) || loading || error)
-      placeholderProp = true;
-
     return (
       <>
-
-        <ProgressModal open={loading} />
-
-        <ErrorSnackbar open={error && !loading} onClose={clearError}>
-          Error loading patterns
-        </ErrorSnackbar>
-
         <NavDrawer
-          placeholder={placeholderProp}
+          placeholder={placeholder}
           patternTitles={patternTitles}
           mobileOpen={mobileOpen}
           handleDrawerToggle={handleDrawerToggle}
+          loadingPatterns={loading}
         />
-
+        <ErrorSnackbar open={error && !loading} onClose={clearError}>
+          Error loading patterns!
+        </ErrorSnackbar>
       </>
     );
   }

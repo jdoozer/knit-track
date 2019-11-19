@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Hidden from '@material-ui/core/Hidden';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import NavMenuItem from 'components/NavMenuItem';
 import AddPattern from 'components/AddPattern';
 
@@ -22,15 +23,17 @@ const useStyles = makeStyles(theme => ({
   toolbar: {
     [theme.breakpoints.up('md')]: theme.mixins.toolbar
   },
+  loading: {
+    textAlign: 'center',
+  }
 }));
 
-const NavDrawer = (
-  { placeholder, patternTitles, mobileOpen, handleDrawerToggle }
-) => {
+const NavDrawer = ({
+  placeholder, patternTitles, mobileOpen, handleDrawerToggle, loadingPatterns
+}) => {
   const classes = useStyles();
-  if (placeholder) {
+  if (placeholder)
     return (<div className={classes.drawer} />);
-  }
 
   let mobileDrawerLinkProps = {};
   if (mobileOpen)
@@ -42,16 +45,19 @@ const NavDrawer = (
       <AddPattern />
       <List component="nav">
         <NavMenuItem level={0} key="patterns">Patterns</NavMenuItem>
-        {patternTitles.map(({ patternId, title }) => (
-          <NavMenuItem
-            level={1}
-            link={`/patterns/${patternId}`}
-            key={patternId}
-            {...mobileDrawerLinkProps}
-          >
-            {title}
-          </NavMenuItem>
-        ))}
+        {loadingPatterns
+          ? (<div className={classes.loading}><CircularProgress /></div>)
+          : patternTitles.map(({ patternId, title }) => (
+            <NavMenuItem
+              level={1}
+              link={`/patterns/${patternId}`}
+              key={patternId}
+              {...mobileDrawerLinkProps}
+            >
+              {title}
+            </NavMenuItem>
+          ))
+        }
         <NavMenuItem
           level={0}
           link="/about"
