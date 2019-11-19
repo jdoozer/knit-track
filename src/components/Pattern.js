@@ -9,8 +9,6 @@ import Section from 'containers/Section';
 import AddSection from 'components/AddSection';
 
 const styles = theme => ({
-  root: {
-  },
   info: {
     textAlign: 'left',
     margin: theme.spacing(3),
@@ -86,7 +84,7 @@ Pattern.propTypes = {
     title: PropTypes.string.isRequired,
     info: PropTypes.string,
     patternId: PropTypes.string.isRequired,
-    sectionIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    sectionIds: PropTypes.arrayOf(PropTypes.string.isRequired),
   }).isRequired,
   classes: PropTypes.object.isRequired,
 };
