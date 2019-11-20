@@ -34,7 +34,7 @@ const Header = ({ classes, handleDrawerToggle, loggedIn, logout }) => {
   return (
     <AppBar position="fixed" className={classes.root}>
       <Toolbar>
-        <IconButton
+        {loggedIn && <IconButton
           color="inherit"
           aria-label="open drawer"
           edge="start"
@@ -42,7 +42,7 @@ const Header = ({ classes, handleDrawerToggle, loggedIn, logout }) => {
           className={classes.menuButton}
         >
           <MenuIcon />
-        </IconButton>
+        </IconButton>}
         <Typography variant="h5" color="inherit" className={classes.title}>
           {loggedIn ? titleHomeLink : title}
         </Typography>
