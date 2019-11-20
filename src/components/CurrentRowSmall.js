@@ -11,11 +11,11 @@ const textColor = gray[900];
 const styles = theme => ({
   root: {
     border: 'solid 2px ' + borderColor,
-    display: ({ big }) => big ? 'flex' : 'inline-block',
+    display: 'inline-block',
     alignItems: 'center',
     justifyContent: 'center',
-    minWidth: ({ big }) => big ? 100 : 30,
-    height: ({ big }) => big ? 94 : 'auto',
+    minWidth: 30,
+    height: 'auto',
     marginRight: theme.spacing(1),
     padding: theme.spacing(0, 1),
     color: ({ color }) => color || textColor,
@@ -23,20 +23,19 @@ const styles = theme => ({
   }
 });
 
-const CurrentRow = ({ currentRow, classes, big }) => (
+const CurrentRowSmall = ({ currentRow, classes, big }) => (
   <Paper className={classes.root} elevation={1}>
-    <Typography variant={big ? 'h3' : 'subtitle1'}>
+    <Typography variant="subtitle1">
       {currentRow}
     </Typography>
   </Paper>
 );
 
-CurrentRow.propTypes = {
+CurrentRowSmall.propTypes = {
   currentRow: PropTypes.number.isRequired,
   classes: PropTypes.object.isRequired,
   color: PropTypes.string,
-  big: PropTypes.bool,
   final: PropTypes.bool,
 };
 
-export default withStyles(styles)(CurrentRow);
+export default withStyles(styles)(CurrentRowSmall);

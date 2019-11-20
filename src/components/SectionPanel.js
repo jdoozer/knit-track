@@ -7,7 +7,7 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import TotalRows from 'components/TotalRows';
-import CurrentRow from 'components/CurrentRow';
+import CurrentRowSmall from 'components/CurrentRowSmall';
 import RowCounter from 'components/RowCounter';
 import DeleteSection from 'containers/DeleteSection';
 
@@ -75,7 +75,7 @@ class SectionPanel extends React.Component {
             {
               expanded
                 ? <TotalRows numRows={numRows} />
-                : <CurrentRow
+                : <CurrentRowSmall
                     currentRow={currentRow}
                     final={currentRow===numRows}
                   />

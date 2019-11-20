@@ -7,7 +7,7 @@ import MinusIcon from '@material-ui/icons/Remove';
 import ResetIcon from '@material-ui/icons/Undo';
 import Tooltip from '@material-ui/core/Tooltip';
 import gray from '@material-ui/core/colors/blueGrey';
-import CurrentRow from 'components/CurrentRow';
+import CurrentRowBig from 'components/CurrentRowBig';
 import RowInfo from 'components/RowInfo';
 
 const textColor = gray[900];
@@ -62,10 +62,9 @@ const RowCounter = ({
     <div className={classes.root}>
       <div className={classes.rowCounter}>
 
-        <CurrentRow
+        <CurrentRowBig
           color={rowColor}
           currentRow={currentRow}
-          big
           final={final}
         />
 
