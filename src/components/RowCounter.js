@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import PlusIcon from '@material-ui/icons/Add';
 import MinusIcon from '@material-ui/icons/Remove';
 import ResetIcon from '@material-ui/icons/Undo';
+import Tooltip from '@material-ui/core/Tooltip';
 import gray from '@material-ui/core/colors/blueGrey';
 import CurrentRow from 'components/CurrentRow';
 import RowInfo from 'components/RowInfo';
@@ -50,7 +51,7 @@ const styles = theme => ({
 const RowCounter = ({
   currentRow, rows, onClick, classes, error, loading, final
 }) => {
-  
+
   let rowColor = textColor;
   if (error)
     rowColor = textErrorColor;
@@ -60,38 +61,47 @@ const RowCounter = ({
   return (
     <div className={classes.root}>
       <div className={classes.rowCounter}>
+
         <CurrentRow
           color={rowColor}
           currentRow={currentRow}
           big
           final={final}
         />
+
         <div className={classes.counterButtonRoot}>
-          <Button
-            variant="contained"
-            className={classes.counterButton}
-            color="secondary"
-            onClick={() => onClick("INCREMENT")}
-          >
-            <PlusIcon className={classes.bigIcon} />
-          </Button>
+          <Tooltip title="Increment" placement="right">
+            <Button
+              variant="contained"
+              className={classes.counterButton}
+              color="secondary"
+              onClick={() => onClick("INCREMENT")}
+            >
+              <PlusIcon className={classes.bigIcon} />
+            </Button>
+          </Tooltip>
           <div className={classes.counterButtonSecondary}>
-            <Button
-              variant="contained"
-              className={classes.counterButton}
-              onClick={() => onClick("RESET")}
-            >
-              <ResetIcon />
-            </Button>
-            <Button
-              variant="contained"
-              className={classes.counterButton}
-              onClick={() => onClick("DECREMENT")}
-            >
-              <MinusIcon />
-            </Button>
+            <Tooltip title="Reset" placement="bottom-start">
+              <Button
+                variant="contained"
+                className={classes.counterButton}
+                onClick={() => onClick("RESET")}
+              >
+                <ResetIcon />
+              </Button>
+            </Tooltip>
+            <Tooltip title="Decrement" placement="right">
+              <Button
+                variant="contained"
+                className={classes.counterButton}
+                onClick={() => onClick("DECREMENT")}
+              >
+                <MinusIcon />
+              </Button>
+            </Tooltip>
           </div>
         </div>
+
       </div>
       {rows[currentRow]
         && <RowInfo currentRow={currentRow} {...rows[currentRow]} />}
