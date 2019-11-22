@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { updateRowCount, subscribeRowCount } from 'actions';
@@ -18,39 +18,35 @@ const mapDispatchToProps = {
   ),
 };
 
-// USE HOOKS!
-class Section extends React.Component {
+const Section = ({ section, sectionId, updateRowCount, subscribeRowCount }) => {
 
-  state = { subscribed: false };
+  const [subscribed, setSubscribed] = useState(false);
 
-  componentDidUpdate() {
-    if (this.props.section && !this.state.subscribed) {
-      this.props.subscribeRowCount(this.props.sectionId, true);
-      this.setState({ subscribed: true });
+  useEffect(() => {
+    if (sectionId && !subscribed) {
+      subscribeRowCount(sectionId, true);
+      setSubscribed(true);
     }
+    return (() => {
+      if (subscribed)
+        subscribeRowCount(sectionId, false);
+      }
+    );
+  }, [sectionId, subscribed, subscribeRowCount]);
+
+  if (!section) {
+    return (<div>wait for it...</div>);
   }
 
-  componentWillUnmount() {
-    if (this.props.section && this.state.subscribed)
-      this.props.subscribeRowCount(this.props.sectionId, false);
-  }
+  return (
+    <SectionPanel section={section} updateRowCount={updateRowCount} />
+  )
 
-  render() {
-    const { section, updateRowCount } = this.props;
-
-    if (!section) {
-      return (<div>wait for it...</div>);
-    }
-
-    return (
-      <SectionPanel section={section} updateRowCount={updateRowCount} />
-    )
-  }
-
-};
+}
 
 Section.propTypes = {
   updateRowCount: PropTypes.func.isRequired,
+  subscribeRowCount: PropTypes.func.isRequired,
   sectionId: PropTypes.string.isRequired,
   section: PropTypes.object,
 };
