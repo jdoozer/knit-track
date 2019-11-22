@@ -83,8 +83,32 @@ export const subscribePatternList = (listenerOn) => (dispatch) => {
   }
 };
 
+export const subscribeRowCount = (sectionId, listenerOn) => (
+  (dispatch, getState) => {
+    if (listenerOn) {
+      db.ref(`sections/${sectionId}/currentRow`).on('value',
+        currRowSnap => {
+          const { lastActionType } = getState().sections.byId[sectionId];
+          if (lastActionType === 'updateRowCount')
+            return null;
+          return dispatch(
+            receiveUpdatedSection({ currentRow: currRowSnap.val() }, sectionId)
+          )
+        },
+        error => dispatch(
+          receiveError(
+            { status: 500, message: error.message }, 'sections', sectionId
+          )
+        )
+      );
+    } else {
+      db.ref(`sections/${sectionId}/currentRow`).off('value');
+    }
+  }
+);
 
-// ASYNC THUNK FUNCTIONS
+
+// ASYNC THUNK FUNCTIONS - REST API
 export const fetchPatterns = () => fetchThunk({
   requestAction: requestData('patterns'),
   receiveAction: receiveData,

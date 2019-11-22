@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { updateRowCount } from 'actions';
+import { updateRowCount, subscribeRowCount } from 'actions';
 import { getSectionById } from 'reducers';
 import SectionPanel from 'components/SectionPanel';
 
@@ -13,17 +13,41 @@ const mapDispatchToProps = {
   updateRowCount: (sectionId, updateType) => (
     updateRowCount(sectionId, updateType)
   ),
+  subscribeRowCount: (sectionId, listenerOn) => (
+    subscribeRowCount(sectionId, listenerOn)
+  ),
 };
 
-const Section = ({ section, updateRowCount }) => {
+// USE HOOKS!
+class Section extends React.Component {
 
-  if (!section) {
-    return (<div>wait for it...</div>);
+  state = { subscribed: false };
+
+  componentDidUpdate() {
+    if (this.props.section && !this.state.subscribed) {
+      this.props.subscribeRowCount(this.props.sectionId, true);
+      this.setState({ subscribed: true });
+    }
   }
 
-  return (
-    <SectionPanel section={section} updateRowCount={updateRowCount} />
-)};
+  componentWillUnmount() {
+    if (this.props.section && this.state.subscribed)
+      this.props.subscribeRowCount(this.props.sectionId, false);
+  }
+
+  render() {
+    const { section, updateRowCount } = this.props;
+
+    if (!section) {
+      return (<div>wait for it...</div>);
+    }
+
+    return (
+      <SectionPanel section={section} updateRowCount={updateRowCount} />
+    )
+  }
+
+};
 
 Section.propTypes = {
   updateRowCount: PropTypes.func.isRequired,
