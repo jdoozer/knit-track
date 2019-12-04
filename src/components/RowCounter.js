@@ -49,7 +49,7 @@ const styles = theme => ({
 });
 
 const RowCounter = ({
-  currentRow, rows, onClick, classes, error, loading, final
+  currentRow, rows, onClick, classes, error, loading, max
 }) => {
 
   let rowColor = textColor;
@@ -65,7 +65,8 @@ const RowCounter = ({
         <CurrentRowBig
           color={rowColor}
           currentRow={currentRow}
-          final={final}
+          max={max}
+          onClick={row => onClick(row)}
         />
 
         <div className={classes.counterButtonRoot}>
@@ -111,6 +112,7 @@ const RowCounter = ({
 RowCounter.propTypes = {
   onClick: PropTypes.func.isRequired,
   currentRow: PropTypes.number.isRequired,
+  max: PropTypes.number.isRequired,
   rows: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]).isRequired,
   loading: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,

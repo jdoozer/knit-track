@@ -88,7 +88,7 @@ class SectionPanel extends React.Component {
             && (<>
               <RowCounter
                 currentRow={currentRow}
-                final={currentRow===numRows}
+                max={numRows}
                 rows={rows || {}}
                 error={Boolean(error) && lastActionType==='updateRowCount'}
                 loading={loading  && lastActionType==='updateRowCount'}

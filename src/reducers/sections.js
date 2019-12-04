@@ -14,6 +14,9 @@ const getNextRow = (updateType, { currentRow, numRows }) => {
     case 'RESET':
       return 1;
     default:
+      if (typeof updateType === 'number'
+          && updateType >= 1 && updateType <= numRows)
+        return Math.floor(updateType);
       return currentRow;
   }
 };
