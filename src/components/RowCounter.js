@@ -49,7 +49,7 @@ const styles = theme => ({
 });
 
 const RowCounter = ({
-  currentRow, rows, onClick, classes, error, loading, max
+  currentRow, rows, updateRowCount, classes, error, loading, max
 }) => {
 
   let rowColor = textColor;
@@ -66,7 +66,7 @@ const RowCounter = ({
           color={rowColor}
           currentRow={currentRow}
           max={max}
-          onClick={row => onClick(row)}
+          updateRowCount={row => updateRowCount(row)}
         />
 
         <div className={classes.counterButtonRoot}>
@@ -75,7 +75,7 @@ const RowCounter = ({
               variant="contained"
               className={classes.counterButton}
               color="secondary"
-              onClick={() => onClick("INCREMENT")}
+              onClick={() => updateRowCount("INCREMENT")}
             >
               <PlusIcon className={classes.bigIcon} />
             </Button>
@@ -85,7 +85,7 @@ const RowCounter = ({
               <Button
                 variant="contained"
                 className={classes.counterButton}
-                onClick={() => onClick("RESET")}
+                onClick={() => updateRowCount("RESET")}
               >
                 <ResetIcon />
               </Button>
@@ -94,7 +94,7 @@ const RowCounter = ({
               <Button
                 variant="contained"
                 className={classes.counterButton}
-                onClick={() => onClick("DECREMENT")}
+                onClick={() => updateRowCount("DECREMENT")}
               >
                 <MinusIcon />
               </Button>
@@ -110,7 +110,7 @@ const RowCounter = ({
 }
 
 RowCounter.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  updateRowCount: PropTypes.func.isRequired,
   currentRow: PropTypes.number.isRequired,
   max: PropTypes.number.isRequired,
   rows: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]).isRequired,

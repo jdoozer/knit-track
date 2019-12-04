@@ -92,7 +92,7 @@ class SectionPanel extends React.Component {
                 rows={rows || {}}
                 error={Boolean(error) && lastActionType==='updateRowCount'}
                 loading={loading  && lastActionType==='updateRowCount'}
-                onClick={updateType => updateRowCount(sectionId, updateType)}
+                updateRowCount={type => updateRowCount(sectionId, type)}
               />
               <div className={classes.button}>
                 <DeleteSection sectionId={sectionId} />

@@ -31,7 +31,7 @@ const styles = theme => ({
   }
 });
 
-const CurrentRowBig = ({ currentRow, max, onClick, classes }) => {
+const CurrentRowBig = ({ currentRow, max, updateRowCount, classes }) => {
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [newRow, setNewRow] = useState(currentRow);
@@ -50,8 +50,8 @@ const CurrentRowBig = ({ currentRow, max, onClick, classes }) => {
     }
   }
 
-  const updateRow = () => {
-    onClick(parseInt(newRow, 10));
+  const updateAndClose = () => {
+    updateRowCount(parseInt(newRow, 10));
     setDialogOpen(false);
   }
 
@@ -64,8 +64,8 @@ const CurrentRowBig = ({ currentRow, max, onClick, classes }) => {
     </Paper>
 
     <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
-      <form>
-        <DialogTitle>New Row</DialogTitle>
+      <form onSubmit={e => e.preventDefault()}>
+        <DialogTitle>New Row:</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -82,7 +82,7 @@ const CurrentRowBig = ({ currentRow, max, onClick, classes }) => {
           <Button onClick={() => setDialogOpen(false)} color="primary">
             cancel
           </Button>
-          <Button onClick={updateRow} color="primary" variant="contained" type="submit">
+          <Button onClick={updateAndClose} color="primary" variant="contained" type="submit">
             update
           </Button>
         </DialogActions>
@@ -95,6 +95,7 @@ const CurrentRowBig = ({ currentRow, max, onClick, classes }) => {
 CurrentRowBig.propTypes = {
   currentRow: PropTypes.number.isRequired,
   max: PropTypes.number.isRequired,
+  updateRowCount: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   color: PropTypes.string,
 };
