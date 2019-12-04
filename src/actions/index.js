@@ -54,25 +54,22 @@ const {
 export { clearError, clearLastCreated, updateLogin };
 
 
-// FORMATTING FOR REALTIME DB REQUESTS (replicated from express server)
-const formatPatterns = (patterns) => ({
-  patterns: { byId: patterns, allIds: Object.keys(patterns) }
-});
-
 // ASYNC THUNK FUNCTIONS - REALTIME DATABASE
 export const subscribePatternList = (listenerOn) => (dispatch) => {
   if (listenerOn) {
     dispatch(requestData('patterns'));
     db.ref('patterns').on('value',
-      snapshot => {
-        let patterns = {};
-        snapshot.forEach(patternSnapshot => {
-          patterns[patternSnapshot.key] = {
-            patternId: patternSnapshot.key,
-            title: patternSnapshot.child('title').val()
-          }
+      patternSnapshots => {
+        let patterns = { byId: {}, allIds: [] };
+        patternSnapshots.forEach(snapshot => {
+          const patternId = snapshot.key;
+          patterns.byId[patternId] = {
+            patternId: patternId,
+            title: snapshot.child('title').val()
+          };
+          patterns.allIds.push(patternId);
         });
-        return dispatch(receiveData(formatPatterns(patterns)));
+        return dispatch(receiveData({ patterns }));
       },
       error => dispatch(
         receiveError({ status: 500, message: error.message }, 'patterns')
@@ -169,7 +166,7 @@ export const deleteSection = sectionId => fetchThunk({
 
 // CONDITIONAL & CHAINED THUNKS
 
-export const fetchPatternExpandedIfNeeded = patternId => (
+export const fetchPatternExpandedIfNeeded = (patternId) => (
   (dispatch, getState) => {
 
     const { patterns, sections } = getState();
