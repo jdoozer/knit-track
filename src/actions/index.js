@@ -85,11 +85,17 @@ export const subscribeRowCount = (sectionId, listenerOn) => (
     if (listenerOn) {
       db.ref(`sections/${sectionId}/currentRow`).on('value',
         currRowSnap => {
-          const { lastActionType } = getState().sections.byId[sectionId];
-          if (lastActionType === 'updateRowCount')
+          const currentRowUpdated = currRowSnap.val();
+          const { lastActionType, currentRow } = (
+            getState().sections.byId[sectionId]
+          );
+          if (
+            (lastActionType === 'updateRowCount')
+            || (currentRow === currentRowUpdated)
+          )
             return null;
           return dispatch(
-            receiveUpdatedSection({ currentRow: currRowSnap.val() }, sectionId)
+            receiveUpdatedSection({ currentRow: currentRowUpdated }, sectionId)
           )
         },
         error => dispatch(

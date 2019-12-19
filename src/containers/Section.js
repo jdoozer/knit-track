@@ -18,9 +18,10 @@ const mapDispatchToProps = {
   ),
 };
 
-const Section = ({ section, sectionId, updateRowCount, subscribeRowCount }) => {
+const Section = (props) => {
 
   const [subscribed, setSubscribed] = useState(false);
+  const { section, sectionId, updateRowCount, subscribeRowCount } = props;
 
   useEffect(() => {
     if (sectionId && !subscribed) {
@@ -30,8 +31,7 @@ const Section = ({ section, sectionId, updateRowCount, subscribeRowCount }) => {
     return (() => {
       if (subscribed)
         subscribeRowCount(sectionId, false);
-      }
-    );
+    });
   }, [sectionId, subscribed, subscribeRowCount]);
 
   if (!section) {
