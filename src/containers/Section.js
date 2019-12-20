@@ -20,19 +20,23 @@ const mapDispatchToProps = {
 
 const Section = (props) => {
 
-  const [subscribed, setSubscribed] = useState(false);
+  const [, setSubscribed] = useState(false);
   const { section, sectionId, updateRowCount, subscribeRowCount } = props;
 
   useEffect(() => {
-    if (sectionId && !subscribed) {
-      subscribeRowCount(sectionId, true);
-      setSubscribed(true);
-    }
-    return (() => {
-      if (subscribed)
-        subscribeRowCount(sectionId, false);
+    setSubscribed(subscribed => {
+      if (sectionId && !subscribed)
+        subscribeRowCount(sectionId, true);
+      return (sectionId && !subscribed);
     });
-  }, [sectionId, subscribed, subscribeRowCount]);
+    return (() => {
+      setSubscribed(subscribed => {
+        if (subscribed)
+          subscribeRowCount(sectionId, false);
+        return false;
+      });
+    });
+  }, [sectionId, subscribeRowCount]);
 
   if (!section) {
     return (<div>wait for it...</div>);
