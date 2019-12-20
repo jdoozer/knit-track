@@ -33,10 +33,7 @@ const App = ({ loggedIn, logout }) => {
   };
 
   const navProps = { placeholder: !loggedIn, mobileOpen, handleDrawerToggle };
-
-  const AppProtectedRoute = props => (
-    <ProtectedRoute allow={loggedIn} redirectLink="/login" {...props} />
-  );
+  const routeProps = { allow: loggedIn, redirectLink: "/login" };
 
   return (
     <>
@@ -49,11 +46,19 @@ const App = ({ loggedIn, logout }) => {
       <MainContentWrapper>
         <Switch>
           <Route path="/login" component={LoginPage} />
-          <AppProtectedRoute path="/home" component={HomeScreen} />
-          <AppProtectedRoute path="/about" component={About} />
-          <AppProtectedRoute path="/patterns/new" component={PatternSetup} />
-          <AppProtectedRoute path="/patterns/:patternId" component={PatternContainer} />
-          <AppProtectedRoute component={HomeScreen} />
+          <ProtectedRoute path="/home" component={HomeScreen} {...routeProps} />
+          <ProtectedRoute path="/about" component={About} {...routeProps} />
+          <ProtectedRoute
+            path="/patterns/new"
+            component={PatternSetup}
+            {...routeProps}
+          />
+          <ProtectedRoute
+            path="/patterns/:patternId"
+            component={PatternContainer}
+            {...routeProps}
+          />
+          <ProtectedRoute component={HomeScreen} {...routeProps} />
         </Switch>
       </MainContentWrapper>
     </>
