@@ -18,31 +18,29 @@ function addItem(state, newItem, idField, updates) {
   return state;
 }
 
-// mergeItems assumes the input already has byId, allId fields
+// mergeItems assumes the input has byId, allId fields
 function mergeItems(state, newItems, stateUpdates, newItemFields) {
-  if (newItems) {
-    const newState = {
-      ...state,
-      byId: {
-        ...state.byId,
-        ...newItems.byId,
-      },
-      allIds: [...new Set([...state.allIds ,...newItems.allIds])],
-      ...stateUpdates,
+
+  if (!newItems)
+    return state;
+
+  const newState = {
+    ...state,
+    byId: { ...state.byId, },
+    allIds: [...new Set([...state.allIds ,...newItems.allIds])],
+    ...stateUpdates,
+  };
+
+  newItems.allIds.forEach(itemId => {
+    newState.byId[itemId] = {
+      ...state.byId[itemId],
+      ...newItems.byId[itemId],
+      ...newItemFields,
     };
-    if (newItemFields) {
-      newItems.allIds.forEach(
-        itemId => {
-          newState.byId[itemId] = {
-            ...newItemFields,
-            ...newState.byId[itemId]
-          };
-        }
-      );
-    }
-    return newState;
-  }
-  return state;
+  });
+
+  return newState;
+
 }
 
 
