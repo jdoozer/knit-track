@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+import MuiLink from '@material-ui/core/Link';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
 import DeletePattern from 'containers/DeletePattern';
 import ContentHeader from 'components/ContentHeader';
 import Section from 'containers/Section';
@@ -35,26 +38,35 @@ const Pattern = ({ pattern, classes }) => {
     patternId, title, info, linkPattSource, linkRavPatt, linkRavProj, sectionIds
   } = pattern;
 
+  const EditLink = React.forwardRef((props, ref) => (
+    <Link innerRef={ref} to={`/patterns/${patternId}/edit`} {...props} />
+  ));
+
   let linkBlock = [];
   if (linkPattSource) {
     linkBlock.push(<span key="pattSource">
-      <Link href={linkPattSource}>Pattern Source</Link>
+      <MuiLink href={linkPattSource}>Pattern Source</MuiLink>
     </span>);
   }
   if (linkRavPatt) {
     linkBlock.push(<span key="ravPatt">
-      <Link href={linkRavPatt}>Ravelry Pattern</Link>
+      <MuiLink href={linkRavPatt}>Ravelry Pattern</MuiLink>
     </span>);
   }
   if (linkRavProj) {
     linkBlock.push(<span key="ravProj">
-      <Link href={linkRavProj}>Ravelry Project</Link>
+      <MuiLink href={linkRavProj}>Ravelry Project</MuiLink>
     </span>);
   }
 
   return (<>
 
-    <ContentHeader iconButton={(<DeletePattern patternId={patternId} />)}>
+    <ContentHeader iconButton={[
+      (<IconButton color="inherit" key="edit" component={EditLink}>
+        <EditIcon />
+      </IconButton>),
+      (<DeletePattern patternId={patternId} key="delete" />)
+    ]}>
       {title}
     </ContentHeader>
 

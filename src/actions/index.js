@@ -8,6 +8,7 @@ const {
   receiveNewPattern,
   receiveNewSection,
   receiveUpdatedSection,
+  receiveUpdatedPattern,
   updateRowCountOptimistic,
   receiveError,
   receiveDeletePatternKeys,
@@ -27,6 +28,9 @@ const {
 
   RECEIVE_UPDATED_SECTION: (json, sectionId) => (
     { section: { sectionId, ...json } }),
+
+  RECEIVE_UPDATED_PATTERN: (json, patternId) => (
+    { pattern: { patternId, ...json } }),
 
   UPDATE_ROW_COUNT_OPTIMISTIC: (sectionId, updateType) => (
     { sectionId, updateType }
@@ -133,6 +137,15 @@ export const createPattern = ({ ...patternData }) => fetchThunk({
   path: 'patterns',
   requestType: 'POST',
   body: { pattern: patternData },
+});
+
+export const updatePattern = (patternId, patternUpdates, actionType) => fetchThunk({
+  requestAction: requestData('patterns', patternId, actionType),
+  receiveAction: json => receiveUpdatedPattern(json, patternId),
+  errorAction: error => receiveError(error, 'patterns', patternId),
+  path: `patterns/${patternId}`,
+  requestType: 'PATCH',
+  body: patternUpdates,
 });
 
 export const createSection = ({ ...sectionData }) => fetchThunk({

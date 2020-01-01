@@ -2,13 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { fetchPatternExpandedIfNeeded } from 'actions';
+import {
+  fetchPatternExpandedIfNeeded, clearError, updatePattern
+} from 'actions';
 import {
   getPatternLoading, getPatternError, getPatternLastAction, getPatternById
 } from 'reducers';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MessageBlock from 'components/MessageBlock';
 import Pattern from 'components/Pattern';
+import PatternForm from 'components/PatternForm';
 import SectionSetup from 'containers/SectionSetup';
 
 const mapStateToProps = (state, { match: { params: { patternId }}}) => ({
@@ -22,6 +25,10 @@ const mapDispatchToProps = {
   fetchPatternExpandedIfNeeded: patternId => (
     fetchPatternExpandedIfNeeded(patternId)
   ),
+  clearError: patternId => clearError('patterns', patternId),
+  updatePattern: ({ patternId, ...patternUpdates }) => (
+    updatePattern(patternId, patternUpdates, 'updatePattern')
+  )
 };
 
 class PatternContainer extends React.Component {
@@ -50,8 +57,8 @@ class PatternContainer extends React.Component {
   render() {
 
     const {
-      match: { path }, pattern,
-      loading, error, lastActionType
+      match: { path }, history, pattern,
+      loading, error, lastActionType, clearError, updatePattern
     } = this.props;
 
     if ((loading || this.state.initialLoadingIndicator) && !lastActionType) {
@@ -70,14 +77,23 @@ class PatternContainer extends React.Component {
       );
     }
 
+    if (!pattern)
+      return (<Redirect push to="/home" />);
+
     return (
       <Switch>
         <Route path={`${path}/newsection`} component={SectionSetup} />
-        <Route render={() => (
-          (pattern === undefined)
-            ? (<Redirect push to="/patterns" />)
-            : (<Pattern pattern={pattern} />)
+        <Route path={`${path}/edit`} render={() => (
+          <PatternForm
+            onSubmit={updatePattern}
+            clearError={clearError}
+            loading={loading && lastActionType === 'updatePattern'}
+            error={Boolean(error) && lastActionType === 'updatePattern'}
+            pattern={pattern}
+            history={history}
+          />
         )} />
+        <Route render={() => (<Pattern pattern={pattern} />)} />
       </Switch>
     );
   }
@@ -91,6 +107,7 @@ PatternContainer.propTypes = {
       patternId: PropTypes.string.isRequired
     }).isRequired
   }).isRequired,
+  history: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired,
   error: PropTypes.object,
   lastActionType: PropTypes.string.isRequired,

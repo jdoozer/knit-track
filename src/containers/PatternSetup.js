@@ -5,7 +5,7 @@ import { createPattern, clearLastCreated, clearError } from 'actions';
 import {
   getLastCreatedPatternId, getPatternsLoading, getPatternsError
 } from 'reducers';
-import PatternSetupForm from 'components/PatternSetupForm';
+import PatternForm from 'components/PatternForm';
 
 const mapStateToProps = state => ({
   lastCreatedId: getLastCreatedPatternId(state),
@@ -16,7 +16,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   createPattern: patternData => createPattern(patternData),
   clearError: () => clearError('patterns'),
-  clearLastCreated: () => clearLastCreated(['patterns']),
+  clearLastCreated: () => clearLastCreated('patterns'),
 };
 
 class PatternSetup extends React.Component {
@@ -34,8 +34,8 @@ class PatternSetup extends React.Component {
   render() {
     const { createPattern, clearError, loading, error } = this.props;
     return (
-      <PatternSetupForm
-        createPattern={createPattern}
+      <PatternForm
+        onSubmit={createPattern}
         clearError={clearError}
         loading={loading}
         error={error}

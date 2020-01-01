@@ -21,6 +21,15 @@ const patternsReducer = handleActions({
     }
   ),
 
+  RECEIVE_UPDATED_PATTERN: (state, action) => {
+    const { patternId, ...patternUpdates } = action.payload.pattern;
+    return update(
+      state,
+      { ...patternUpdates, ...itemMetaState },
+      patternId,
+    );
+  },
+
   RECEIVE_NEW_SECTION: (state, action) => {
 
     const { patternId, sectionId } = action.payload.section;
