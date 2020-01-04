@@ -17,8 +17,10 @@ import 'index.css';
 
 const loginState = loadLoginState();
 
+const composeEnhancers = composeWithDevTools({ trace: true, traceLimit: 10 });
+
 const middleware = (process.env.NODE_ENV === `development`)
-  ? composeWithDevTools(applyMiddleware(thunkMiddleware, createLogger()))
+  ? composeEnhancers(applyMiddleware(thunkMiddleware, createLogger()))
   : applyMiddleware(thunkMiddleware);
 
 const store = createStore(
