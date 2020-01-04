@@ -5,6 +5,7 @@ import db from 'config/firebaseDB';
 const {
   requestData,
   receiveData,
+  receivePatternTitles,
   receiveNewPattern,
   receiveNewSection,
   receiveUpdatedSection,
@@ -21,6 +22,8 @@ const {
   REQUEST_DATA: (dataType, id, actionType) => ({ dataType, id, actionType }),
 
   RECEIVE_DATA: json => ({ ...json }),
+
+  RECEIVE_PATTERN_TITLES: json => ({ ...json }),
 
   RECEIVE_NEW_PATTERN: json => ({ pattern: json }),
 
@@ -73,7 +76,7 @@ export const subscribePatternList = (listenerOn) => (dispatch) => {
           };
           patterns.allIds.push(patternId);
         });
-        return dispatch(receiveData({ patterns }));
+        return dispatch(receivePatternTitles({ patterns }));
       },
       error => dispatch(
         receiveError({ status: 500, message: error.message }, 'patterns')

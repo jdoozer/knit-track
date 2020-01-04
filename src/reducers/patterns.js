@@ -1,7 +1,8 @@
 import { handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import {
-  update, addItem, deleteFromState, deleteItemsFromArray
+  update, addItem, deleteFromState, deleteItemsFromArray,
+  mergeItemsKeepItemFields
 } from 'utils/reducerUtils';
 import sortByKey from 'utils/sortByKey';
 import {
@@ -10,6 +11,10 @@ import {
 
 
 const patternsReducer = handleActions({
+
+  RECEIVE_PATTERN_TITLES: (state, action) => mergeItemsKeepItemFields(
+    state, action.payload.patterns, collectionMetaState, itemMetaState
+  ),
 
   RECEIVE_NEW_PATTERN: (state, action) => addItem(
     state,

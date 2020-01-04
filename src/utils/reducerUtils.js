@@ -43,6 +43,30 @@ function mergeItems(state, newItems, stateUpdates, newItemFields) {
 
 }
 
+function mergeItemsKeepItemFields(state, newItems, stateUpdates, newItemFields) {
+
+  if (!newItems)
+    return state;
+
+  const newState = {
+    ...state,
+    byId: { ...state.byId, },
+    allIds: [...new Set([...state.allIds ,...newItems.allIds])],
+    ...stateUpdates,
+  };
+
+  newItems.allIds.forEach(itemId => {
+    newState.byId[itemId] = {
+      ...newItemFields,
+      ...state.byId[itemId],
+      ...newItems.byId[itemId],
+    };
+  });
+
+  return newState;
+
+}
+
 
 function update(state, updates, itemId) {
   if (updates) {
@@ -116,4 +140,7 @@ function deleteFromState(state, itemIds) {
   return state;
 }
 
-export { addItem, mergeItems, update, deleteItemsFromArray, deleteFromState };
+export {
+  addItem, mergeItems, mergeItemsKeepItemFields, update,
+  deleteItemsFromArray, deleteFromState
+};
