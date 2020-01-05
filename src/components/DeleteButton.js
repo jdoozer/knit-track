@@ -10,10 +10,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 
-const styles = theme => ({
-  root: {
-    padding: theme.spacing(1),
-  },
+const styles = () => ({
   title: {
     textTransform: 'capitalize',
   },
@@ -39,11 +36,7 @@ class DeleteButton extends React.Component {
     return (
       <>
 
-        <IconButton
-          color="inherit"
-          className={classes.root}
-          onClick={this.handleClickOpen}
-        >
+        <IconButton color="inherit" onClick={this.handleClickOpen}>
           <DeleteIcon />
         </IconButton>
 
