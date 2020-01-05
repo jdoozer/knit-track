@@ -1,6 +1,7 @@
 import { createActions } from 'redux-actions';
 import fetchThunk from 'actions/fetchThunk';
 import db from 'config/firebaseDB';
+import isEmpty from 'utils/isEmpty';
 
 const {
   requestData,
@@ -142,14 +143,18 @@ export const createPattern = ({ ...patternData }) => fetchThunk({
   body: { pattern: patternData },
 });
 
-export const updatePattern = (patternId, patternUpdates, actionType) => fetchThunk({
-  requestAction: requestData('patterns', patternId, actionType),
-  receiveAction: json => receiveUpdatedPattern(json, patternId),
-  errorAction: error => receiveError(error, 'patterns', patternId),
-  path: `patterns/${patternId}`,
-  requestType: 'PATCH',
-  body: patternUpdates,
-});
+export const updatePattern = (patternId, patternUpdates, actionType) => {
+  if (isEmpty(patternUpdates))
+    return (dispatch => Promise.resolve());
+  return fetchThunk({
+    requestAction: requestData('patterns', patternId, actionType),
+    receiveAction: json => receiveUpdatedPattern(json, patternId),
+    errorAction: error => receiveError(error, 'patterns', patternId),
+    path: `patterns/${patternId}`,
+    requestType: 'PATCH',
+    body: patternUpdates,
+  })
+};
 
 export const createSection = ({ ...sectionData }) => fetchThunk({
   requestAction: requestData('sections'),
@@ -188,7 +193,7 @@ export const deleteSection = sectionId => fetchThunk({
 
 // CONDITIONAL & CHAINED THUNKS
 
-export const fetchPatternExpandedIfNeeded = (patternId) => (
+export const fetchPatternIfNeeded = (patternId) => (
   (dispatch, getState) => {
 
     const { patterns, sections } = getState();

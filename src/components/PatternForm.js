@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import ProgressModal from 'components/ProgressModal';
 import ErrorSnackbar from 'components/ErrorSnackbar';
 import ContentHeader from 'components/ContentHeader';
+import filterUpdates from 'utils/filterUpdates';
 
 const styles = theme => ({
   form: {
@@ -47,7 +48,7 @@ class PatternForm extends React.Component {
   };
 
   handleSubmit = event => {
-    this.props.onSubmit(this.state);
+    this.props.onSubmit(filterUpdates(this.state, this.props.pattern));
     event.preventDefault();
   };
 
