@@ -30,10 +30,6 @@ export const getPatternTitlesSorted = state => (
   patternSelectors.getPatternTitlesSorted(state.patterns)
 );
 
-export const getLastCreatedPatternId = state => (
-  patternSelectors.getLastCreatedPatternId(state.patterns)
-);
-
 export const getPatternById = (state, patternId) => (
   patternSelectors.getPatternById(state.patterns, patternId)
 );
@@ -58,10 +54,6 @@ export const getSectionsLoading = state => (
 
 export const getSectionsError = state => (
   sectionSelectors.getSectionsError(state.sections)
-);
-
-export const getPatternIdLastCreatedSection = state => (
-  sectionSelectors.getPatternIdLastCreatedSection(state.sections)
 );
 
 export const getSectionsById = (state, sectionIds) => (

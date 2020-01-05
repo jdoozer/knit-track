@@ -6,7 +6,6 @@ const initialState = {
   allIds: [],
   loading: false,
   error: null,
-  lastCreatedId: '',
   lastActionType: ''
 };
 

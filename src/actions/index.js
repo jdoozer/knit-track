@@ -16,7 +16,6 @@ const {
   receiveDeletePatternKeys,
   receiveDeleteSectionKeys,
   clearError,
-  clearLastCreated,
   updateLogin
 } = createActions({
 
@@ -52,14 +51,12 @@ const {
 
   CLEAR_ERROR: (dataType, id) => ({ dataType, id }),
 
-  CLEAR_LAST_CREATED: dataType => ({ dataType }),
-
   UPDATE_LOGIN: loggedIn => ({ loggedIn })
 
 });
 
 // EXPORT SYNCHRONOUS ACTION CREATORS
-export { clearError, clearLastCreated, updateLogin };
+export { clearError, updateLogin };
 
 
 // ASYNC THUNK FUNCTIONS - REALTIME DATABASE

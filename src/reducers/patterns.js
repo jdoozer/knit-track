@@ -20,10 +20,7 @@ const patternsReducer = handleActions({
     state,
     { ...action.payload.pattern, ...itemMetaState },
     'patternId',
-    {
-      ...collectionMetaState,
-      lastCreatedId: action.payload.pattern.patternId
-    }
+    collectionMetaState,
   ),
 
   RECEIVE_UPDATED_PATTERN: (state, action) => {
@@ -86,8 +83,6 @@ export const getPatternTitlesSorted = createSelector(
 
 export const getPatternsLoading = state => state.loading;
 export const getPatternsError = state => state.error;
-export const getLastCreatedPatternId = state => state.lastCreatedId;
-
 
 export const getPatternById = (state, patternId) => (
   getPatternsById(state)[patternId]

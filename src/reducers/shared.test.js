@@ -8,7 +8,6 @@ const initialState = {
   allIds: [],
   loading: false,
   error: null,
-  lastCreatedId: '',
   lastActionType: ''
 };
 
@@ -17,7 +16,6 @@ const initialStateWithError = {
   allIds: [],
   loading: false,
   error: testError,
-  lastCreatedId: '',
   lastActionType: ''
 };
 
