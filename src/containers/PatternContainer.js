@@ -21,15 +21,23 @@ const mapStateToProps = (state, { match: { params: { patternId }}}) => ({
   pattern: getPatternById(state, patternId),
 });
 
-const mapDispatchToProps = {
-  fetchPatternExpandedIfNeeded: patternId => (
-    fetchPatternExpandedIfNeeded(patternId)
-  ),
-  clearError: patternId => clearError('patterns', patternId),
-  updatePattern: ({ patternId, ...patternUpdates }) => (
-    updatePattern(patternId, patternUpdates, 'updatePattern')
-  )
+const mapDispatchToProps = (dispatch, ownProps) => {
+
+  const { history, match: { params: { patternId } } } = ownProps;
+
+  return ({
+    fetchPatternExpandedIfNeeded: () => dispatch(
+      fetchPatternExpandedIfNeeded(patternId)
+    ),
+    clearError: () => dispatch(clearError('patterns', patternId)),
+    updatePattern: patternUpdates => (
+      dispatch(updatePattern(patternId, patternUpdates, 'updatePattern'))
+      .then(action => (action.payload.error ? null : history.push('.')))
+    ),
+  });
+
 };
+
 
 class PatternContainer extends React.Component {
 
@@ -39,7 +47,7 @@ class PatternContainer extends React.Component {
     const patternId = this.props.match.params.patternId;
 
     if (patternId) {
-      this.props.fetchPatternExpandedIfNeeded(patternId);
+      this.props.fetchPatternExpandedIfNeeded();
     }
 
     this.setState({ initialLoadingIndicator: false });
@@ -50,7 +58,7 @@ class PatternContainer extends React.Component {
     const prevPatternId = prevProps.match.params.patternId;
 
     if (patternId && prevPatternId && (patternId !== prevPatternId)) {
-      this.props.fetchPatternExpandedIfNeeded(patternId);
+      this.props.fetchPatternExpandedIfNeeded();
     }
   }
 

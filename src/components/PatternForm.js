@@ -47,13 +47,7 @@ class PatternForm extends React.Component {
   };
 
   handleSubmit = event => {
-    const { pattern, onSubmit, history } = this.props;
-    if (pattern) {
-      onSubmit({...this.state, patternId: pattern.patternId });
-      history.push(`/patterns/${pattern.patternId}`);
-    }
-    else
-      onSubmit(this.state);
+    this.props.onSubmit(this.state);
     event.preventDefault();
   };
 
@@ -141,9 +135,6 @@ PatternForm.propTypes = {
   loading: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
   pattern: PropTypes.object,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
 };
 
 export default withStyles(styles)(PatternForm);
