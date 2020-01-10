@@ -91,7 +91,7 @@ for (let rowNum = 0; rowNum < numRowsStart; rowNum++) {
 }
 
 
-class SectionSetupForm extends React.Component {
+class SectionForm extends React.Component {
 
   state = {
     title: '' ,
@@ -218,7 +218,7 @@ class SectionSetupForm extends React.Component {
   }
 };
 
-SectionSetupForm.propTypes = {
+SectionForm.propTypes = {
   classes: PropTypes.object.isRequired,
   createSection: PropTypes.func.isRequired,
   pattern: PropTypes.shape({
@@ -230,4 +230,4 @@ SectionSetupForm.propTypes = {
   error: PropTypes.bool.isRequired,
 };
 
-export default withStyles(styles)(SectionSetupForm);
+export default withStyles(styles)(SectionForm);

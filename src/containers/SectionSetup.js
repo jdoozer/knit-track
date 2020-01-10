@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSection, clearError } from 'actions';
 import { getPatternById, getSectionsLoading, getSectionsError } from 'reducers';
-import SectionSetupForm from 'components/SectionSetupForm';
+import SectionForm from 'components/SectionForm';
 
 const mapStateToProps = (state, ownProps) => ({
   pattern: getPatternById(state, ownProps.match.params.patternId),
@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 const SectionSetup = ({
   pattern, createSection, loading, error, clearError
 }) => (
-  <SectionSetupForm
+  <SectionForm
     pattern={pattern}
     createSection={createSection}
     clearError={clearError}
