@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { forwardRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
 import TotalRows from 'components/TotalRows';
 import CurrentRowSmall from 'components/CurrentRowSmall';
 import RowCounter from 'components/RowCounter';
@@ -39,71 +42,72 @@ const styles = theme => ({
   },
 });
 
+const EditLink = sectionId => forwardRef((props, ref) => (
+  <Link innerRef={ref} to={`/sections/${sectionId}/edit`} {...props} />
+));
 
-class SectionPanel extends React.Component {
+const SectionPanel = (props) => {
 
-  state = { expanded: false };
+  const [expanded, setExpanded] = useState(false);
 
-  handleExpandClick = () => {
-    this.setState(prevState => ({ expanded: !prevState.expanded }));
-  }
+  // TODO: Maybe shouldn't destructure section like this? Requires lots of
+  // knowledge of section shape in this component... could fix with selectors?
+  const {
+    section: {
+      title, currentRow, numRows, sectionId, rows,
+      loading, error, lastActionType
+    },
+    updateRowCount, classes
+  } = props;
 
-  render() {
-    // TODO: Maybe shouldn't destructure section like this? Requires lots of
-    // knowledge of section shape in this component... could fix with selectors?
-    const {
-      section: {
-        title, currentRow, numRows, sectionId, rows,
-        loading, error, lastActionType
-      },
-      updateRowCount, classes
-    } = this.props;
-    const { expanded } = this.state;
-
-    return (
-      <ExpansionPanel onChange={this.handleExpandClick}>
-        <ExpansionPanelSummary
-          expandIcon={<ExpandMoreIcon />}
-          className={classes.summary}
-        >
-          <div className={classes.titleColumn}>
-            <Typography variant="h6" className={classes.heading}>
-              {title}
-            </Typography>
-          </div>
-          <div className={classes.statusColumn}>
-            {
-              expanded
-                ? <TotalRows numRows={numRows} />
-                : <CurrentRowSmall
-                    currentRow={currentRow}
-                    final={currentRow===numRows}
-                  />
-            }
-          </div>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails className={classes.details}>
+  return (
+    <ExpansionPanel onChange={() => setExpanded(expanded => !expanded)}>
+      <ExpansionPanelSummary
+        expandIcon={<ExpandMoreIcon />}
+        className={classes.summary}
+      >
+        <div className={classes.titleColumn}>
+          <Typography variant="h6" className={classes.heading}>
+            {title}
+          </Typography>
+        </div>
+        <div className={classes.statusColumn}>
           {
             expanded
-            && (<>
-              <RowCounter
-                currentRow={currentRow}
-                max={numRows}
-                rows={rows || {}}
-                error={Boolean(error) && lastActionType==='updateRowCount'}
-                loading={loading  && lastActionType==='updateRowCount'}
-                updateRowCount={type => updateRowCount(sectionId, type)}
-              />
-              <div className={classes.button}>
-                <DeleteSection sectionId={sectionId} />
-              </div>
-            </>)
+              ? <TotalRows numRows={numRows} />
+              : <CurrentRowSmall
+                  currentRow={currentRow}
+                  final={currentRow===numRows}
+                />
           }
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-    );
-  }
-};
+        </div>
+      </ExpansionPanelSummary>
+      <ExpansionPanelDetails className={classes.details}>
+        {
+          expanded
+          && (<>
+            <RowCounter
+              currentRow={currentRow}
+              max={numRows}
+              rows={rows || {}}
+              error={Boolean(error) && lastActionType==='updateRowCount'}
+              loading={loading  && lastActionType==='updateRowCount'}
+              updateRowCount={type => updateRowCount(sectionId, type)}
+            />
+            <div className={classes.button}>
+              <IconButton
+                color="inherit" key="edit" component={EditLink(sectionId)}
+              >
+                <EditIcon />
+              </IconButton>
+              <DeleteSection sectionId={sectionId} />
+            </div>
+          </>)
+        }
+      </ExpansionPanelDetails>
+    </ExpansionPanel>
+  );
+}
 
 SectionPanel.propTypes = {
   section: PropTypes.shape({
