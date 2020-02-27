@@ -11,6 +11,7 @@ import HomeScreen from 'components/HomeScreen';
 import About from 'components/About';
 import LoginPage from 'containers/LoginPage';
 import PatternContainer from 'containers/PatternContainer';
+import SectionContainer from 'containers/SectionContainer';
 import PatternSetup from 'containers/PatternSetup';
 import Navigation from 'containers/Navigation';
 
@@ -56,6 +57,11 @@ const App = ({ loggedIn, logout }) => {
           <ProtectedRoute
             path="/patterns/:patternId"
             component={PatternContainer}
+            {...routeProps}
+          />
+          <ProtectedRoute
+            path="/sections/:sectionId"
+            component={SectionContainer}
             {...routeProps}
           />
           <ProtectedRoute component={HomeScreen} {...routeProps} />

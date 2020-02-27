@@ -142,7 +142,7 @@ export const createPattern = ({ ...patternData }) => fetchThunk({
 
 export const updatePattern = (patternId, patternUpdates, actionType) => {
   if (isEmpty(patternUpdates))
-    return (dispatch => Promise.resolve());
+    return (() => Promise.resolve());
   return fetchThunk({
     requestAction: requestData('patterns', patternId, actionType),
     receiveAction: json => receiveUpdatedPattern(json, patternId),
@@ -160,6 +160,13 @@ export const createSection = ({ ...sectionData }) => fetchThunk({
   path: 'sections',
   requestType: 'POST',
   body: { section: sectionData },
+});
+
+const fetchSection = sectionId => fetchThunk({
+  requestAction: requestData('sections', sectionId),
+  receiveAction: receiveData,
+  errorAction: error => receiveError(error, 'sections', sectionId),
+  path: `sections/${sectionId}`,
 });
 
 const updateSection = (sectionId, sectionUpdates, actionType) => fetchThunk({
@@ -210,6 +217,15 @@ export const fetchPatternIfNeeded = (patternId) => (
   }
 );
 
+export const fetchSectionIfNeeded = (sectionId) => (
+  (dispatch, getState) => {
+    const { sections } = getState();
+    if (sections.allIds.includes(sectionId)) {
+      return null;
+    }
+    return dispatch(fetchSection(sectionId));
+  }
+);
 
 export const updateRowCount = (sectionId, updateType) => (
   (dispatch, getState) => {
