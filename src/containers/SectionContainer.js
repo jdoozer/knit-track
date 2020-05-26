@@ -4,25 +4,28 @@ import { connect } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { fetchSectionIfNeeded, /* clearError, updatePattern */ } from 'actions';
 import { getSectionLastAction, getSectionLoading, getSectionError } from 'reducers';
+import { updateRowCount, subscribeRowCount } from 'actions';
+import { getSectionById } from 'reducers';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MessageBlock from 'components/MessageBlock';
-import Section from 'containers/Section';
+import SectionPanel from 'components/SectionPanel';
 
 const mapStateToProps = (state, ownProps) => {
-  const sectionId = ownProps.match.params.sectionId;
+  const { match, sectionId: sectionIdProp } = ownProps;
+  const sectionId = sectionIdProp ? sectionIdProp : match.params.sectionId;
   return ({
+    section: getSectionById(state, sectionId),
     loading: getSectionLoading(state, sectionId),
     error: Boolean(getSectionError(state, sectionId)),
     lastActionType: getSectionLastAction(state, sectionId),
   })
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  // const sectionId = ownProps.match.params.sectionId;
-  return ({
-    fetchSectionIfNeeded: (sectionId) => dispatch(
-      fetchSectionIfNeeded(sectionId)
-    ),
+const mapDispatchToProps = {
+  updateRowCount,
+  subscribeRowCount,
+  fetchSectionIfNeeded,
+};
     // clearError: () => dispatch(clearError('sections', sectionId)),
     // updatePattern: patternUpdates => (
     //   dispatch(updatePattern(patternId, patternUpdates, 'updatePattern'))
@@ -30,14 +33,18 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     //     (action && action.payload.error) ? null : history.push('.')
     //   ))
     // ),
-  });
-};
 
-const SectionContainer = ({
-  match, loading, error, lastActionType, fetchSectionIfNeeded,
-}) => {
+
+const SectionContainer = (props) => {
+
+  const {
+    section, sectionId: sectionIdProp, match, loading, error, lastActionType,
+    fetchSectionIfNeeded, updateRowCount, subscribeRowCount
+  } = props;
+  const sectionId = sectionIdProp ? sectionIdProp : match.params.sectionId;
+
   const [initialLoadingIndicator, setInitialLoadingIndicator] = useState(true);
-  const sectionId = match.params.sectionId;
+  const [, setSubscribed] = useState(false);
 
   useEffect(() => {
     setInitialLoadingIndicator(false);
@@ -46,6 +53,23 @@ const SectionContainer = ({
   useEffect(() => {
     fetchSectionIfNeeded(sectionId)
   }, [fetchSectionIfNeeded, sectionId]);
+
+  useEffect(() => {
+    setSubscribed(subscribed => {
+      if (sectionId && !subscribed)
+        subscribeRowCount(sectionId, true);
+      return (sectionId && !subscribed);
+    });
+    return (() => {
+      setSubscribed(subscribed => {
+        if (subscribed)
+          subscribeRowCount(sectionId, false);
+        return false;
+      });
+    });
+  }, [sectionId, subscribeRowCount]);
+
+
 
   if ((loading || initialLoadingIndicator) && !lastActionType)
     return (<CircularProgress />);
@@ -60,8 +84,8 @@ const SectionContainer = ({
     );
   }
 
-  // if (!section)
-  //   return (<Redirect push to="/home" />);
+  if (!section)
+    return (<Redirect push to="/" />);
 
   return (
     <Switch>
@@ -76,7 +100,7 @@ const SectionContainer = ({
           history={history}
         />
       )} /> */}
-      <Route render={() => (<Section sectionId={sectionId} />)} />
+      <Route render={() => (<SectionPanel section={section} updateRowCount={updateRowCount} />)} />
     </Switch>
   );
 }

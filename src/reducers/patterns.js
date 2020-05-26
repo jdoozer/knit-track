@@ -53,6 +53,9 @@ const patternsReducer = handleActions({
     const { patternId, sectionId } = action.payload;
 
     const sectionIds = state.byId[patternId].sectionIds;
+
+    if (!sectionIds) return state;
+
     const updates = { sectionIds: deleteItemsFromArray(sectionIds, sectionId) };
 
     return update(state, updates, patternId);

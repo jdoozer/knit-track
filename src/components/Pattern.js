@@ -8,7 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeletePattern from 'containers/DeletePattern';
 import ContentHeader from 'components/ContentHeader';
-import Section from 'containers/Section';
+import SectionContainer from 'containers/SectionContainer';
 import AddSection from 'components/AddSection';
 
 const styles = theme => ({
@@ -82,7 +82,7 @@ const Pattern = ({ pattern, classes }) => {
 
     <span className={classes.sectionCards}>
       {sectionIds ?
-        sectionIds.map(id => <Section key={id} sectionId={id} />)
+        sectionIds.map(id => <SectionContainer key={id} sectionId={id} />)
         : 'loading...'}
     </span>
 

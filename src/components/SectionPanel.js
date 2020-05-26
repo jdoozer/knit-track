@@ -50,8 +50,6 @@ const SectionPanel = (props) => {
 
   const [expanded, setExpanded] = useState(false);
 
-  // TODO: Maybe shouldn't destructure section like this? Requires lots of
-  // knowledge of section shape in this component... could fix with selectors?
   const {
     section: {
       title, currentRow, numRows, sectionId, rows,

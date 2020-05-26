@@ -19,42 +19,28 @@ const mapStateToProps = (state, { match: { params: { patternId }}}) => ({
   pattern: getPatternById(state, patternId),
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-
-  const { history, match: { params: { patternId } } } = ownProps;
-
-  return ({
-    fetchPatternIfNeeded: () => dispatch(
-      fetchPatternIfNeeded(patternId)
-    ),
-    clearError: () => dispatch(clearError('patterns', patternId)),
-    updatePattern: patternUpdates => (
-      dispatch(updatePattern(patternId, patternUpdates, 'updatePattern'))
-      .then(action => (
-        (action && action.payload.error) ? null : history.push('.')
-      ))
-    ),
-  });
-
+const mapDispatchToProps = {
+  fetchPatternIfNeeded: patternId => fetchPatternIfNeeded(patternId),
+  clearError: patternId => clearError('patterns', patternId),
+  updatePattern: (patternId, patternUpdates, history) => (
+    updatePattern(patternId, patternUpdates, 'updatePattern', history)
+  ),
 };
 
 
 const PatternContainer = (props) => {
 
   const {
-    match: { path }, history, pattern, loading, error, lastActionType,
+    match: { path, params }, history, pattern, loading, error, lastActionType,
     clearError, updatePattern, fetchPatternIfNeeded
   } = props;
+  const { patternId } = params;
 
   const [initialLoadingIndicator, setInitialLoadingIndicator] = useState(true);
 
-  useEffect(() => {
-    setInitialLoadingIndicator(false);
-  }, []);
+  useEffect(() => { setInitialLoadingIndicator(false) }, []);
 
-  useEffect(() => {
-    fetchPatternIfNeeded()
-  }, [fetchPatternIfNeeded]);
+  useEffect(() => { fetchPatternIfNeeded(patternId) }, [fetchPatternIfNeeded, patternId]);
 
 
   if ((loading || initialLoadingIndicator) && !lastActionType)
@@ -78,8 +64,8 @@ const PatternContainer = (props) => {
       <Route path={`${path}/newsection`} component={SectionSetup} />
       <Route path={`${path}/edit`} render={() => (
         <PatternForm
-          onSubmit={updatePattern}
-          clearError={clearError}
+          onSubmit={patternUpdates => updatePattern(patternId, patternUpdates, history)}
+          clearError={() => clearError(patternId)}
           loading={loading && lastActionType === 'updatePattern'}
           error={Boolean(error) && lastActionType === 'updatePattern'}
           pattern={pattern}
