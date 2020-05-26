@@ -1,5 +1,6 @@
 import { createActions } from 'redux-actions';
 import fetchThunk from 'actions/fetchThunk';
+import fetchThunkWithRedirect from 'actions/fetchThunkWithRedirect';
 import db from 'config/firebaseDB';
 import isEmpty from 'utils/isEmpty';
 
@@ -140,17 +141,19 @@ export const createPattern = ({ ...patternData }) => fetchThunk({
   body: { pattern: patternData },
 });
 
-export const updatePattern = (patternId, patternUpdates, actionType) => {
+export const updatePattern = (patternId, patternUpdates, actionType, history) => {
   if (isEmpty(patternUpdates))
     return (() => Promise.resolve());
-  return fetchThunk({
+  return fetchThunkWithRedirect({
     requestAction: requestData('patterns', patternId, actionType),
     receiveAction: json => receiveUpdatedPattern(json, patternId),
     errorAction: error => receiveError(error, 'patterns', patternId),
     path: `patterns/${patternId}`,
     requestType: 'PATCH',
     body: patternUpdates,
-  })
+    successRedirect: '.',
+    history,
+  });
 };
 
 export const createSection = ({ ...sectionData }) => fetchThunk({
@@ -186,12 +189,14 @@ export const deletePattern = patternId => fetchThunk({
   requestType: 'DELETE',
 });
 
-export const deleteSection = sectionId => fetchThunk({
+export const deleteSection = (sectionId, patternId, history) => fetchThunkWithRedirect({
   requestAction: requestData('sections', sectionId, 'deleteSection'),
   receiveAction: receiveDeleteSectionKeys,
   errorAction: error => receiveError(error, 'sections', sectionId),
   path: `sections/${sectionId}`,
   requestType: 'DELETE',
+  successRedirect: `/patterns/${patternId}`,
+  history,
 });
 
 

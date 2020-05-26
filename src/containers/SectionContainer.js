@@ -26,6 +26,7 @@ const mapDispatchToProps = {
   subscribeRowCount,
   fetchSectionIfNeeded,
 };
+    // TODO: need section equivalents of these
     // clearError: () => dispatch(clearError('sections', sectionId)),
     // updatePattern: patternUpdates => (
     //   dispatch(updatePattern(patternId, patternUpdates, 'updatePattern'))
@@ -70,7 +71,6 @@ const SectionContainer = (props) => {
   }, [sectionId, subscribeRowCount]);
 
 
-
   if ((loading || initialLoadingIndicator) && !lastActionType)
     return (<CircularProgress />);
 
@@ -84,7 +84,11 @@ const SectionContainer = (props) => {
     );
   }
 
-  if (!section)
+  // section is temporarily undefined after a section has been deleted but before we redirect
+  if (!section) return null;
+  
+  // if an invalid section ID entered in URL, redirect to home
+  if (!section.sectionId)
     return (<Redirect push to="/" />);
 
   return (
