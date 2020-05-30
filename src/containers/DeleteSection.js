@@ -10,9 +10,6 @@ import ErrorSnackbar from 'components/ErrorSnackbar';
 import { getSectionById } from 'reducers';
 
 const mapStateToProps = (state, { sectionId }) => ({
-  // loading: getSectionLoading(state, sectionId),
-  // error: Boolean(getSectionError(state, sectionId)),
-  // lastActionType: getSectionLastAction(state, sectionId),
   section: getSectionById(state, sectionId),
 });
 

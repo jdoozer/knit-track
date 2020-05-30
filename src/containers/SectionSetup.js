@@ -11,22 +11,17 @@ const mapStateToProps = (state, ownProps) => ({
   error: Boolean(getSectionsError(state)),
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  createSection: sectionData => dispatch(createSection(sectionData))
-    .then(action => (
-      action.payload.error
-        ? null
-        : ownProps.history.push(`/patterns/${ownProps.match.params.patternId}`))
-    ),
-  clearError: () => dispatch(clearError('sections')),
-});
+const mapDispatchToProps = {
+  createSection,
+  clearError: () => clearError('sections'),
+};
 
 const SectionSetup = ({
-  pattern, createSection, loading, error, clearError
+  pattern, createSection, loading, error, clearError, history,
 }) => (
   <SectionForm
     pattern={pattern}
-    createSection={createSection}
+    createSection={sectionData => createSection({ history, sectionData })}
     clearError={clearError}
     loading={loading}
     error={error}

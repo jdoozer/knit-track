@@ -10,19 +10,14 @@ const mapStateToProps = state => ({
   error: Boolean(getPatternsError(state)),
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  createPattern: patternData => dispatch(createPattern(patternData))
-    .then(action => (
-      action.payload.error
-        ? null
-        : ownProps.history.push(`/patterns/${action.payload.pattern.patternId}`))
-    ),
-  clearError: () => dispatch(clearError('patterns')),
-});
+const mapDispatchToProps = {
+  createPattern,
+  clearError: () => clearError('patterns'),
+};
 
-const PatternSetup = ({ createPattern, clearError, loading, error }) => (
+const PatternSetup = ({ createPattern, clearError, loading, error, history }) => (
   <PatternForm
-    onSubmit={createPattern}
+    onSubmit={patternData => createPattern({ history, patternData })}
     clearError={clearError}
     loading={loading}
     error={error}

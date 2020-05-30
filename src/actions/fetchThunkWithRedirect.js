@@ -38,7 +38,13 @@ function fetchThunkWithRedirect({
         dispatch(receiveAction(json)) :
         dispatch(errorAction({ status, message: json.error.message }))
     ))
-    .then(() => history.push(successRedirect))
+    .then(({ payload }) => {
+      if (typeof successRedirect === 'string')
+        return history.push(successRedirect);
+      if (typeof successRedirect === 'function')
+        return history.push(successRedirect(payload))
+      return null;
+    })
     .catch(error => {
       dispatch(errorAction({ status: 500, message: error.message }));
       history.push(errorRedirect);
