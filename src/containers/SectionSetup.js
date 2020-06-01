@@ -21,7 +21,7 @@ const SectionSetup = ({
 }) => (
   <SectionForm
     pattern={pattern}
-    createSection={sectionData => createSection({ history, sectionData })}
+    onSubmit={sectionData => createSection({ history, sectionData })}
     clearError={clearError}
     loading={loading}
     error={error}

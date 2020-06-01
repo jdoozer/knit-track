@@ -42,9 +42,6 @@ const DeleteSection = ({
 
 DeleteSection.propTypes = {
   sectionId: PropTypes.string.isRequired,
-  loading: PropTypes.bool.isRequired,
-  error: PropTypes.bool.isRequired,
-  lastActionType: PropTypes.string.isRequired,
   deleteSection: PropTypes.func.isRequired,
   clearError: PropTypes.func.isRequired,
 };

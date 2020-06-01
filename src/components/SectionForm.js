@@ -8,6 +8,8 @@ import ErrorSnackbar from 'components/ErrorSnackbar';
 import ContentHeader from 'components/ContentHeader';
 import SectionRowInputs from 'components/SectionRowInputs';
 import updateNestedItem from 'utils/updateNestedItem';
+import filterUpdates from 'utils/filterUpdates';
+import initialSectionFormState from 'helpers/initialSectionFormState';
 
 // keys here should match the props pulled out in RowInfo component
 const rowProps = {
@@ -27,6 +29,9 @@ const rowProps = {
     type: 'number',
   },
 };
+
+// constants
+const NUM_ROWS_START = 5;
 
 const styles = theme => {
   const mainStyles = {
@@ -79,31 +84,18 @@ const styles = theme => {
   return Object.assign(mainStyles, rowPropStyles);
 }
 
-// initialization support for form component state
-const numRowsStart = 5;
-
+// // initialization support for form component state
 let initialRow = {};
 Object.keys(rowProps).forEach(key => { initialRow[key] = '' });
 
-let rowData = [];
-for (let rowNum = 0; rowNum < numRowsStart; rowNum++) {
-  rowData.push({...initialRow})
-}
-
-
 class SectionForm extends React.Component {
-
-  state = {
-    title: '' ,
-    numRowsInput: numRowsStart,
-    numRows: numRowsStart,
-    rowData
-  };
 
   constructor(props) {
     super(props);
     this.handleRowDataChange = this.handleRowDataChange.bind(this);
   }
+
+  state = initialSectionFormState(this.props.section, NUM_ROWS_START, initialRow);
 
   handleChange = ({ target: { name, value } }) => {
     this.setState({ [name]: value });
@@ -135,24 +127,29 @@ class SectionForm extends React.Component {
   };
 
   handleSubmit = event => {
-    const { createSection, pattern: { patternId } } = this.props;
+    const { onSubmit, pattern: { patternId } } = this.props;
     const { title, numRows, rowData } = this.state;
-    const newSection = {
-      patternId, title, numRows, rows: [{}].concat(rowData)
+    const row0 = [{}]; // we always want row 0 empty so rows can be 1-indexed
+    const sectionData = {
+      patternId, title, numRows, rows: row0.concat(rowData)
     };
-    createSection(newSection);
+    onSubmit(sectionData);
+    console.log('hi');
+    // this.props.onSubmit(filterUpdates(this.state, this.props.pattern));
     event.preventDefault();
   };
 
   render() {
 
     const {
-      pattern: { title }, classes, loading, error, clearError
+      pattern: { title }, section, classes, loading, error, clearError
     } = this.props;
 
     return (
       <>
-        <ContentHeader>{title} - New Section Setup</ContentHeader>
+        <ContentHeader>
+          {title} - {section ? 'Edit Section' : 'New Section Setup'}
+        </ContentHeader>
         <form
           onSubmit={this.handleSubmit}
           className={classes.root}
@@ -204,7 +201,7 @@ class SectionForm extends React.Component {
             className={classes.button}
             type="submit"
           >
-            Create Section
+            {section ? 'Update Section' : 'Create Section'}
           </Button>
         </form>
 
@@ -220,7 +217,7 @@ class SectionForm extends React.Component {
 
 SectionForm.propTypes = {
   classes: PropTypes.object.isRequired,
-  createSection: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   pattern: PropTypes.shape({
     title: PropTypes.string.isRequired,
     patternId: PropTypes.string.isRequired,

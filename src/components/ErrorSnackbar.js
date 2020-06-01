@@ -22,7 +22,7 @@ const styles = theme => ({
 const ErrorSnackbar = ({ open, classes, onClose, children }) => (
   <Snackbar
     anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-    open={open}
+    open={!!open}
     autoHideDuration={3000}
     onClose={onClose}
   >
@@ -41,7 +41,7 @@ const ErrorSnackbar = ({ open, classes, onClose, children }) => (
 ErrorSnackbar.propTypes = {
   classes: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
+  open: PropTypes.bool,
   children: PropTypes.node.isRequired,
 };
 

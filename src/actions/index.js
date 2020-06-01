@@ -1,6 +1,5 @@
 import { createActions } from 'redux-actions';
 import fetchThunk from 'actions/fetchThunk';
-import fetchThunkWithRedirect from 'actions/fetchThunkWithRedirect';
 import db from 'config/firebaseDB';
 import isEmpty from 'utils/isEmpty';
 
@@ -132,7 +131,15 @@ const fetchPatternExpanded = patternId => fetchThunk({
   path: `patterns/${patternId}`,
 });
 
-export const createPattern = ({ history, patternData }) => fetchThunkWithRedirect({
+const fetchSection = sectionId => fetchThunk({
+  requestAction: requestData('sections', sectionId),
+  receiveAction: receiveData,
+  errorAction: error => receiveError(error, 'sections', sectionId),
+  path: `sections/${sectionId}`,
+});
+
+
+export const createPattern = ({ history, patternData }) => fetchThunk({
   requestAction: requestData('patterns'),
   receiveAction: receiveNewPattern,
   errorAction: error => receiveError(error, 'patterns'),
@@ -146,7 +153,7 @@ export const createPattern = ({ history, patternData }) => fetchThunkWithRedirec
 export const updatePattern = (patternId, patternUpdates, actionType, history) => {
   if (isEmpty(patternUpdates))
     return (() => Promise.resolve());
-  return fetchThunkWithRedirect({
+  return fetchThunk({
     requestAction: requestData('patterns', patternId, actionType),
     receiveAction: json => receiveUpdatedPattern(json, patternId),
     errorAction: error => receiveError(error, 'patterns', patternId),
@@ -158,7 +165,7 @@ export const updatePattern = (patternId, patternUpdates, actionType, history) =>
   });
 };
 
-export const createSection = ({ history, sectionData }) => fetchThunkWithRedirect({
+export const createSection = ({ history, sectionData }) => fetchThunk({
   requestAction: requestData('sections'),
   receiveAction: receiveNewSection,
   errorAction: error => receiveError(error, 'sections'),
@@ -169,21 +176,20 @@ export const createSection = ({ history, sectionData }) => fetchThunkWithRedirec
   history,
 });
 
-const fetchSection = sectionId => fetchThunk({
-  requestAction: requestData('sections', sectionId),
-  receiveAction: receiveData,
-  errorAction: error => receiveError(error, 'sections', sectionId),
-  path: `sections/${sectionId}`,
-});
-
-const updateSection = (sectionId, sectionUpdates, actionType) => fetchThunk({
-  requestAction: requestData('sections', sectionId, actionType),
-  receiveAction: json => receiveUpdatedSection(json, sectionId),
-  errorAction: error => receiveError(error, 'sections', sectionId),
-  path: `sections/${sectionId}`,
-  requestType: 'PATCH',
-  body: sectionUpdates,
-});
+export const updateSection = (sectionId, sectionUpdates, actionType, history) => {
+  if (isEmpty(sectionUpdates))
+    return (() => Promise.resolve);
+  return fetchThunk({
+    requestAction: requestData('sections', sectionId, actionType),
+    receiveAction: json => receiveUpdatedSection(json, sectionId),
+    errorAction: error => receiveError(error, 'sections', sectionId),
+    path: `sections/${sectionId}`,
+    requestType: 'PATCH',
+    body: sectionUpdates,
+    successRedirect: ({ section }) => `/patterns/${section.patternId}`,
+    history,
+  })
+};
 
 export const deletePattern = patternId => fetchThunk({
   requestAction: requestData('patterns', patternId, 'deletePattern'),
@@ -193,7 +199,7 @@ export const deletePattern = patternId => fetchThunk({
   requestType: 'DELETE',
 });
 
-export const deleteSection = (sectionId, patternId, history) => fetchThunkWithRedirect({
+export const deleteSection = (sectionId, patternId, history) => fetchThunk({
   requestAction: requestData('sections', sectionId, 'deleteSection'),
   receiveAction: receiveDeleteSectionKeys,
   errorAction: error => receiveError(error, 'sections', sectionId),
