@@ -127,15 +127,19 @@ class SectionForm extends React.Component {
   };
 
   handleSubmit = event => {
-    const { onSubmit, pattern: { patternId } } = this.props;
+    const { onSubmit, pattern: { patternId }, section } = this.props;
     const { title, numRows, rowData } = this.state;
+  
     const row0 = [{}]; // we always want row 0 empty so rows can be 1-indexed
-    const sectionData = {
-      patternId, title, numRows, rows: row0.concat(rowData)
-    };
-    onSubmit(sectionData);
-    console.log('hi');
-    // this.props.onSubmit(filterUpdates(this.state, this.props.pattern));
+    const sectionData = filterUpdates(
+      { title, numRows, rows: row0.concat(rowData) },
+      section
+    );
+
+    if (sectionData) {
+      onSubmit({ patternId, ...sectionData });
+    }
+    // TODO: what if there are no changes? show modal?
     event.preventDefault();
   };
 

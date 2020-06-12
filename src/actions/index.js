@@ -178,7 +178,7 @@ export const createSection = ({ history, sectionData }) => fetchThunk({
 
 export const updateSection = (sectionId, sectionUpdates, actionType, history) => {
   if (isEmpty(sectionUpdates))
-    return (() => Promise.resolve);
+    return (() => Promise.resolve());
   return fetchThunk({
     requestAction: requestData('sections', sectionId, actionType),
     receiveAction: json => receiveUpdatedSection(json, sectionId),
@@ -186,9 +186,9 @@ export const updateSection = (sectionId, sectionUpdates, actionType, history) =>
     path: `sections/${sectionId}`,
     requestType: 'PATCH',
     body: sectionUpdates,
-    successRedirect: ({ section }) => `/patterns/${section.patternId}`,
+    successRedirect: `/sections/${sectionId}`,
     history,
-  })
+  });
 };
 
 export const deletePattern = patternId => fetchThunk({
