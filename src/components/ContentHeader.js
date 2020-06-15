@@ -27,7 +27,9 @@ const ContentHeader = ({ classes, children, iconButton }) => (
 ContentHeader.propTypes = {
   classes: PropTypes.object.isRequired,
   children: PropTypes.node,
-  iconButton: PropTypes.element,
+  iconButton: PropTypes.oneOfType(
+    [PropTypes.element, PropTypes.arrayOf(PropTypes.element)]
+  ),
 };
 
 export default withStyles(styles)(ContentHeader);

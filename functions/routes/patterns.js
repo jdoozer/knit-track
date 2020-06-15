@@ -90,6 +90,17 @@ function makeRouter(db) {
     }
   });
 
+  router.patch('/:patternId', async (req, res, next) => {
+    try {
+      const patternUpdates = req.body;
+      const patternId = req.params.patternId;
+      await db.ref('patterns').child(patternId).update(patternUpdates);
+      res.send(patternUpdates);
+    } catch(error) {
+      next(createError(500, error.message));
+      return;
+    }
+  });
 
   router.delete('/:patternId', async (req, res, next) => {
     try {

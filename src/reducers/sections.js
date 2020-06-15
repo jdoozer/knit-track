@@ -27,10 +27,7 @@ const sectionsReducer = handleActions({
      state,
      { ...action.payload.section, ...itemMetaState },
      'sectionId',
-     {
-       ...collectionMetaState,
-       lastCreatedId: action.payload.section.sectionId
-     }
+     collectionMetaState,
    ),
 
   RECEIVE_UPDATED_SECTION: (state, action) => {
@@ -79,13 +76,6 @@ export const getSectionById = (state, sectionId) => state.byId[sectionId];
 export const getSectionsById = (state, sectionIds) => (
   sectionIds.map(sectionId => getSectionById(state, sectionId))
 );
-
-const getLastCreatedSectionId = state => state.lastCreatedId;
-
-export const getPatternIdLastCreatedSection = state => {
-  const sectionId = getLastCreatedSectionId(state);
-  return sectionId ? state.byId[sectionId].patternId : '';
-};
 
 const getSectionField = (field, defaultVal) => (state, sectionId) => {
   const section = getSectionById(state, sectionId);

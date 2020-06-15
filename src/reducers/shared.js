@@ -3,7 +3,6 @@ import { update, mergeItems } from 'utils/reducerUtils';
 export const collectionMetaState = {
   loading: false,
   error: null,
-  lastCreatedId: '',
   lastActionType: ''
 };
 
@@ -49,10 +48,6 @@ const sharedReducer = stateDataType => (state = initialState, action) => {
 
     case 'CLEAR_ERROR':
       updates = { error: null, lastActionType: '' };
-      break;
-
-    case 'CLEAR_LAST_CREATED':
-      updates = { lastCreatedId: '' };
       break;
 
     default:

@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import ProgressModal from 'components/ProgressModal';
 import ErrorSnackbar from 'components/ErrorSnackbar';
 import ContentHeader from 'components/ContentHeader';
+import filterUpdates from 'utils/filterUpdates';
 
 const styles = theme => ({
   form: {
@@ -15,42 +16,56 @@ const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     minWidth: 330,
+    width: '100%'
   },
   textField: {
     width: '100%',
   },
-  button: {
+  submitButton: {
     marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(1),
   },
 });
 
-class PatternSetupForm extends React.Component {
+class PatternForm extends React.Component {
 
-  state = {
-    title: '' ,
+  state = (this.props.pattern ? {
+    title: (this.props.pattern.title || ''),
+    info: (this.props.pattern.info || ''),
+    linkPattSource: (this.props.pattern.linkPattSource || ''),
+    linkRavPatt: (this.props.pattern.linkRavPatt || ''),
+    linkRavProj: (this.props.pattern.linkRavProj || ''),
+  } : {
+    title: '',
     info: '',
     linkPattSource: '',
     linkRavPatt: '',
     linkRavProj: '',
-  };
+  });
 
   handleChange = ({ target }) => {
     this.setState({ [target.name]: target.value });
   };
 
   handleSubmit = event => {
-    this.props.createPattern(this.state);
+    const { onSubmit, pattern } = this.props;
+    const patternData = filterUpdates(this.state, pattern);
+
+    if (patternData)
+      onSubmit(patternData);
     event.preventDefault();
   };
 
   render() {
 
-    const { classes, loading, error, clearError } = this.props;
+    const { classes, loading, error, clearError, pattern } = this.props;
 
     return (
       <>
 
-        <ContentHeader>Pattern Setup</ContentHeader>
+        <ContentHeader>
+          {pattern ? `Edit Pattern - ${pattern.title}` : 'New Pattern Setup'}
+        </ContentHeader>
         <form onSubmit={this.handleSubmit} className={classes.form}>
           <TextField label="Pattern Title"
             className={classes.textField}
@@ -91,22 +106,26 @@ class PatternSetupForm extends React.Component {
             onChange={this.handleChange}
             multiline
             rowsMax="10"
+            rows="3"
             margin="dense"
             variant="filled"
           />
           <Button
             variant="contained"
             color="primary"
-            className={classes.button}
+            className={classes.submitButton}
             type="submit"
           >
-            Create Pattern
+            {pattern ? 'Update Pattern' : 'Create Pattern'}
+          </Button>
+          <Button color="primary">
+            cancel
           </Button>
         </form>
 
         <ProgressModal open={loading} />
         <ErrorSnackbar open={error} onClose={clearError}>
-          Error creating pattern, please retry!
+          Error {pattern ? 'editing' : 'creating'} pattern, please retry!
         </ErrorSnackbar>
 
       </>
@@ -114,12 +133,13 @@ class PatternSetupForm extends React.Component {
   }
 };
 
-PatternSetupForm.propTypes = {
+PatternForm.propTypes = {
   classes: PropTypes.object.isRequired,
-  createPattern: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   clearError: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
+  pattern: PropTypes.object,
 };
 
-export default withStyles(styles)(PatternSetupForm);
+export default withStyles(styles)(PatternForm);

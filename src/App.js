@@ -11,8 +11,10 @@ import HomeScreen from 'components/HomeScreen';
 import About from 'components/About';
 import LoginPage from 'containers/LoginPage';
 import PatternContainer from 'containers/PatternContainer';
+import SectionContainer from 'containers/SectionContainer';
 import PatternSetup from 'containers/PatternSetup';
 import Navigation from 'containers/Navigation';
+import ErrorBoundary from 'components/ErrorBoundary';
 
 const mapStateToProps = state => ({
   loggedIn: getUserLoggedIn(state)
@@ -36,7 +38,7 @@ const App = ({ loggedIn, logout }) => {
   const routeProps = { allow: loggedIn, redirectLink: "/login" };
 
   return (
-    <>
+    <ErrorBoundary>
       <Header
         handleDrawerToggle={handleDrawerToggle}
         loggedIn={loggedIn}
@@ -58,10 +60,15 @@ const App = ({ loggedIn, logout }) => {
             component={PatternContainer}
             {...routeProps}
           />
+          <ProtectedRoute
+            path="/sections/:sectionId"
+            component={SectionContainer}
+            {...routeProps}
+          />
           <ProtectedRoute component={HomeScreen} {...routeProps} />
         </Switch>
       </MainContentWrapper>
-    </>
+    </ErrorBoundary>
   )
 };
 

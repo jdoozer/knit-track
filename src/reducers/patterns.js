@@ -1,7 +1,8 @@
 import { handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import {
-  update, addItem, deleteFromState, deleteItemsFromArray
+  update, addItem, deleteFromState, deleteItemsFromArray,
+  mergeItemsKeepItemFields
 } from 'utils/reducerUtils';
 import sortByKey from 'utils/sortByKey';
 import {
@@ -11,15 +12,25 @@ import {
 
 const patternsReducer = handleActions({
 
+  RECEIVE_PATTERN_TITLES: (state, action) => mergeItemsKeepItemFields(
+    state, action.payload.patterns, collectionMetaState, itemMetaState
+  ),
+
   RECEIVE_NEW_PATTERN: (state, action) => addItem(
     state,
     { ...action.payload.pattern, ...itemMetaState },
     'patternId',
-    {
-      ...collectionMetaState,
-      lastCreatedId: action.payload.pattern.patternId
-    }
+    collectionMetaState,
   ),
+
+  RECEIVE_UPDATED_PATTERN: (state, action) => {
+    const { patternId, ...patternUpdates } = action.payload.pattern;
+    return update(
+      state,
+      { ...patternUpdates, ...itemMetaState },
+      patternId,
+    );
+  },
 
   RECEIVE_NEW_SECTION: (state, action) => {
 
@@ -42,6 +53,9 @@ const patternsReducer = handleActions({
     const { patternId, sectionId } = action.payload;
 
     const sectionIds = state.byId[patternId].sectionIds;
+
+    if (!sectionIds) return state;
+
     const updates = { sectionIds: deleteItemsFromArray(sectionIds, sectionId) };
 
     return update(state, updates, patternId);
@@ -72,8 +86,6 @@ export const getPatternTitlesSorted = createSelector(
 
 export const getPatternsLoading = state => state.loading;
 export const getPatternsError = state => state.error;
-export const getLastCreatedPatternId = state => state.lastCreatedId;
-
 
 export const getPatternById = (state, patternId) => (
   getPatternsById(state)[patternId]
