@@ -48,7 +48,11 @@ class PatternForm extends React.Component {
   };
 
   handleSubmit = event => {
-    this.props.onSubmit(filterUpdates(this.state, this.props.pattern));
+    const { onSubmit, pattern } = this.props;
+    const patternData = filterUpdates(this.state, pattern);
+
+    if (patternData)
+      onSubmit(patternData);
     event.preventDefault();
   };
 

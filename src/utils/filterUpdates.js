@@ -1,3 +1,4 @@
+import isEqual from 'lodash.isequal';
 import isEmpty from 'utils/isEmpty';
 
 function filterUpdates(objCurr, objPrev) {
@@ -7,7 +8,7 @@ function filterUpdates(objCurr, objPrev) {
   
   // eslint-disable-next-line
   for (let [keyCurr, valCurr] of Object.entries(objCurr)) {
-    if (valCurr !== objPrev[keyCurr]) {
+    if (!isEqual(valCurr, objPrev[keyCurr])) {
       if (Array.isArray(valCurr)) {
         const nullFill = (objPrev[keyCurr] && objPrev[keyCurr].length > valCurr.length)
           ? Array(objPrev[keyCurr].length - valCurr.length).fill(null)
