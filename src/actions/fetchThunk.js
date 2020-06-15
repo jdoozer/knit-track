@@ -33,16 +33,18 @@ return dispatch => {
     response.json()
     .then(json => ({ status: response.status, json })
   ))
-  .then(({ status, json }) => (
-    (status === 200) ?
-      dispatch(receiveAction(json)) :
-      dispatch(errorAction({ status, message: json.error.message }))
-  ))
+  .then(({ status, json }) => {
+    if (status === 200)
+      return dispatch(receiveAction(json));
+    throw json.error;
+  })
   .then(({ payload }) => {
-    if (typeof successRedirect === 'string')
-      return history.push(successRedirect);
-    if (typeof successRedirect === 'function')
-      return history.push(successRedirect(payload))
+    if (successRedirect) {
+      if (typeof successRedirect === 'string')
+        return history.push(successRedirect);
+      if (typeof successRedirect === 'function')
+        return history.push(successRedirect(payload));
+    }
     return null;
   })
   .catch(error => {

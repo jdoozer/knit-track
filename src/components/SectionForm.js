@@ -84,7 +84,7 @@ const styles = theme => {
   return Object.assign(mainStyles, rowPropStyles);
 }
 
-// // initialization support for form component state
+// initialization support for form component state
 let initialRow = {};
 Object.keys(rowProps).forEach(key => { initialRow[key] = '' });
 
@@ -211,7 +211,7 @@ class SectionForm extends React.Component {
 
         <ProgressModal open={loading} />
         <ErrorSnackbar open={error} onClose={clearError}>
-          Error creating section, please retry!
+          Error {section ? 'editing' : 'creating'} section, please retry!
         </ErrorSnackbar>
 
       </>

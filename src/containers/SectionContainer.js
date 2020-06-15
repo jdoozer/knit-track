@@ -35,7 +35,7 @@ const SectionContainer = (props) => {
 
   const {
     pattern, section, sectionId: sectionIdProp, match, history,
-    fetchSectionIfNeeded, updateRowCount, subscribeRowCount, updateSection,
+    fetchSectionIfNeeded, updateRowCount, subscribeRowCount, updateSection, clearError,
   } = props;
   const { path, params } = match || {};
   const sectionId = sectionIdProp ? sectionIdProp : params.sectionId;
@@ -89,7 +89,7 @@ const SectionContainer = (props) => {
       <Route path={`${path}/edit`} render={() => (
         <SectionForm
           onSubmit={sectionUpdates => updateSection(sectionId, sectionUpdates, history)}
-          clearError={clearError}
+          clearError={() => clearError(sectionId)}
           loading={loading && lastActionType === 'updateSection'}
           error={Boolean(error) && lastActionType === 'updateSection'}
           pattern={pattern}
@@ -110,15 +110,17 @@ SectionContainer.propTypes = {
     path: PropTypes.string.isRequired,
   }),
   section: PropTypes.shape({
-    loading: PropTypes.bool,
-    error: PropTypes.bool,
-    lastActionType: PropTypes.string,
+    loading: PropTypes.bool.isRequired,
+    error: PropTypes.shape({
+      status: PropTypes.number,
+      message: PropTypes.string,
+    }),
+    lastActionType: PropTypes.string.isRequired,
   }),
   pattern: PropTypes.shape({
-    title: PropTypes.string,
+    title: PropTypes.string.isRequired,
   }),
-  // createSection: PropTypes.func.isRequired,
-  // clearError: PropTypes.func.isRequired,
+  clearError: PropTypes.func.isRequired,
   fetchSectionIfNeeded: PropTypes.func.isRequired,
 };
 
