@@ -1,7 +1,7 @@
 
 const server = (process.env.NODE_ENV === 'development')
-? '/api'
-: 'https://us-central1-knit-track.cloudfunctions.net/api';
+  ? '/api'
+  : 'https://us-central1-knit-track.cloudfunctions.net/api';
 
 function fetchThunkWithRedirect({
 requestAction = (() => {}),
