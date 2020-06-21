@@ -6,7 +6,7 @@
     "@material-ui/core": "^4.4.0",
     "@material-ui/icons": "^4.2.1",
     "@material-ui/styles": "^4.3.3",
-    "firebase": "^6.5.0",
+    "firebase": "^7.15.3",
     "lodash.isequal": "^4.5.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
@@ -23,6 +23,7 @@
     "typeface-roboto": "0.0.75"
   },
   "scripts": {
+    "clean": "npm cache verify && rm -rf node_modules && cd functions && rm -rf node_modules",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
