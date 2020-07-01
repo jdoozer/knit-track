@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { subscribePatternList, clearError } from 'actions';
 import {
-  getPatternTitlesSorted, getPatternsLoading, getPatternsError
+  getPatternTitlesSorted, getPatternsLoading, getPatternsError, getPatternsLastAction,
 } from 'reducers';
 import ErrorSnackbar from 'components/ErrorSnackbar';
 import NavDrawer from 'components/NavDrawer';
@@ -12,6 +12,7 @@ const mapStateToProps = state => ({
   patternTitles: getPatternTitlesSorted(state),
   loading: getPatternsLoading(state),
   error: Boolean(getPatternsError(state)),
+  lastActionType: getPatternsLastAction(state),
 });
 
 const mapDispatchToProps = {
@@ -25,6 +26,7 @@ const Navigation = (props) => {
   const {
     loading,
     error,
+    lastActionType,
     patternTitles,
     placeholder,
     mobileOpen,
@@ -50,7 +52,10 @@ const Navigation = (props) => {
         handleDrawerToggle={handleDrawerToggle}
         loadingPatterns={loading}
       />
-      <ErrorSnackbar open={error && !loading} onClose={clearError}>
+      <ErrorSnackbar
+        open={error && !loading && lastActionType==='loadPatternList'}
+        onClose={clearError}
+      >
         Error loading patterns!
       </ErrorSnackbar>
     </>

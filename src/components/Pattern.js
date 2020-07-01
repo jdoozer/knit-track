@@ -5,7 +5,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import MuiLink from '@material-ui/core/Link';
 import IconButton from '@material-ui/core/IconButton';
-import EditIcon from '@material-ui/icons/Edit';
+import EditIcon from '@material-ui/icons/EditRounded';
+import CopyIcon from '@material-ui/icons/FileCopyRounded';
 import DeletePattern from 'containers/DeletePattern';
 import ContentHeader from 'components/ContentHeader';
 import SectionContainer from 'containers/SectionContainer';
@@ -42,6 +43,10 @@ const Pattern = ({ pattern, classes }) => {
     <Link innerRef={ref} to={`/patterns/${patternId}/edit`} {...props} />
   ));
 
+  const CopyLink = React.forwardRef((props, ref) => (
+    <Link innerRef={ref} to={`/patterns/${patternId}/copy`} {...props} />
+  ));
+
   let linkBlock = [];
   if (linkPattSource) {
     linkBlock.push(<span key="pattSource">
@@ -64,6 +69,9 @@ const Pattern = ({ pattern, classes }) => {
     <ContentHeader iconButton={[
       (<IconButton color="inherit" key="edit" component={EditLink}>
         <EditIcon />
+      </IconButton>),
+      (<IconButton color="inherit" key="copy" component={CopyLink}>
+        <CopyIcon />
       </IconButton>),
       (<DeletePattern patternId={patternId} key="delete" />)
     ]}>

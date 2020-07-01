@@ -61,7 +61,7 @@ export { clearError, updateLogin };
 // ASYNC THUNK FUNCTIONS - REALTIME DATABASE
 export const subscribePatternList = (listenerOn) => (dispatch) => {
   if (listenerOn) {
-    dispatch(requestData('patterns'));
+    dispatch(requestData('patterns', null, 'loadPatternList'));
     db.ref('patterns').on('value',
       patternSnapshots => {
         let patterns = { byId: {}, allIds: [] };
@@ -138,10 +138,10 @@ const fetchSection = sectionId => fetchThunk({
 });
 
 
-export const createPattern = ({ history, patternData }) => fetchThunk({
-  requestAction: requestData('patterns'),
+export const createPattern = ({ history, patternData, actionType, copyId }) => fetchThunk({
+  requestAction: requestData('patterns', copyId, actionType),
   receiveAction: receiveNewPattern,
-  errorAction: error => receiveError(error, 'patterns'),
+  errorAction: error => receiveError(error, 'patterns', copyId),
   path: 'patterns',
   requestType: 'POST',
   body: { pattern: { ...patternData } },

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { fetchPatternIfNeeded, clearError, updatePattern } from 'actions';
+import { fetchPatternIfNeeded, clearError, updatePattern, createPattern } from 'actions';
 import {
   getPatternLoading, getPatternError, getPatternLastAction, getPatternById
 } from 'reducers';
@@ -22,9 +22,8 @@ const mapStateToProps = (state, { match: { params: { patternId }}}) => ({
 const mapDispatchToProps = {
   fetchPatternIfNeeded: patternId => fetchPatternIfNeeded(patternId),
   clearError: patternId => clearError('patterns', patternId),
-  updatePattern: (patternId, patternUpdates, history) => (
-    updatePattern(patternId, patternUpdates, 'updatePattern', history)
-  ),
+  updatePattern,
+  createPattern,
 };
 
 
@@ -32,7 +31,7 @@ const PatternContainer = (props) => {
 
   const {
     match: { path, params }, history, pattern, loading, error, lastActionType,
-    clearError, updatePattern, fetchPatternIfNeeded
+    clearError, updatePattern, fetchPatternIfNeeded, createPattern,
   } = props;
   const { patternId } = params;
 
@@ -64,12 +63,25 @@ const PatternContainer = (props) => {
       <Route path={`${path}/newsection`} component={SectionSetup} />
       <Route path={`${path}/edit`} render={() => (
         <PatternForm
-          onSubmit={patternUpdates => updatePattern(patternId, patternUpdates, history)}
+          onSubmit={patternUpdates => updatePattern(patternId, patternUpdates, 'updatePattern', history)}
           clearError={() => clearError(patternId)}
           loading={loading && lastActionType === 'updatePattern'}
           error={Boolean(error) && lastActionType === 'updatePattern'}
           pattern={pattern}
           history={history}
+        />
+      )} />
+      <Route path={`${path}/copy`} render={() => (
+        <PatternForm
+          onSubmit={patternData => createPattern({
+            history, patternData, actionType: 'copyPattern', copyId: patternId,
+          })}
+          clearError={() => clearError(patternId)}
+          loading={loading && lastActionType === 'copyPattern'}
+          error={Boolean(error) && lastActionType === 'copyPattern'}
+          pattern={{ ...pattern, title: `${pattern.title} copy`}}
+          history={history}
+          createNew
         />
       )} />
       <Route render={() => (<Pattern pattern={pattern} />)} />

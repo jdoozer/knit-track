@@ -26,6 +26,10 @@ export const getPatternsError = state => (
   patternSelectors.getPatternsError(state.patterns)
 );
 
+export const getPatternsLastAction = state => (
+  patternSelectors.getPatternsLastAction(state.patterns)
+);
+
 export const getPatternTitlesSorted = state => (
   patternSelectors.getPatternTitlesSorted(state.patterns)
 );
