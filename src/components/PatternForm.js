@@ -48,8 +48,8 @@ class PatternForm extends React.Component {
   };
 
   handleSubmit = event => {
-    const { onSubmit, pattern } = this.props;
-    const patternData = filterUpdates(this.state, pattern);
+    const { onSubmit, pattern, createNew } = this.props;
+    const patternData = createNew ? this.state : filterUpdates(this.state, pattern);
 
     if (patternData)
       onSubmit(patternData);
@@ -58,13 +58,13 @@ class PatternForm extends React.Component {
 
   render() {
 
-    const { classes, loading, error, clearError, pattern } = this.props;
+    const { classes, loading, error, clearError, pattern, createNew } = this.props;
 
     return (
       <>
 
         <ContentHeader>
-          {pattern ? `Edit Pattern - ${pattern.title}` : 'New Pattern Setup'}
+          {pattern ? (createNew ? 'Duplicate Pattern' : 'Edit Pattern') : 'New Pattern'}
         </ContentHeader>
         <form onSubmit={this.handleSubmit} className={classes.form}>
           <TextField label="Pattern Title"
@@ -116,16 +116,16 @@ class PatternForm extends React.Component {
             className={classes.submitButton}
             type="submit"
           >
-            {pattern ? 'Update Pattern' : 'Create Pattern'}
+            {createNew ? 'Create Pattern' : 'Update Pattern'}
           </Button>
-          <Button color="primary">
+          {/** <Button color="primary">
             cancel
-          </Button>
+          </Button> */}
         </form>
 
         <ProgressModal open={loading} />
         <ErrorSnackbar open={error} onClose={clearError}>
-          Error {pattern ? 'editing' : 'creating'} pattern, please retry!
+          Error {createNew ? 'creating' : 'editing'} pattern, please retry!
         </ErrorSnackbar>
 
       </>
@@ -134,11 +134,12 @@ class PatternForm extends React.Component {
 };
 
 PatternForm.propTypes = {
+  createNew: PropTypes.bool,
   classes: PropTypes.object.isRequired,
-  onSubmit: PropTypes.func.isRequired,
   clearError: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   pattern: PropTypes.object,
 };
 

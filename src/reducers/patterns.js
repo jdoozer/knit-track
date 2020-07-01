@@ -86,6 +86,7 @@ export const getPatternTitlesSorted = createSelector(
 
 export const getPatternsLoading = state => state.loading;
 export const getPatternsError = state => state.error;
+export const getPatternsLastAction = state => state.lastActionType;
 
 export const getPatternById = (state, patternId) => (
   getPatternsById(state)[patternId]

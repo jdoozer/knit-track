@@ -17,10 +17,11 @@ const mapDispatchToProps = {
 
 const PatternSetup = ({ createPattern, clearError, loading, error, history }) => (
   <PatternForm
-    onSubmit={patternData => createPattern({ history, patternData })}
+    onSubmit={patternData => createPattern({ history, patternData, actionType: 'createPattern' })}
     clearError={clearError}
     loading={loading}
     error={error}
+    createNew
   />
 );
 
