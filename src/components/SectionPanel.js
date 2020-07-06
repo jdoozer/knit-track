@@ -8,7 +8,8 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import IconButton from '@material-ui/core/IconButton';
-import EditIcon from '@material-ui/icons/Edit';
+import EditIcon from '@material-ui/icons/EditRounded';
+import CopyIcon from '@material-ui/icons/FileCopyRounded';
 import TotalRows from 'components/TotalRows';
 import CurrentRowSmall from 'components/CurrentRowSmall';
 import RowCounter from 'components/RowCounter';
@@ -44,6 +45,10 @@ const styles = theme => ({
 
 const EditLink = sectionId => forwardRef((props, ref) => (
   <Link innerRef={ref} to={`/sections/${sectionId}/edit`} {...props} />
+));
+
+const CopyLink = sectionId => React.forwardRef((props, ref) => (
+  <Link innerRef={ref} to={`/sections/${sectionId}/copy`} {...props} />
 ));
 
 const SectionPanel = (props) => {
@@ -93,10 +98,11 @@ const SectionPanel = (props) => {
               updateRowCount={type => updateRowCount(sectionId, type)}
             />
             <div className={classes.button}>
-              <IconButton
-                color="inherit" key="edit" component={EditLink(sectionId)}
-              >
+              <IconButton color="inherit" key="edit" component={EditLink(sectionId)}>
                 <EditIcon />
+              </IconButton>
+              <IconButton color="inherit" key="copy" component={CopyLink(sectionId)}>
+                <CopyIcon />
               </IconButton>
               <DeleteSection sectionId={sectionId} />
             </div>
