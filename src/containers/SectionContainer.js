@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import {
-  fetchSectionIfNeeded, updateRowCount, subscribeRowCount, clearError, updateSection,
+  fetchSectionIfNeeded, updateRowCount, subscribeRowCount, clearError, updateSection, createSection,
 } from 'actions';
 import { getSectionById, getPatternById } from 'reducers';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -26,15 +26,14 @@ const mapDispatchToProps = {
   subscribeRowCount,
   fetchSectionIfNeeded,
   clearError: sectionId => clearError('sections', sectionId),
-  updateSection: (sectionId, sectionUpdates, history) => (
-    updateSection(sectionId, sectionUpdates, 'updateSection', history)
-  ),
+  updateSection,
+  createSection,
 };
 
 const SectionContainer = (props) => {
 
   const {
-    pattern, section, sectionId: sectionIdProp, match, history,
+    pattern, section, sectionId: sectionIdProp, match, history, createSection,
     fetchSectionIfNeeded, updateRowCount, subscribeRowCount, updateSection, clearError,
   } = props;
   const { path, params } = match || {};
@@ -88,13 +87,27 @@ const SectionContainer = (props) => {
     <Switch>
       <Route path={`${path}/edit`} render={() => (
         <SectionForm
-          onSubmit={sectionUpdates => updateSection(sectionId, sectionUpdates, history)}
+          onSubmit={sectionUpdates => updateSection(sectionId, sectionUpdates, 'updateSection', history)}
           clearError={() => clearError(sectionId)}
           loading={loading && lastActionType === 'updateSection'}
           error={Boolean(error) && lastActionType === 'updateSection'}
           pattern={pattern}
           section={section}
           history={history}
+        />
+      )} />
+      <Route path={`${path}/copy`} render={() => (
+        <SectionForm
+          onSubmit={sectionData => createSection({
+            history, sectionData, actionType: 'copySection', copyId: sectionId,
+          })}
+          clearError={() => clearError(sectionId)}
+          loading={loading && lastActionType === 'copySection'}
+          error={Boolean(error) && lastActionType === 'copySection'}
+          pattern={pattern}
+          section={{ ...section, title: `${section.title} copy`}}
+          history={history}
+          createNew
         />
       )} />
       <Route render={() => (<SectionPanel section={section} updateRowCount={updateRowCount} />)} />

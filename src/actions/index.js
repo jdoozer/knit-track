@@ -160,10 +160,10 @@ export const updatePattern = (patternId, patternUpdates, actionType, history) =>
   history,
 });
 
-export const createSection = ({ history, sectionData }) => fetchThunk({
-  requestAction: requestData('sections'),
+export const createSection = ({ history, sectionData, actionType, copyId }) => fetchThunk({
+  requestAction: requestData('sections', copyId, actionType),
   receiveAction: receiveNewSection,
-  errorAction: error => receiveError(error, 'sections'),
+  errorAction: error => receiveError(error, 'sections', copyId),
   path: 'sections',
   requestType: 'POST',
   body: { section: { ...sectionData } },

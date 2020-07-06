@@ -127,14 +127,14 @@ class SectionForm extends React.Component {
   };
 
   handleSubmit = event => {
-    const { onSubmit, pattern: { patternId }, section } = this.props;
+    const { onSubmit, pattern: { patternId }, section, createNew } = this.props;
     const { title, numRows, rowData } = this.state;
   
     const row0 = [{}]; // we always want row 0 empty so rows can be 1-indexed
-    const sectionData = filterUpdates(
-      { title, numRows, rows: row0.concat(rowData) },
-      section
-    );
+    const formattedSection = { title, numRows, rows: row0.concat(rowData) };
+    const sectionData = createNew
+      ? formattedSection
+      : filterUpdates(formattedSection, section);
 
     if (sectionData) {
       onSubmit({ patternId, ...sectionData });
@@ -146,13 +146,13 @@ class SectionForm extends React.Component {
   render() {
 
     const {
-      pattern: { title }, section, classes, loading, error, clearError
+      pattern: { title }, classes, loading, error, clearError, createNew,
     } = this.props;
 
     return (
       <>
         <ContentHeader>
-          {title} - {section ? 'Edit Section' : 'New Section Setup'}
+          {title} - {createNew ? 'Create Section' : 'Update Section'}
         </ContentHeader>
         <form
           onSubmit={this.handleSubmit}
@@ -205,13 +205,13 @@ class SectionForm extends React.Component {
             className={classes.button}
             type="submit"
           >
-            {section ? 'Update Section' : 'Create Section'}
+            {createNew ? 'Create Section' : 'Update Section'}
           </Button>
         </form>
 
         <ProgressModal open={loading} />
         <ErrorSnackbar open={error} onClose={clearError}>
-          Error {section ? 'editing' : 'creating'} section, please retry!
+          Error {createNew ? 'creating' : 'editing'} section, please retry!
         </ErrorSnackbar>
 
       </>
@@ -229,6 +229,7 @@ SectionForm.propTypes = {
   clearError: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
+  createNew: PropTypes.bool,
 };
 
 export default withStyles(styles)(SectionForm);

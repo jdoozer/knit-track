@@ -21,10 +21,11 @@ const SectionSetup = ({
 }) => (
   <SectionForm
     pattern={pattern}
-    onSubmit={sectionData => createSection({ history, sectionData })}
+    onSubmit={sectionData => createSection({ history, sectionData, actionType: 'createSection' })}
     clearError={clearError}
     loading={loading}
     error={error}
+    createNew
   />
 );
 
